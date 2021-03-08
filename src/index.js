@@ -16,20 +16,49 @@ const router = express.Router();
 // API FUNCTIONS
 const objId = 'mediDB'
 
-//get all active prescriptions for a given user id
+//ADD USER/PHARM/PREC TO THE DATABASE -------------------------------------------------------------
+router.post(`/${objId}/:addParm`, asynch(req,res) => {
+	try{
+		const { addParm } = req.params;
+
+		switch(addParm){
+			case '0':
+				// new prescription to existing user and pharmacy
+				const { user_id, pharm_id, rx_no} = req.body;
+			break;
+
+			case '1':
+			break;
+
+			case '2':
+			break;
+
+			default:
+			break;
+			
+		}
+	} catch(err){
+		console.log(err);
+	}
+
+});
+
+//GET ACTIVE PRESCRIPTIONS FOR A CURRENT USER ------------------------------------------
 //result will be an array of prescription dictionaries
 //dictionary contains prescription rxno, administered pharmacy, and status
-router.get(`/${objId}/user_id`, async (req, res) => { 
+router.get(`/${objId}/:user_id`, async (req, res) => { 
 	try{
 		//set up information needed for prescription call
 		const { user_id } = req.params; //get the user id from request parameters
 
 		//make call to the database
 		//will return a json text of active prescriptions with their prescription ID
-		const prec_ids = JSON.parse( await pool.query(
+		const queryOut = await pool.query(
 			"SELECT active_precs FROM user_table WHERE user_id=$1",
 			[user_id]
-			));
+			);
+
+		const prec_ids = JSON.parse(queryOut.rows[0].active_precs);
 
 		//now make successive api calls to retrieve the information
 		//dictionary structure
@@ -60,11 +89,11 @@ router.get(`/${objId}/user_id`, async (req, res) => {
 				//with every id in prec ids
 				//retrieve the prec information from database
 				curPrecInfo = await pool.query(
-					"SELECT rx_no, pharm_id, status FROM prec_table WHERE rx_no = $1",
+					"SELECT pharm_id, status FROM prec_table WHERE rx_no = $1",
 					[curPrecId]
 					);
 
-				curRx = curPrecInfo.rows[0].rx_no; //extract rx no
+				curRx = curPrecId; //extract rx no
 				curStat = curPrecInfo.rows[0].status; //extract status
 
 				//use pharmId from precInfo to make another database query to get pharmacy information
