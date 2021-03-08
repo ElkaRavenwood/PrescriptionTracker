@@ -50,6 +50,7 @@ router.get(`/${objId}/:user_id`, async (req, res) => {
 	try{
 		//set up information needed for prescription call
 		const { user_id } = req.params; //get the user id from request parameters
+		//const user_id = parseInt(user_id_text,10);
 
 		//make call to the database
 		//will return a json text of active prescriptions with their prescription ID
