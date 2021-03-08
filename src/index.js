@@ -14,11 +14,96 @@ const router = express.Router();
 
 
 // API FUNCTIONS
+const objId = 'mediDB'
 
-router.get('/', function (req, res) { 
+//get all active prescriptions for a given user id
+//result will be an array of prescription dictionaries
+//dictionary contains prescription rxno, administered pharmacy, and status
+router.get(`/${objId}/user_id`, async (req, res) => { 
+	try{
+		//set up information needed for prescription call
+		const { user_id } = req.params; //get the user id from request parameters
 
-  res.send('Backend is up!')
+		//make call to the database
+		//will return a json text of active prescriptions with their prescription ID
+		const prec_ids = JSON.parse( await pool.query(
+			"SELECT active_precs FROM user_table WHERE user_id=$1",
+			[user_id]
+			));
+
+		//now make successive api calls to retrieve the information
+		//dictionary structure
+		/*
+		{
+			rx_no : 'test',
+			pharmacy : {
+				name: 'BigPharma',
+				address: '27 Auburn Rd',
+				zip_code: 'K7L2S7'
+			},
+			status : 'teststatus'
+		}
+		*/
+
+		const prec_dixes = [];
+		let curPrecInfo;
+		let curRx;
+		let curPharmQuery;
+		let curPharmDix;
+		let curStat;
+
+		let curprecdix;
+
+		//loop for filling up prescption dictionary
+		prec_ids.forEach(
+			function (curPrecId){
+				//with every id in prec ids
+				//retrieve the prec information from database
+				curPrecInfo = await pool.query(
+					"SELECT rx_no, pharm_id, status FROM prec_table WHERE rx_no = $1",
+					[curPrecId]
+					);
+
+				curRx = curPrecInfo.rows[0].rx_no; //extract rx no
+				curStat = curPrecInfo.rows[0].status; //extract status
+
+				//use pharmId from precInfo to make another database query to get pharmacy information
+				curPharmQuery = await pool.query(
+					"SELECT name, street_address, zip_code FROM pharm_table WHERE pharm_id = $1",
+					[curPrecInfo.rows[0].pharm_id]
+					);
+
+				curPharmDix = {
+					name: curPharmQuery.rows[0].name, //get pharmacy name
+					address: curPharmQuery.rows[0].street_address, //street address
+					zip_code: curPharmQuery.rows[0].zip_code //and zipcode
+				}; //put it into the pharm dix
+
+				//now can create the prescription dictionary
+				curprecdix = {
+					rx_no: curRx,
+					pharmacy : curPharmDix,
+					status: curStat
+				};
+
+				//add to the array
+				prec_dixes.push(curprecdix);
+
+			}
+		);
+
+		const output = {
+			user: user_id,
+			prescriptions: prec_dixes
+		};
+
+
+		res.send(output);
+	} catch(err){
+		console.log(err.message);
+	}
 });
+
 
 
 

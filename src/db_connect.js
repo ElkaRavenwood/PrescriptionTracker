@@ -18,7 +18,7 @@ const pool = new Pool({
   port: 5432, //port of the host
 
 
-  database: "meditrack_tb" //the database we will be working wit
+  database: "meditrack_db" //the database we will be working wit
 });
 
 //export the pool
