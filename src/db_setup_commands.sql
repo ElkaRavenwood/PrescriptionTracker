@@ -81,6 +81,11 @@ CREATE TABLE sec_questions(
 	sec_quest VARCHAR(75) NOT NULL
 );
 
+-- https://www.postgresql.org/docs/9.5/arrays.html
+-- https://www.postgresql.org/docs/9.5/datatype.html
+-- https://www.postgresql.org/docs/9.5/datatype-datetime.html
+-- https://www.convertcsv.com/csv-to-sql.htm
+
 -- STATUS QUESTIONS------------------------------------------------------------------------------------------
 INSERT INTO status_steps (status_msg) VALUES ('Received');
 INSERT INTO status_steps (status_msg) VALUES ('Logged');
@@ -152,6 +157,8 @@ INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,p
 INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (48,'Alfonse','Sandercock','asandercock1b@deviantart.com','760-547-2763',NULL,NULL);
 INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (49,'Rogers','Semaine','rsemaine1c@icio.us','723-303-8035',NULL,NULL);
 INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (50,'Rem','Rawnsley','rrawnsley1d@cdc.gov','964-615-2678',NULL,NULL);
+
+
 -- SAMPLE USER SEC INFO -----------------------------------------------------------------------------------
 -- SAMPLE PHARM INFO -----------------------------------------------------------------------------------
 -- SAMPLE PHARM SEC INFO -----------------------------------------------------------------------------------
