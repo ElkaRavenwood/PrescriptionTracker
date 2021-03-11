@@ -1,0 +1,178 @@
+prescriptions
+- Rx no
+- Drug name
+- Drug strength
+- user id
+- pharm id
+- is_completed
+- status_step_id
+- status_message
+- status_date
+
+status_steps
+- status id
+- status_step
+- info:
+1. received
+2. Input
+3. Pharmacist Verfication
+4. Packaging
+5. Ready for pick up
+
+
+user information
+- user id
+- first name
+- last name
+- email
+- phone no
+- active prescriptions
+- prescription history
+
+user security information
+- user_id
+- email
+- phone no
+- password
+- security question 1
+- security question 2
+- sec quest 3
+- sec ans 1
+- sec ans 2
+- sec ans 3
+- health card number
+- street address
+- city
+
+
+pharmacy
+- pharm id
+- pharm name
+- address
+- city
+- zip code
+- active prescriptions
+- prescription history
+- serving users
+
+pharmacy securiyt
+- pharm id
+- email
+- password
+-security quest 1
+- security quest 2
+- security ans 1
+- security ans 2
+
+
+- sec_quest_table
+- sec_quest_id 
+- quesiton
+
+What was the house number and street name you lived in as a child?
+What were the last four digits of your childhood telephone number?
+What primary school did you attend?
+In what town or city was your first full time job?
+In what town or city did you meet your spouse or partner?
+What is the middle name of your oldest child?
+What are the last five digits of your driver's license number?
+What is your grandmother's (on your mother's side) maiden name?
+What is your spouse or partner's mother's maiden name?
+In what town or city did your parents meet?
+What time of the day were you born? (hh:mm)
+What time of the day was your first child born? (hh:mm)
+
+ACTIONS
+- add prescription - post /prec/
+	- post to prec_table with user id and pharm id
+	- add to active prescriptions for user
+	- add to active prescriptions for pharmacy
+
+- update prescription status - put /prec/
+	- update the status field for the prescription id
+	- update the date field for the prescription id
+	- if status_step id is completed
+		- remove from active prescriptions and add to prescription history
+		- possibly use a filter function
+
+- delete prescription - delete /prec/
+	- delete the prescription from prec_table
+	- update associated user prescription history and active prescriptions
+	- update associated pharm prescription history and active prescriptions
+
+- retrieve all active prescriptions for a user (using the user id)- get /user/active
+	- return information in an array of dictionaries
+		- each prescription dictionary:
+			- rx no
+			- drug name and strength
+			- associated pharmacy
+			- status_step:
+			- status_message
+
+	- retrieve the active prescription list
+	- for every rx no
+		- retrieve the information from prec table
+			- store rxno, med info, and status info
+			- use pharm id to access pharm table
+				- pharmacy name
+				- pharmacy street address
+				- pharmacy zip code
+			- create pharmacy dictionary
+		- create prescription dictionary
+		- add to array of dictionaries
+
+- retrieve all prescriptions for a user - get /user/history
+	- same steps but with prescription history
+
+- reset password- get /user/security
+	- get security questions and their associated answers
+
+- update password - put /user/security
+
+- get user information - get user/info
+	- get the information of user in dicitonary format
+
+- update information - put user/info
+
+- add user information post user/info
+	- initializations for a given user
+
+- retrieve information to confirm log in - get /user/login
+	- find by email or phone no
+	- retrieve appropriate user id
+	- retrieev appropriate password
+
+
+PHARMACY ACTIONS
+- get all active patients -  get /pharm/patients
+	- retrieve the user id list
+	- will be an array of dictionaries
+	- for every user id
+		- retrieve name information
+		- retrieve user id (hidden from system)
+
+- get all active prescriptions - get /pharm/precsactive
+	- same steps as the user but instead we dont include pharmacy information
+	- include user information instead
+
+- get prescription history - get /pharm/precshistory
+	- same as above but for history list
+
+- reset password- get /pharm/security
+	- get security questions and their associated answers
+
+- update password - put /pharm/security
+
+- get user information - get pharm/info
+	- get the information of user in dicitonary format
+
+- update information - put pharm/info
+
+- add user information post pharm/info
+	- initializations for a given user
+
+- retrieve information to confirm log in - get /pharm/login
+	- find by email or phone no
+	- retrieve appropriate user id
+	- retrieev appropriate password
+
