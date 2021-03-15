@@ -124,23 +124,61 @@ ACTIONS
 - retrieve all prescriptions for a user - get /user/history
 	- same steps but with prescription history
 
-- reset password- get /user/security
-	- get security questions and their associated answers
+---------------------------------------------------------------------
 
-- update password - put /user/security
+- get user account information - get /user/account/info via user id
+	- returns dictionary of 
+	- user id
+	- first name and last name
+	- email and phone no
+	- health card no
+	- street address
+	- city and postal code
 
-- get user information - get user/info
-	- get the information of user in dicitonary format
 
-- update information - put user/info
+- get user security information - get /user/security via user id or via email or phone no
+	- user id
+	- email
+	- phone no
+	- password
+	- security questions and answers
 
-- add user information post user/info
-	- initializations for a given user
+- post user account information -post /user/account
+	- post the user account information and user security information
+	- assuming the fields are available from the request
+	- handle null fields and respond to errors appropriately
 
-- retrieve information to confirm log in - get /user/login
-	- find by email or phone no
-	- retrieve appropriate user id
-	- retrieev appropriate password
+- get security questions - get /user/security/questions
+
+	
+- update user account information - update /user/account
+- delete user profile - delete /user/account
+- update user security infromation - update /user/security
+
+- get user login info -  /user/login
+	- return the email and phone no
+
+- log in
+	- get user log in for given email or phone no
+	- confirm with database and then get information
+- sign up
+	- post user account information
+	- post user security information
+- reset password
+	- get user security information
+	- update user security information
+
+- view account information
+	- get user account information
+
+- update account information
+	- update user account information
+
+- delete account
+	- delete user account information
+	- delete user security information
+
+
 
 
 PHARMACY ACTIONS
@@ -176,3 +214,18 @@ PHARMACY ACTIONS
 	- retrieve appropriate user id
 	- retrieev appropriate password
 
+
+layout:
+router.get(`/${objId}/user/security_questions`, async(req,res) => {
+        try{
+            const { query_pswd} = req.body;
+            if(query_pswd == "ae34ZF76!"){
+
+            } else{
+                res.send("ERROR: Illegal Query");
+            }
+        } catch(err){
+            console.log(err);
+            res.send("ERROR: Failure Handling Request");
+        }
+    });

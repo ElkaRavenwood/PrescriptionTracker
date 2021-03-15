@@ -1,0 +1,168 @@
+**NOTE ******************************************************************************
+All described apis have an implicit 'http://localhost:8000/meditrack' prepend
+For example, get: /user/account/info in full is
+get: http://localhost:8000/meditrack/user/account/info
+
+All queries to the database require a query password for safety
+The password should be as a dictionay key in the request body:
+
+"query_pswd": "ae34ZF76!"
+
+
+
+** API USES IN DIFFERENT ACTIONS ************************************************************
+- user sign up
+	- retrieve information from the fields
+	- GET /user/security/questions for sample user security questions
+	- POST /user/account
+
+- user log in
+	- either log in with email or phone number
+	- confirm infromation using
+	- GET /user/account/security
+
+- user view account information
+	- GET user/account/info
+
+- user update acccount information
+	- GET user/account/info
+	- UPDATE user/account/info
+
+- user update security information
+	- UPDATE user/account/security
+
+- user reset password
+	- GET user/account/security
+	- UPDATE user/account/security
+
+- post a prescription
+	- POST /precs 
+
+
+
+
+** DESCRIPTION OF IMPLEMENTED BACKEND APIS ******************************************************
+{
+	HTTP_CALL path_name (parameters, required_parameters*)
+	parameter names are the keys in the request body dictionary
+	Output:
+	<outputs>
+}
+
+{
+	GET /user/account/info ((user_id or email or phone_no)*)
+	Ouput:
+	Dictionary with the following keys for information
+		- user_id
+		- first_name
+		- last_name
+		- email
+		- phone_no
+		- healthcard_no
+		- street_address
+		- city
+		- postal_code
+}
+
+{
+	GET /user/account/security ((user_id or email or phone_no)*)
+	Ouput:
+	Dictionary with the following keys for information
+		- user_id
+		- first_name
+		- last_name
+		- email
+		- phone_no
+		- password
+		- sec_quest_1
+		- sec_quest_2
+		- sec_quest_3
+		- sec_ans_1
+		- sec_ans_2
+		- sec_ans_3
+}
+
+{
+	POST /user/account (
+		first_name*,
+		last_name*,
+		(email or phone_no)*,
+		password*,
+		street_address, city, postal_code,
+		healthcard_no,
+		sec_quest_1, sec_quest_2, sec_quest_3,
+		sec_ans_1, sec_ans_2, sec_ans_3
+	)
+	Outputs:
+	Returns the information in a dictionary with the following keys:
+		- user_id
+		- first_name
+		- last_name
+		- email
+		- phone_no
+		- precs_active (json array of rx#s of active prescriptions)
+		- precs_history (json array of rx#s of prescription history)
+}
+
+{
+	GET /user/security/questions ()
+	Output:
+	Returns a json array of security question samples.
+}
+
+{
+	PUT /user/account/info (
+		user_id*,
+		email,
+		phone_no,
+		first_name,
+		last_name,
+		email,
+		phone_no,
+		healthcard_no,
+		street_address,
+		city,
+		postal_code,
+	)
+	//parameters should be the fields that need to be updated
+	//updates the user account information (not security information)
+	Outputs:
+	Returns a dictionary:
+		- user_id
+		- update_status (0 for failure, 1 for success);
+		- update_msg (a string )
+}
+
+{
+	PUT /user/account/security (
+		user_id*,
+		password,
+		sec_quest_1,
+		sec_quest_2,
+		sec_quest_3,
+		sec_ans_1,
+		sec_ans_2,
+		sec_ans_3
+	)
+	Outputs:
+	Returns a dictionary:
+		- user_id
+		- update_status (0 for failure, 1 for success);
+		- update_msg (a string )
+} 
+
+{
+	POST /precs (
+		rx*,
+		user_id*,
+		pharm_id*,
+		status_date*,
+		med_name,
+		med_strength,
+		status_msg,
+	)
+	//posts a prescription to the database adding to pharm and users active prescriptions
+	//also adds user to pharm active prescriptions if not already present
+	//returns prescription dictionary
+		- 
+}
