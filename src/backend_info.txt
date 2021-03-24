@@ -216,10 +216,10 @@ PHARMACY ACTIONS
 
 
 layout:
-router.get(`/${objId}/user/security_questions`, async(req,res) => {
+router.get(`/${objId}/`, async(req,res) => {
         try{
             const { query_pswd} = req.body;
-            if(query_pswd == "ae34ZF76!"){
+            if(query_pswd == PSWD){
 
             } else{
                 res.send("ERROR: Illegal Query");

@@ -92,7 +92,6 @@ INSERT INTO status_steps (status_msg) VALUES ('Logged');
 INSERT INTO status_steps (status_msg) VALUES ('Pharmacist Verification');
 INSERT INTO status_steps (status_msg) VALUES ('Packaging');
 INSERT INTO status_steps (status_msg) VALUES ('Ready For Pick Up');
-INSERT INTO status_steps (status_msg) VALUES ('Received');
 INSERT INTO status_steps (status_msg) VALUES ('NOMESSAGE');
 
 -- SEC QUESTIONS------------------------------------------------------------------------------------------

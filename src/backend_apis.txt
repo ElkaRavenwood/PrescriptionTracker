@@ -8,6 +8,7 @@ The password should be as a dictionay key in the request body:
 
 "query_pswd": "ae34ZF76!"
 
+All apis function as a dictionary calls, request should be sent in json format as a dictionary
 
 
 ** API USES IN DIFFERENT ACTIONS ************************************************************
@@ -22,21 +23,87 @@ The password should be as a dictionay key in the request body:
 	- GET /user/account/security
 
 - user view account information
-	- GET user/account/info
+	- GET /user/account/info
 
 - user update acccount information
-	- GET user/account/info
+	- GET /user/account/info
 	- UPDATE user/account/info
 
 - user update security information
-	- UPDATE user/account/security
+	- UPDATE /user/account/security
 
 - user reset password
-	- GET user/account/security
+	- GET /user/account/security
 	- UPDATE user/account/security
 
 - post a prescription
 	- POST /precs 
+
+
+
+- get a given prescription with rxno
+	- GET /precs/rx
+
+//uncompleted actions ************************
+
+- get all active prescriptions for user and their associated tracking information
+	- GET /user/precs/active
+
+- get all prescriptions for a user (for user history)
+	- GET /user/precs/history
+
+- get status progress steps
+	- GET /precs/status/progress
+
+
+- update the status of a prescription
+	- UPDATE /precs/status
+
+	- requires the rxno of prescription
+	- optional pharm_id (just to confirm that the pharmacy updating is the appropriate one for prescription)
+	- requires the status number to be provided.
+	- status message is optional
+	- 
+
+- user pick up prescription
+	- user completes a prescription pick up
+
+- delete a prescription
+	- DELETE /precs
+
+
+- pharm sign up
+	- retrieve information from the fields
+	- GET /security/questions for sample user security questions
+	- POST /pharm/account
+
+- pharm log in
+	- either log in with email or phone number
+	- confirm infromation using
+	- GET /pharm/account/security
+
+- pharm view account information
+	- GET /pharm/account/info
+
+- pharm update acccount information
+	- GET /pharm/account/info
+	- UPDATE pharm/account/info
+
+- pharm update security information
+	- UPDATE /pharm/account/security
+
+- pharm reset password
+	- GET /pharm/account/security
+	- UPDATE pharm/account/security
+
+- pharm view patients
+	- obtains the list of patients the pharmacy is servicing
+	- GET /pharm/patients
+
+- pharm view a patient information
+	- see all the prescriptions that the pharmacy is currently serving
+	- GET /pharm/patient/precs
+
 
 
 
@@ -105,7 +172,7 @@ The password should be as a dictionay key in the request body:
 }
 
 {
-	GET /user/security/questions ()
+	GET /security/questions ()
 	Output:
 	Returns a json array of security question samples.
 }
@@ -159,10 +226,66 @@ The password should be as a dictionay key in the request body:
 		status_date*,
 		med_name,
 		med_strength,
-		status_msg,
+		status_msg
 	)
 	//posts a prescription to the database adding to pharm and users active prescriptions
 	//also adds user to pharm active prescriptions if not already present
 	//returns prescription dictionary
 		- 
+}
+
+{
+	GET /precs (rx*)
+
+	//returns a dictionary of the format:
+	{
+		rx: 1234,
+		med_name: Acetone,
+		med_strength: High,
+
+		user: {
+			user_id:
+			first_name:
+			last_name:
+			emai:
+			phone_no:
+		},
+
+		pharmacy: {
+			pharm_id:
+			name: Big Pharma,
+			address: King Avenue,
+			phone_no:
+			email:
+		},
+
+		progress: 2 //number out of 5 for stage in pharmacy, 6 if not used
+		progress_msg: "Received"
+		status_msg: "nothign yet!"
+		status_date: 09002-3940-833
+		is_completed: 0 (0 for not completed, 1 for completed)
+	}
+}
+
+{
+	GET /user/precs/active/ (user_id*)
+
+	returns an array of currently active (being tracked) prescription dictionaries
+	in the format of the dictionary above.
+}
+
+{
+	GET /user/precs/history/ (user_id*)
+
+	returns an array of all prescriptions tracked in the form of dictionaries
+	in the format of the dictionary above.
+}
+
+{
+	PUT /precs/update (
+		rx*,
+		progress*, //number out of 5 for stage in pharmacy, 6 if not used
+		status_msg, //specific message from pharmacy
+		status_date*,
+	)
 }
