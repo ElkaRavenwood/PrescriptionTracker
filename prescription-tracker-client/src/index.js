@@ -4,11 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter } from "react-router-dom";
+import { MuiThemeProvider } from '@material-ui/core';
+import theme from './Theme';
 
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')
