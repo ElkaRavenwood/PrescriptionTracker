@@ -2,7 +2,7 @@ import './App.css';
 import { Switch, Route } from "react-router-dom";
 
 // Pages
-import { Home, Login, Signup, PageNotFound } from "./Pages";
+import { Home, Login, PageNotFound } from "./Pages";
 
 function App() {
   return (
@@ -18,12 +18,6 @@ function App() {
           exact path="/Login"
           render={props => 
             <Login {...props} />
-          }
-        />
-        <Route 
-          exact path="/Signup"
-          render={props => 
-            <Signup {...props} />
           }
         />
         <Route
