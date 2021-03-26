@@ -4,6 +4,8 @@
 -- \i downloads/db_setup_commands.sql
 CREATE DATABASE meditrack_db;
 
+\c meditrack_db
+
 CREATE TABLE prec_info(
 	rx VARCHAR(10) PRIMARY KEY NOT NULL,
 	med_name VARCHAR(50) NULL,
@@ -106,56 +108,56 @@ INSERT INTO sec_questions(sec_quest) VALUES ('What time of the day were you born
 INSERT INTO sec_questions(sec_quest) VALUES ('What time of the day was your first child born? (hh:mm)');
 
 -- SAMPLE USER INFO -----------------------------------------------------------------------------------
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (1,'Toddie','Petters','tpetters0@walmart.com','827-326-9651',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (2,'Lamar','Lamping','llamping1@privacy.gov.au','192-293-0350',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (3,'Addia','Zellick','azellick2@omniture.com','735-232-5276',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (4,'Frederigo','Peperell','fpeperell3@skyrock.com','650-973-6340',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (5,'Millie','Baike','mbaike4@fotki.com','169-172-4022',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (6,'Lyndsey','Rillstone','lrillstone5@booking.com','544-556-7146',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (7,'Margi','Westphal','mwestphal6@typepad.com','931-200-3729',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (8,'Finn','Leathart','fleathart7@ca.gov','538-304-4146',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (9,'Clim','McCabe','cmccabe8@chicagotribune.com','741-472-5430',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (10,'Janean','Drever','jdrever9@marketwatch.com','407-633-6486',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (11,'Spike','Ogdahl','sogdahla@youku.com','165-937-9782',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (12,'Eachelle','Whitmell','ewhitmellb@indiegogo.com','351-568-6508',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (13,'Law','Locket','llocketc@soup.io','527-701-3275',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (14,'Jervis','Castagnier','jcastagnierd@wikipedia.org','786-564-9169',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (15,'Marshal','Champneys','mchampneyse@washington.edu','626-722-8119',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (16,'Nichole','Hudless','nhudlessf@booking.com','899-620-7385',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (17,'Riva','Scottrell','rscottrellg@telegraph.co.uk','346-553-1442',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (18,'Ulrikaumeko','Gibby','ugibbyh@about.com','663-930-4213',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (19,'Flemming','Wrotham','fwrothami@google.com','827-772-4842',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (20,'Cecelia','Caldairou','ccaldairouj@google.com.au','826-944-6130',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (21,'Rosmunda','Ferras','rferrask@indiatimes.com','885-799-0550',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (22,'Parke','Frankiewicz','pfrankiewiczl@bandcamp.com','348-824-2927',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (23,'Lindsey','Macura','lmacuram@4shared.com','704-524-5614',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (24,'Pierette','Bagniuk','pbagniukn@sciencedirect.com','927-235-9661',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (25,'Nanci','Sarch','nsarcho@merriam-webster.com','466-573-6485',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (26,'Perrine','Breckin','pbreckinp@flavors.me','284-219-7295',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (27,'Stevy','Thorowgood','sthorowgoodq@g.co','977-787-4860',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (28,'Annora','Blofield','ablofieldr@nba.com','550-239-3649',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (29,'Gabriela','Garrie','ggarries@msn.com','473-931-1489',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (30,'Fleming','Castagne','fcastagnet@spotify.com','106-334-2284',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (31,'Byrle','Cramb','bcrambu@engadget.com','570-647-7128',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (32,'Francine','Heams','fheamsv@pinterest.com','299-484-8193',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (33,'Lidia','Coomes','lcoomesw@utexas.edu','870-226-0015',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (34,'Vi','De Filippo','vdefilippox@friendfeed.com','586-413-1655',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (35,'Gwen','Vaggs','gvaggsy@slashdot.org','799-137-7178',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (36,'Nerita','Kettel','nkettelz@boston.com','186-749-2727',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (37,'Nico','McKiddin','nmckiddin10@businesswire.com','816-374-0454',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (38,'Osmond','Foakes','ofoakes11@wix.com','473-533-4000',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (39,'Ashlee','Cherm','acherm12@mozilla.org','614-398-1494',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (40,'Arch','Thomasset','athomasset13@netlog.com','447-311-3305',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (41,'Rice','Shwenn','rshwenn14@prweb.com','749-545-5489',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (42,'Asher','Coulton','acoulton15@domainmarket.com','742-451-7521',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (43,'Alic','Phidgin','aphidgin16@issuu.com','391-698-7923',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (44,'Garrard','Lyle','glyle17@reddit.com','397-347-0953',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (45,'Ynez','Tompkin','ytompkin18@oakley.com','461-117-7471',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (46,'Roth','Elcoat','relcoat19@sakura.ne.jp','806-206-5535',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (47,'Helenka','Dollin','hdollin1a@scientificamerican.com','970-876-3867',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (48,'Alfonse','Sandercock','asandercock1b@deviantart.com','760-547-2763',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (49,'Rogers','Semaine','rsemaine1c@icio.us','723-303-8035',NULL,NULL);
-INSERT INTO user_info(user_id,first_name,last_name,email,phone_no,precs_active,precs_history) VALUES (50,'Rem','Rawnsley','rrawnsley1d@cdc.gov','964-615-2678',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Toddie','Petters','tpetters0@walmart.com','827-326-9651',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Lamar','Lamping','llamping1@privacy.gov.au','192-293-0350',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Addia','Zellick','azellick2@omniture.com','735-232-5276',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Frederigo','Peperell','fpeperell3@skyrock.com','650-973-6340',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Millie','Baike','mbaike4@fotki.com','169-172-4022',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Lyndsey','Rillstone','lrillstone5@booking.com','544-556-7146',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Margi','Westphal','mwestphal6@typepad.com','931-200-3729',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Finn','Leathart','fleathart7@ca.gov','538-304-4146',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Clim','McCabe','cmccabe8@chicagotribune.com','741-472-5430',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Janean','Drever','jdrever9@marketwatch.com','407-633-6486',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Spike','Ogdahl','sogdahla@youku.com','165-937-9782',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Eachelle','Whitmell','ewhitmellb@indiegogo.com','351-568-6508',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Law','Locket','llocketc@soup.io','527-701-3275',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Jervis','Castagnier','jcastagnierd@wikipedia.org','786-564-9169',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Marshal','Champneys','mchampneyse@washington.edu','626-722-8119',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Nichole','Hudless','nhudlessf@booking.com','899-620-7385',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Riva','Scottrell','rscottrellg@telegraph.co.uk','346-553-1442',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Ulrikaumeko','Gibby','ugibbyh@about.com','663-930-4213',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Flemming','Wrotham','fwrothami@google.com','827-772-4842',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Cecelia','Caldairou','ccaldairouj@google.com.au','826-944-6130',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Rosmunda','Ferras','rferrask@indiatimes.com','885-799-0550',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Parke','Frankiewicz','pfrankiewiczl@bandcamp.com','348-824-2927',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Lindsey','Macura','lmacuram@4shared.com','704-524-5614',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Pierette','Bagniuk','pbagniukn@sciencedirect.com','927-235-9661',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Nanci','Sarch','nsarcho@merriam-webster.com','466-573-6485',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Perrine','Breckin','pbreckinp@flavors.me','284-219-7295',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Stevy','Thorowgood','sthorowgoodq@g.co','977-787-4860',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Annora','Blofield','ablofieldr@nba.com','550-239-3649',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Gabriela','Garrie','ggarries@msn.com','473-931-1489',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Fleming','Castagne','fcastagnet@spotify.com','106-334-2284',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Byrle','Cramb','bcrambu@engadget.com','570-647-7128',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Francine','Heams','fheamsv@pinterest.com','299-484-8193',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Lidia','Coomes','lcoomesw@utexas.edu','870-226-0015',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Vi','De Filippo','vdefilippox@friendfeed.com','586-413-1655',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Gwen','Vaggs','gvaggsy@slashdot.org','799-137-7178',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Nerita','Kettel','nkettelz@boston.com','186-749-2727',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Nico','McKiddin','nmckiddin10@businesswire.com','816-374-0454',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Osmond','Foakes','ofoakes11@wix.com','473-533-4000',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Ashlee','Cherm','acherm12@mozilla.org','614-398-1494',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Arch','Thomasset','athomasset13@netlog.com','447-311-3305',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Rice','Shwenn','rshwenn14@prweb.com','749-545-5489',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Asher','Coulton','acoulton15@domainmarket.com','742-451-7521',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Alic','Phidgin','aphidgin16@issuu.com','391-698-7923',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Garrard','Lyle','glyle17@reddit.com','397-347-0953',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Ynez','Tompkin','ytompkin18@oakley.com','461-117-7471',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Roth','Elcoat','relcoat19@sakura.ne.jp','806-206-5535',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Helenka','Dollin','hdollin1a@scientificamerican.com','970-876-3867',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Alfonse','Sandercock','asandercock1b@deviantart.com','760-547-2763',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Rogers','Semaine','rsemaine1c@icio.us','723-303-8035',NULL,NULL);
+INSERT INTO user_info(first_name,last_name,email,phone_no,precs_active,precs_history) VALUES ('Rem','Rawnsley','rrawnsley1d@cdc.gov','964-615-2678',NULL,NULL);
 
 
 -- SAMPLE USER SEC INFO -----------------------------------------------------------------------------------
@@ -212,57 +214,56 @@ INSERT INTO user_sec_info(user_id,email,phone_no,password,healthcard_no,street_a
 
 
 -- SAMPLE PHARM INFO -----------------------------------------------------------------------------------
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (1,'Alternative Pharmacy','lstoltz0@dedecms.com','113-484-2912','42678 Carberry Pass','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (2,'Ningbo Heyi Daily Chemical Products Co., Ltd.','nwooddisse1@npr.org','425-459-2231','62 Russell Hill','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (3,'Laser Pharmaceuticals, LLC','ewinear2@dailymotion.com','919-940-5099','04 Saint Paul Road','Kingston','184653',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (4,'MallyGirl, LLC','nphilpott3@facebook.com','442-880-4838','965 Luster Avenue','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (5,'Morton Grove Pharmaceuticals, Inc.','jmacneely4@state.gov','862-764-7392','0 Cherokee Center','Kingston','7505',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (6,'REMEDYREPACK INC.','rcowup5@reference.com','969-375-3263','27417 Hazelcrest Hill','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (7,'Uriel Pharmacy Inc.','jvondrak6@blogspot.com','777-292-5822','98466 Barby Center','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (8,'Space Brands Limited','wleggat7@biglobe.ne.jp','914-160-7725','08232 Ridgeway Lane','Kingston','62070 CEDEX 9',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (9,'A&Z Pharmaceutical, Inc.','rkeneforde8@cafepress.com','142-173-5071','809 Hazelcrest Place','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (10,'Medimetriks Pharmaceuticals','mszymanowski9@example.com','953-959-3692','02 Alpine Lane','Kingston','265 40',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (11,'REMEDYREPACK INC.','bsladea@google.co.jp','857-952-9676','22 Fordem Parkway','Kingston','10902',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (12,'Sanofi-Aventis U.S. LLC','mlarkingb@reverbnation.com','136-439-0067','8 Truax Road','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (13,'DIRECT RX','cemberyc@list-manage.com','966-685-3092','16 Center Center','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (14,'The Man Can, LLC','xpeersd@redcross.org','160-407-1107','35259 Drewry Point','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (15,'Vi-Jon','nrumbellowe@multiply.com','342-978-5836','58399 Anniversary Street','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (16,'Procter & Gamble Manufacturing Company','bnowickf@chronoengine.com','280-375-0854','129 Clove Pass','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (17,'Paramesh Banerji Life Sciences LLC','rrawsthorneg@examiner.com','705-921-6899','3 Jana Park','Kingston','9601',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (18,'REMEDYREPACK INC.','kjanecekh@dell.com','365-333-7701','3863 School Terrace','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (19,'Chang Hwa Dang Co., Ltd.','mthrasheri@irs.gov','970-473-7071','9 Roxbury Terrace','Kingston','3109',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (20,'Ranbaxy Pharmaceuticals Inc.','kashburnerj@bandcamp.com','480-166-6084','07013 Northview Court','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (21,'REMEDYREPACK INC.','kduiguidk@eventbrite.com','901-628-5124','7 Milwaukee Lane','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (22,'SJ Creations, Inc.','svonwelldunl@diigo.com','732-728-9212','37 Mccormick Point','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (23,'Eon Labs, Inc.','dseifertm@ucoz.ru','266-501-7348','962 Londonderry Pass','Kingston','391237',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (24,'REMEDYREPACK INC.','lpitkinsn@goodreads.com','531-537-1718','975 Dottie Hill','Kingston','30902',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (25,'Lake Erie Medical DBA Quality Care Products LLC','mwhitfordo@technorati.com','180-522-0464','40 Browning Trail','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (26,'Eon Labs, Inc.','fspunerp@furl.net','623-385-9923','97984 Sachs Avenue','Kingston','331 85',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (27,'A-S Medication Solutions LLC','groscherq@google.nl','516-985-0950','09 Montana Circle','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (28,'Publix Super Markets Inc','tmorsomr@dell.com','331-841-6661','0808 Beilfuss Road','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (29,'Rite Aid Corporation','bblatherwicks@gov.uk','284-147-0017','62705 Sommers Center','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (30,'Energetix Corp','arapaportt@theatlantic.com','246-855-3381','8 Mcguire Park','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (31,'Meijer Distribution, Inc.','bsoaperu@devhub.com','339-939-6880','90 Cordelia Point','Kingston','4950-208',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (32,'Actavis Pharma, Inc.','ufawcettv@comcast.net','502-728-4872','119 Montana Alley','Kingston','386150',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (33,'AuroMedics Pharma LLC','rmenezesw@amazon.de','725-428-8388','78807 Stephen Parkway','Kingston','2610-006',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (34,'Sato Pharmaceutical Co., Ltd.','bjewsonx@ed.gov','821-909-9452','9265 Golf View Court','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (35,'Uriel Pharmacy Inc.','eebunoluway@squidoo.com','955-423-7693','1805 Anderson Crossing','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (36,'Topco Associates LLC','jhurdmanz@friendfeed.com','133-256-8468','076 Sage Drive','Kingston','95-045',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (37,'REMEDYREPACK INC.','ptingley10@360.cn','966-693-4806','973 Glendale Park','Kingston','386245',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (38,'Bayer HealthCare Pharmaceuticals Inc.','gesbrook11@unc.edu','597-424-1575','855 Lunder Place','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (39,'Aidarex Pharmaceuticals LLC','dgoseling12@yolasite.com','372-791-4614','0 Summit Parkway','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (40,'Aurolife Pharma LLC','ayandell13@miitbeian.gov.cn','826-919-1734','3703 Browning Circle','Kingston','49900-000',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (41,'Natural Health Supply','rburchnall14@spiegel.de','734-975-3244','59541 Barby Point','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (42,'Sunovion','cargo15@desdev.cn','574-503-8449','3 Mendota Lane','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (43,'Taro Pharmaceuticals U.S.A., Inc.','vkeeling16@mozilla.com','121-531-6856','28 Holy Cross Center','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (44,'Forest Laboratories, Inc.','psellers17@economist.com','225-425-4052','5 Village Junction','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (45,'SHANGHAI YINJING MEDICAL SUPPLIES CO., LTD.','ahucklesby18@springer.com','808-405-0442','7 Bashford Center','Kingston','MD-4734',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (46,'Budpak Inc.','cweildish19@nba.com','749-857-3602','6 West Drive','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (47,'Stephen L. LaFrance Pharmacy, Inc.','bdominik1a@google.pl','183-882-4672','5 Northland Park','Kingston','699',NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (48,'Apotheca Company','cdavydochkin1b@stumbleupon.com','692-120-3762','2256 Clarendon Parkway','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (49,'E. FOUGERA & CO','smccarlie1c@fastcompany.com','420-540-6408','02795 Riverside Crossing','Kingston',NULL,NULL,NULL,NULL);
-INSERT INTO pharm_info(pharm_id,name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES (50,'LABORATORIOS DE COSMETICA SCIENTIFICA ATACHE SA','rhaye1d@tamu.edu','288-893-8190','7 Little Fleur Avenue','Kingston','6341',NULL,NULL,NULL);
-
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Alternative Pharmacy','lstoltz0@dedecms.com','113-484-2912','42678 Carberry Pass','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Ningbo Heyi Daily Chemical Products Co., Ltd.','nwooddisse1@npr.org','425-459-2231','62 Russell Hill','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Laser Pharmaceuticals, LLC','ewinear2@dailymotion.com','919-940-5099','04 Saint Paul Road','Kingston','184653',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('MallyGirl, LLC','nphilpott3@facebook.com','442-880-4838','965 Luster Avenue','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Morton Grove Pharmaceuticals, Inc.','jmacneely4@state.gov','862-764-7392','0 Cherokee Center','Kingston','7505',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','rcowup5@reference.com','969-375-3263','27417 Hazelcrest Hill','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Uriel Pharmacy Inc.','jvondrak6@blogspot.com','777-292-5822','98466 Barby Center','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Space Brands Limited','wleggat7@biglobe.ne.jp','914-160-7725','08232 Ridgeway Lane','Kingston','62070 CEDEX 9',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('A&Z Pharmaceutical, Inc.','rkeneforde8@cafepress.com','142-173-5071','809 Hazelcrest Place','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Medimetriks Pharmaceuticals','mszymanowski9@example.com','953-959-3692','02 Alpine Lane','Kingston','265 40',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','bsladea@google.co.jp','857-952-9676','22 Fordem Parkway','Kingston','10902',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Sanofi-Aventis U.S. LLC','mlarkingb@reverbnation.com','136-439-0067','8 Truax Road','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('DIRECT RX','cemberyc@list-manage.com','966-685-3092','16 Center Center','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('The Man Can, LLC','xpeersd@redcross.org','160-407-1107','35259 Drewry Point','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Vi-Jon','nrumbellowe@multiply.com','342-978-5836','58399 Anniversary Street','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Procter & Gamble Manufacturing Company','bnowickf@chronoengine.com','280-375-0854','129 Clove Pass','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Paramesh Banerji Life Sciences LLC','rrawsthorneg@examiner.com','705-921-6899','3 Jana Park','Kingston','9601',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','kjanecekh@dell.com','365-333-7701','3863 School Terrace','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Chang Hwa Dang Co., Ltd.','mthrasheri@irs.gov','970-473-7071','9 Roxbury Terrace','Kingston','3109',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Ranbaxy Pharmaceuticals Inc.','kashburnerj@bandcamp.com','480-166-6084','07013 Northview Court','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','kduiguidk@eventbrite.com','901-628-5124','7 Milwaukee Lane','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('SJ Creations, Inc.','svonwelldunl@diigo.com','732-728-9212','37 Mccormick Point','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Eon Labs, Inc.','dseifertm@ucoz.ru','266-501-7348','962 Londonderry Pass','Kingston','391237',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','lpitkinsn@goodreads.com','531-537-1718','975 Dottie Hill','Kingston','30902',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Lake Erie Medical DBA Quality Care Products LLC','mwhitfordo@technorati.com','180-522-0464','40 Browning Trail','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Eon Labs, Inc.','fspunerp@furl.net','623-385-9923','97984 Sachs Avenue','Kingston','331 85',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('A-S Medication Solutions LLC','groscherq@google.nl','516-985-0950','09 Montana Circle','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Publix Super Markets Inc','tmorsomr@dell.com','331-841-6661','0808 Beilfuss Road','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Rite Aid Corporation','bblatherwicks@gov.uk','284-147-0017','62705 Sommers Center','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Energetix Corp','arapaportt@theatlantic.com','246-855-3381','8 Mcguire Park','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Meijer Distribution, Inc.','bsoaperu@devhub.com','339-939-6880','90 Cordelia Point','Kingston','4950-208',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Actavis Pharma, Inc.','ufawcettv@comcast.net','502-728-4872','119 Montana Alley','Kingston','386150',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('AuroMedics Pharma LLC','rmenezesw@amazon.de','725-428-8388','78807 Stephen Parkway','Kingston','2610-006',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Sato Pharmaceutical Co., Ltd.','bjewsonx@ed.gov','821-909-9452','9265 Golf View Court','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Uriel Pharmacy Inc.','eebunoluway@squidoo.com','955-423-7693','1805 Anderson Crossing','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Topco Associates LLC','jhurdmanz@friendfeed.com','133-256-8468','076 Sage Drive','Kingston','95-045',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('REMEDYREPACK INC.','ptingley10@360.cn','966-693-4806','973 Glendale Park','Kingston','386245',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Bayer HealthCare Pharmaceuticals Inc.','gesbrook11@unc.edu','597-424-1575','855 Lunder Place','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Aidarex Pharmaceuticals LLC','dgoseling12@yolasite.com','372-791-4614','0 Summit Parkway','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Aurolife Pharma LLC','ayandell13@miitbeian.gov.cn','826-919-1734','3703 Browning Circle','Kingston','49900-000',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Natural Health Supply','rburchnall14@spiegel.de','734-975-3244','59541 Barby Point','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Sunovion','cargo15@desdev.cn','574-503-8449','3 Mendota Lane','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Taro Pharmaceuticals U.S.A., Inc.','vkeeling16@mozilla.com','121-531-6856','28 Holy Cross Center','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Forest Laboratories, Inc.','psellers17@economist.com','225-425-4052','5 Village Junction','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('SHANGHAI YINJING MEDICAL SUPPLIES CO., LTD.','ahucklesby18@springer.com','808-405-0442','7 Bashford Center','Kingston','MD-4734',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Budpak Inc.','cweildish19@nba.com','749-857-3602','6 West Drive','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Stephen L. LaFrance Pharmacy, Inc.','bdominik1a@google.pl','183-882-4672','5 Northland Park','Kingston','699',NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('Apotheca Company','cdavydochkin1b@stumbleupon.com','692-120-3762','2256 Clarendon Parkway','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('E. FOUGERA & CO','smccarlie1c@fastcompany.com','420-540-6408','02795 Riverside Crossing','Kingston',NULL,NULL,NULL,NULL);
+INSERT INTO pharm_info(name,email,phone_no,street_address,city,postal_code,precs_active,precs_history,patients) VALUES ('LABORATORIOS DE COSMETICA SCIENTIFICA ATACHE SA','rhaye1d@tamu.edu','288-893-8190','7 Little Fleur Avenue','Kingston','6341',NULL,NULL,NULL);
 
 
 

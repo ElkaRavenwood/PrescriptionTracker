@@ -42,9 +42,8 @@ All apis function as a dictionary calls, request should be sent in json format a
 
 
 - get a given prescription with rxno
-	- GET /precs/rx
+	- GET /precs/info
 
-//uncompleted actions ************************
 
 - get all active prescriptions for user and their associated tracking information
 	- GET /user/precs/active
@@ -52,12 +51,14 @@ All apis function as a dictionary calls, request should be sent in json format a
 - get all prescriptions for a user (for user history)
 	- GET /user/precs/history
 
-- get status progress steps
-	- GET /precs/status/progress
+- get status progress steps for a prescription
+	- GET /precs/info
 
+- update the information of a prescription (name and strength (user_id and pharm_id nonchangeabe))
+	- UPDATE /precs/info
 
 - update the status of a prescription
-	- UPDATE /precs/status
+	- UPDATE /precs/progress
 
 	- requires the rxno of prescription
 	- optional pharm_id (just to confirm that the pharmacy updating is the appropriate one for prescription)
@@ -235,7 +236,7 @@ All apis function as a dictionary calls, request should be sent in json format a
 }
 
 {
-	GET /precs (rx*)
+	GET /precs/info (rx*)
 
 	//returns a dictionary of the format:
 	{
@@ -282,10 +283,12 @@ All apis function as a dictionary calls, request should be sent in json format a
 }
 
 {
-	PUT /precs/update (
+	PUT /precs/progress (
 		rx*,
 		progress*, //number out of 5 for stage in pharmacy, 6 if not used
 		status_msg, //specific message from pharmacy
 		status_date*,
 	)
 }
+
+//***************UNCOMPLETED APIS **********************************
