@@ -1,4 +1,4 @@
-import { Box, Checkbox, Icon, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Box, Icon, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import CustomButton from "../../Components/CustomButton";
 
@@ -48,7 +48,7 @@ const Refill = (props) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        // pull from database
+        // TODO pull from database
         let temp = [{
             name: "0000000001",
             repeated: 0,
@@ -67,7 +67,7 @@ const Refill = (props) => {
             refillsAllowed: 5,
         }];
 
-        temp.map(elem => {
+        temp.forEach(elem => {
             elem.selected = false;
         });
         setData(temp);
@@ -80,7 +80,7 @@ const Refill = (props) => {
     }
 
     const handleSubmit = () => {
-        // ping backend
+        // TODO ping backend
         console.log(123);
     }
 

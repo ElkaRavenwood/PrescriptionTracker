@@ -1,6 +1,5 @@
-import { Box, Checkbox, Icon, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Box, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import CustomButton from "../../Components/CustomButton";
 
 const useStyles = makeStyles((theme) => ({
     root: {

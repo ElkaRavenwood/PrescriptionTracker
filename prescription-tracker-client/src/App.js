@@ -4,7 +4,6 @@ import { Switch, Route } from "react-router-dom";
 // Pages
 import { Home, Login, PageNotFound } from "./Pages";
 import Patient from './Pages/Patient/Patient';
-import History from './Pages/Patient/History';
 import Contact from './Pages/Patient/Contact';
 import Prescription from './Pages/Patient/Prescription';
 

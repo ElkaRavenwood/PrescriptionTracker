@@ -55,8 +55,10 @@ const PatientHeader = (props) => {
                 <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Patient/Tracking')}>
                     <Typography variant="h4" className={classes.header_elem}>Tracking</Typography>
                 </Grid>
-                <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Patient/History')}>
-                    <Typography variant="h4" className={classes.header_elem}>Order History</Typography>
+                <Grid item xs={2} className={classes.header_elem_container}>
+                    <Link to={{pathname:"/Patient", hash:"history"}} className="noUnderline">
+                        <Typography variant="h4" className={classes.header_elem}>Order History</Typography>
+                    </Link>
                 </Grid>
                 <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Contact')}>
                     <Typography variant="h4" className={classes.header_elem}>Contact Us</Typography>
