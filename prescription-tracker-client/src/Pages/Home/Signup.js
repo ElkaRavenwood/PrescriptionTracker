@@ -58,7 +58,7 @@ const Signup = (props) => {
     }
 
     const handleSubmit = () => {
-
+        // TODO Ping backend
     }
 
     return ( 

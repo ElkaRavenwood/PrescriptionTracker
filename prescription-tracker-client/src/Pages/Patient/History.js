@@ -42,7 +42,7 @@ const History = (props) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        // pull from database
+        // TODO pull from database
         setData([{
             number: "0000000001",
             placed: "01/01/2021",
