@@ -1,0 +1,18 @@
+
+1. Follow the steps in the youtube video to install postgres (https://youtu.be/qw--VYLpxG4 @ 10:55)
+	- suppose your set up password is <password>
+
+2. Log in to the postgres terminal, and execute the db_setup_commands.sql
+	In the postgres terminal, write the command '\i <file path db_setup_commands.sql>'
+	This will set up the database along with its mock values.
+	This may take a few seconds for file to be parsed through, and then a lot of creates and inserts will happen
+
+3. Load the files from the repo into your visual studio project
+
+4. Install the pg library using $ npm install --save pg
+
+5. In db_connect.js, change the password field (line 15) to your set up password
+
+6. All done, the mapping to the index has already been done.
+	Perform a test call using GET http://localhost:8000/meditrack/test
+	This will return the information for the first user in the system (Todd Peters)
