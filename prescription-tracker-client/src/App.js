@@ -42,12 +42,6 @@ function App() {
             <Prescription {...props} />
           }
         />
-        <Route 
-          exact path="/Patient/History"
-          render={props => 
-            <History {...props} />
-          }
-        />
         <Route
           render={props => 
             <PageNotFound />
