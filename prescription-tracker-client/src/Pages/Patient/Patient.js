@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Prescription from "./Prescription";
 import CustomButton from "../../Components/CustomButton";
 import Refill from "./Refill";
+import History from "./History";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,7 +56,7 @@ const Patient = (props) => {
                     <Grid item xs={2}/>
                         <Grid item xs={3}>
                             <Link to={{pathname:"/Patient", hash:"prescription"}} className="noUnderline">
-                                <CustomButton text="Prescription" color="primary" variant="contained" fullWidth/>
+                                <CustomButton text="Prescriptions" color="primary" variant="contained" fullWidth/>
                             </Link>
                         </Grid>
                     <Grid item xs={2}/>
@@ -64,11 +65,11 @@ const Patient = (props) => {
                     </Grid>
                     <Grid item xs={2}/>
                     <Grid item xs={2}/>
-                    {/* <Link to="/Patient/#prescription" className="noUnderline"> */}
-                        <Grid item xs={3} onClick={() => history.push("/Patient/History")}>
+                    <Grid item xs={3} >
+                        <Link to={{pathname:"/Patient", hash:"history"}} className="noUnderline">
                             <CustomButton text="Order History" color="primary" variant="contained" fullWidth/>
-                        </Grid>
-                    {/* </Link> */}
+                        </Link>
+                    </Grid>
                     <Grid item xs={2}/>
                     <Grid item xs={3} onClick={() => history.push("/Patient/Contact")}>
                         <CustomButton text="Contact Us" color="primary" variant="contained" fullWidth/>
@@ -78,6 +79,7 @@ const Patient = (props) => {
             </Box>
             <Prescription/>
             <Refill />
+            <History />
 
         </div>
     );
