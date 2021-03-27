@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router';
 import HomeHeader from '../../Components/HomeHeader';
 import background from "../../Resources/store.png"
 import Signup from './Signup';
@@ -36,11 +37,22 @@ const Home = (props) => {
     const about = useRef(null);
     const signup = useRef(null);
 
-    const executeScroll = (someRef) => someRef.current.scrollIntoView();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.hash) {
+            let elem = document.getElementById(location.hash.slice(1))
+                if (elem) {
+                    elem.scrollIntoView({behavior: "smooth"})
+                }
+            } else {
+            window.scrollTo({top:0,left:0, behavior: "smooth"})
+            }
+    }, [location]);
 
     return (
         <div className={classes.root}>
-            <HomeHeader about={about} signup={signup} executeScroll={executeScroll}/>
+            <HomeHeader />
             <Box className={classes.about_container} ref={about}>
                 <Box className={classes.about_content_container}>
                     <Typography variant="h3" className={classes.about_content_text}>
@@ -48,7 +60,7 @@ const Home = (props) => {
                     </Typography>
                 </Box>
             </Box>
-            <div ref={signup}>
+            <div ref={signup} id="signup">
                 <Signup />
             </div>
         </div>
