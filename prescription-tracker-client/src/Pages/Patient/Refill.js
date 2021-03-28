@@ -12,11 +12,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    heading: {
-        fontWeight: "500",
-        color: "white",
-        marginBottom: "5vh",
-    },
     table: {
         width: "80vw",
     },
@@ -87,8 +82,8 @@ const Refill = (props) => {
     return (
         <div id="refill">
             <Box className={classes.root} >
-                <Typography variant="h2" className={classes.heading}>Refill Prescriptions</Typography>
-                <Typography variant="h4" className={classes.heading}>Select a prescription to refill. Then click submit to put in your order.</Typography>
+                <Typography variant="h2" className={"heading"}>Refill Prescriptions</Typography>
+                <Typography variant="h4" className={"heading"}>Select a prescription to refill. Then click submit to put in your order.</Typography>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow hover>

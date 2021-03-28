@@ -43,3 +43,9 @@ html {
 .noUnderline {
   text-decoration: none;
 }
+
+.heading {
+  font-weight: 500 !important;
+  color: white;
+  margin-bottom: 5vh;
+}

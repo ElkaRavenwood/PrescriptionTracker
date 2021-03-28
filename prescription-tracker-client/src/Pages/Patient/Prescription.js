@@ -11,11 +11,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    heading: {
-        fontWeight: "500",
-        color: "white",
-        marginBottom: "5vh",
-    },
     table: {
         width: "80vw",
     },
@@ -65,7 +60,7 @@ const Prescription = (props) => {
     return (
         <div id="prescription">
             <Box className={classes.root} >
-                <Typography variant="h2" className={classes.heading}>Medications List</Typography>
+                <Typography variant="h2" className={"heading"}>Medications List</Typography>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow hover>

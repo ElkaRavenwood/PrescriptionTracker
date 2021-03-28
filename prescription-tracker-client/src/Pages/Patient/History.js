@@ -11,11 +11,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignItems: "center",
     },
-    heading: {
-        fontWeight: "500",
-        color: "white",
-        marginBottom: "5vh",
-    },
     table: {
         width: "80vw",
     },
@@ -70,7 +65,7 @@ const History = (props) => {
     return (
         <div id="history">
             <Box className={classes.root} >
-                <Typography variant="h2" className={classes.heading}>Order History</Typography>
+                <Typography variant="h2" className={"heading"}>Order History</Typography>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow hover>
