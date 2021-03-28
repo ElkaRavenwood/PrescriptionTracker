@@ -168,63 +168,6 @@ getDescriptivePrecInfo_fromQuery =  async (queryIn) => {
     }
 }
 
-deactivatePrescription = async (rx) => {
-    //transfer a prescription from the active list to the history list
-    //for both pharm and user
-    //get lists for both pharm and user
-    //get precInfo first
-    let precInfo = await getPrecInfo(rx);
-    let user_id = precInfo.user_id;
-    let pharm_id = precInfo.pharm_id;
-
-    let myQuery = await pool.query(
-        "SELECT precs_active FROM user_info WHERE user_id="+user_id
-    );
-
-    let user_active = myQuery.rows[0].precs_active;
-
-    myQuery = await pool.query(
-        "SELECT precs_active FROM pharm_info WHERE pharm_id="+pharm_id
-    );
-
-    let pharm_active = myQuery.rows[0].precs_active;
-
-    //now perform the transfer from active to history
-    
-    //user
-    //check if there is a transfer to be made
-    if(user_active == null){
-        user_active = [];
-    } else{
-        //filter the user_active list for the item
-        user_active = user_active.filter((act_rx) => {
-            return act_rx != rx;
-        });
-    }
-    
-
-    //repeat the same for pharmacy
-    if(pharm_active == null){
-        pharm_active = [];
-    } else{
-        //filter the user_active list for the item
-        pharm_active = pharm_active.filter((act_rx) => {
-            return act_rx != rx;
-        });
-    }
-    
-    //now make updates to the repo
-    await pool.query(
-        "UPDATE user_info SET precs_active=$1 WHERE user_id="+user_id,
-        [JSON.stringify(user_active)]
-    );
-
-    await pool.query(
-        "UPDATE pharm_info SET precs_active=$1 WHERE pharm_id="+pharm_id,
-        [JSON.stringify(pharm_active)]
-    );
-}
-
 constructBulkPrecRequest = ( listIn ) => {
     let whereClause = "";
     let cur_rx;
@@ -439,8 +382,8 @@ module.exports = async(router) => {
                     //then retrieve the user_id
                     //console.log("HERE1");
                     let infoQuery = await pool.query(
-                        "INSERT INTO user_info(first_name, last_name, email, phone_no, precs_active, precs_history) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
-                        [first_name, last_name, email, phone_no, null, null]
+                        "INSERT INTO user_info(first_name, last_name, email, phone_no) VALUES($1,$2,$3,$4) RETURNING *",
+                        [first_name, last_name, email, phone_no]
                     );
                     //console.log("HERE2");
 
@@ -704,60 +647,6 @@ module.exports = async(router) => {
                             [rx, med_name, med_strength, user_id, pharm_id, 1, status_msg, 0, status_date ]
                         );
                         
-                        //need to update user active prescriptions and history
-                        userQuery = await pool.query(
-                            "SELECT precs_active, precs_history FROM user_info WHERE user_id="+user_id
-                        );
-
-                        let precs_active = userQuery.rows[0].precs_active;
-                        let precs_history = userQuery.rows[0].precs_history;
-                        
-                        console.log("HERE1");
-                        if(precs_active == null) precs_active = [];
-                        console.log("HERE2");
-                        if(precs_history == null) precs_history = [];
-                    
-                        precs_active.push(rx);
-                        precs_history.unshift(rx);
-
-                        userQuery = await pool.query(
-                            "UPDATE user_info SET precs_active='"+JSON.stringify(precs_active)+"', precs_history='"+JSON.stringify(precs_history)+"' WHERE user_id="+user_id
-                        )
-
-                        //need to update pharmacy active prescriptions and prescription history
-                        //also add user to patients if not already present
-                        pharmQuery = await pool.query(
-                            "SELECT precs_active, precs_history, patients FROM pharm_info WHERE pharm_id="+pharm_id
-                        );
-
-                        precs_active = pharmQuery.rows[0].precs_active;
-                        precs_history = pharmQuery.rows[0].precs_history;
-                        let patients = pharmQuery.rows[0].patients;
-
-                        //console.log("HERE1");
-                        if(precs_active == null) precs_active = [];
-                        //console.log("HERE2");
-                        if(precs_history == null) precs_history = [];
-                    
-                        precs_active.push(rx);
-                        precs_history.unshift(rx);
-
-                        //filter patients list so that user is not already in there
-                        if(patients == null){
-                            patients = [];
-
-                        } else{
-                            patients = patients.filter((pt_id) => {
-                                return pt_id != user_id;
-                            });
-                            //add user
-                        }
-                        patients.unshift(user_id);
-
-                        pharmQuery = await pool.query(
-                            "UPDATE pharm_info SET precs_active='"+JSON.stringify(precs_active)+"', precs_history='"+JSON.stringify(precs_history)+"', patients='"+JSON.stringify(patients)+"' WHERE pharm_id="+pharm_id
-                        )
-
                         res.send(precQuery.rows[0]);
                     }
                 }
@@ -802,30 +691,26 @@ module.exports = async(router) => {
                 const {user_id} = req.body;
 
                 let uQuery = await pool.query(
-                    "SELECT precs_active FROM user_info WHERE user_id="+user_id
+                    "SELECT user_id FROM user_info WHERE user_id="+user_id
                 )
 
                 if(uQuery.rows[0]!=null){
                     //just run a for loop to capture the information
                     let precs = [];
-                    precs_active = uQuery.rows[0].precs_active;
 
-                    if(precs_active == null){
-                        res.send(precs)
-                    } else{
-                        //let sel = constructBulkPrecRequest(precs_active);
-
-                        let precQueries = await pool.query(
-                            "SELECT * FROM prec_info WHERE user_id="+user_id+" and is_completed=0"
-                        );
-
-                        //console.log(precQueries.rows);
-
+                    //active queries will have user id and are not completed
+                    let precQueries = await pool.query(
+                        "SELECT * FROM prec_info WHERE user_id="+user_id+" and is_completed=0"
+                    );
+                    //console.log(precQueries.rows)
+                    //if there is at least one then set up prescription information.
+                    if(precQueries.rows[0] != null){
                         for(i=0; i<precQueries.rows.length; i++){
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
-                        res.send(precs);
                     }
+                    res.send(precs);
+                
 
                 } else {
                     res.send("ERROR: User Not Found");
@@ -848,28 +733,25 @@ module.exports = async(router) => {
                 const {user_id} = req.body;
 
                 let uQuery = await pool.query(
-                    "SELECT precs_history FROM user_info WHERE user_id="+user_id
+                    "SELECT user_id FROM user_info WHERE user_id="+user_id
                 )
 
                 if(uQuery.rows[0]!=null){
                     //just run a for loop to capture the information
                     let precs = [];
-                    precs_history = uQuery.rows[0].precs_history;
 
-                    if(precs_history == null){
-                        res.send(precs)
-                    } else{
-                        let precQueries = await pool.query(
-                            "SELECT * FROM prec_info WHERE user_id="+user_id
-                        );
+                    //all prescritpions will have user id and are not completed
+                    let precQueries = await pool.query(
+                        "SELECT * FROM prec_info WHERE user_id="+user_id
+                    );
 
-                        //console.log(precQueries.rows);
-
+                    //if there is at least one then set up prescription information.
+                    if(precQueries.rows[0] != null){
                         for(i=0; i<precQueries.rows.length; i++){
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
-                        res.send(precs);
                     }
+                    res.send(precs);
 
                 } else {
                     res.send("ERROR: User Not Found");
@@ -1035,7 +917,6 @@ module.exports = async(router) => {
                         );
 
                         //then deactivate the prescription in user and pharm info
-                        await deactivatePrescription(rx);
 
                         //send the updated prescription.
                         prec.is_completed = 1;
@@ -1081,8 +962,8 @@ module.exports = async(router) => {
                     //then retrieve the user_id
                     //console.log("HERE1");
                     let infoQuery = await pool.query(
-                        "INSERT INTO user_info(first_name, last_name, email, phone_no, precs_active, precs_history) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
-                        [first_name, last_name, email, phone_no, null, null]
+                        "INSERT INTO user_info(first_name, last_name, email, phone_no) VALUES($1,$2,$3,$4) RETURNING *",
+                        [first_name, last_name, email, phone_no]
                     );
                     //console.log("HERE2");
 
@@ -1136,8 +1017,8 @@ module.exports = async(router) => {
                     //then retrieve the pharm_id
                     
                     let infoQuery = await pool.query(
-                        "INSERT INTO pharm_info(name, email, phone_no, street_address, city, postal_code, precs_active, precs_history, patients) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *",
-                        [name, email, phone_no, street_address, city, postal_code, null, null, null]
+                        "INSERT INTO pharm_info(name, email, phone_no, street_address, city, postal_code) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
+                        [name, email, phone_no, street_address, city, postal_code]
                     );
                     
                     const pharm_id = infoQuery.rows[0].pharm_id;
@@ -1503,22 +1384,28 @@ module.exports = async(router) => {
                 if(pharm_id != null){
                     // retrieve patient query
                     let pQuery = await pool.query(
-                        "SELECT patients FROM pharm_info WHERE pharm_id="+pharm_id
+                        "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
                     )
                     
                     //if it is empty, then send an error response
                     if(pQuery.rows[0] != null){
-                        //now put together the user array
+                        //if not we can put together array of patients
                         let patients  = [];
-                        patients = pQuery.rows[0].patients;
+
+                        //retrieve user list from prec_info
+                        pQuery = await pool.query(
+                            "SELECT DISTINCT user_id FROM prec_info WHERE pharm_id="+pharm_id
+                        );
+
+                        patients = pQuery.rows;
                         let ptlist = [];
 
-                        if(patients == null){
+                        if(patients[0] == null){
                             ptlist = [];
                         } else{
                             for(i=0; i<patients.length;i++){
                                 //assemble the user dictionary for each user id
-                                ptlist.push(await getBasicUserInfo(patients[i]));
+                                ptlist.push(await getBasicUserInfo(patients[i].user_id));
                             }
                         }
 
@@ -1628,30 +1515,25 @@ module.exports = async(router) => {
                 const {pharm_id} = req.body;
 
                 let uQuery = await pool.query(
-                    "SELECT precs_active FROM pharm_info WHERE pharm_id="+pharm_id
+                    "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
                 )
 
                 if(uQuery.rows[0]!=null){
                     //just run a for loop to capture the information
                     let precs = [];
-                    precs_active = uQuery.rows[0].precs_active;
 
-                    if(precs_active == null){
-                        res.send(precs)
-                    } else{
-                        //let sel = constructBulkPrecRequest(precs_active);
+                    //active queries will have user id and are not completed
+                    let precQueries = await pool.query(
+                        "SELECT * FROM prec_info WHERE pharm_id="+pharm_id+" and is_completed=0"
+                    );
 
-                        let precQueries = await pool.query(
-                            "SELECT * FROM prec_info WHERE pharm_id="+pharm_id+" and is_completed=0"
-                        );
-
-                        //console.log(precQueries.rows);
-
+                    //if there is at least one then set up prescription information.
+                    if(precQueries.rows[0] != null){
                         for(i=0; i<precQueries.rows.length; i++){
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
-                        res.send(precs);
                     }
+                    res.send(precs);
 
                 } else {
                     res.send("ERROR: User Not Found");
@@ -1673,30 +1555,25 @@ module.exports = async(router) => {
                 const {pharm_id} = req.body;
 
                 let uQuery = await pool.query(
-                    "SELECT precs_history FROM pharm_info WHERE pharm_id="+pharm_id
+                    "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
                 )
 
                 if(uQuery.rows[0]!=null){
                     //just run a for loop to capture the information
                     let precs = [];
-                    precs_history = uQuery.rows[0].precs_history;
 
-                    if(precs_history == null){
-                        res.send(precs)
-                    } else{
-                        //let sel = constructBulkPrecRequest(precs_active);
+                    //active queries will have user id and are not completed
+                    let precQueries = await pool.query(
+                        "SELECT * FROM prec_info WHERE pharm_id="+pharm_id
+                    );
 
-                        let precQueries = await pool.query(
-                            "SELECT * FROM prec_info WHERE pharm_id="+pharm_id
-                        );
-
-                        //console.log(precQueries.rows);
-
+                    //if there is at least one then set up prescription information.
+                    if(precQueries.rows[0] != null){
                         for(i=0; i<precQueries.rows.length; i++){
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
-                        res.send(precs);
                     }
+                    res.send(precs);
 
                 } else {
                     res.send("ERROR: User Not Found");
