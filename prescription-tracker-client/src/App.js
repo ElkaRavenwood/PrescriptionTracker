@@ -3,10 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 // Pages
 import { Home, Login, PageNotFound } from "./Pages";
-import Patient from './Pages/Patient/Patient';
-import Contact from './Pages/Patient/Contact';
-import Prescription from './Pages/Patient/Prescription';
-import Tracking from './Pages/Patient/Tracking';
+import { Contact, Patient, Tracking } from "./Pages/Patient";
 
 function App() {
   return (
@@ -37,15 +34,15 @@ function App() {
           }
         />
         <Route 
-          exact path="/Patient/Prescription"
-          render={props => 
-            <Prescription {...props} />
-          }
-        />
-        <Route 
           exact path="/Patient/Tracking"
           render={props => 
             <Tracking {...props} />
+          }
+        />
+        <Route 
+          exact path="/Patient/Contact"
+          render={props => 
+            <Contact {...props} />
           }
         />
         <Route
