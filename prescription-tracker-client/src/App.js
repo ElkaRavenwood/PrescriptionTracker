@@ -6,6 +6,7 @@ import { Home, Login, PageNotFound } from "./Pages";
 import Patient from './Pages/Patient/Patient';
 import Contact from './Pages/Patient/Contact';
 import Prescription from './Pages/Patient/Prescription';
+import Tracking from './Pages/Patient/Tracking';
 
 function App() {
   return (
@@ -39,6 +40,12 @@ function App() {
           exact path="/Patient/Prescription"
           render={props => 
             <Prescription {...props} />
+          }
+        />
+        <Route 
+          exact path="/Patient/Tracking"
+          render={props => 
+            <Tracking {...props} />
           }
         />
         <Route
