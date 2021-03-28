@@ -16,17 +16,37 @@ const useStyles = makeStyles((theme) => ({
         // paddingBottom: "2vh !important",
         // paddingBottom: "2vh !important",
         padding: "2vh 4vh 2vh 4vh",
-    }
-}))
+    },
+    longRectangular: {
+        padding: "0",
+    },
+    smallFont: {
+        fontSize: "1em",
+    },
+    primaryTextColor: {
+        color: theme.palette.primary.main,
+    },
+    primaryDarkTextColor: {
+        color: theme.palette.primary.dark,
+    },
+}));
 
 const CustomButton = (props) => {
 
-    const { color, text, outlined, rectangular, variant, fullWidth, onClick } = props;
+    const { color, text, outlined, rectangular, variant, fullWidth, onClick, longRectangular, smallFont, primaryTextColor, primaryDarkTextColor, disabled} = props;
 
     const classes = useStyles();
 
     return (
-        <Button className={classes.root + " " + (outlined ? classes.outlined : '') + " " + (rectangular ? classes.rectangular : '')} color={color} variant={variant} fullWidth={fullWidth} onClick={onClick}>{text}</Button>
+        <Button className={classes.root + " " + 
+            (outlined ? classes.outlined : '') + " " + 
+            (rectangular ? classes.rectangular : '') + " " + 
+            (longRectangular ? classes.longRectangular : '') + " " + 
+            (smallFont ? classes.smallFont : '') + " " + 
+            (primaryTextColor ? classes.primaryTextColor : '') + " " +
+            (primaryDarkTextColor ? classes.primaryDarkTextColor : '')
+        } 
+        color={color} variant={variant} fullWidth={fullWidth} onClick={onClick} disabled={disabled}>{text}</Button>
     );
 
 }

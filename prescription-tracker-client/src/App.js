@@ -3,9 +3,8 @@ import { Switch, Route } from "react-router-dom";
 
 // Pages
 import { Home, Login, PageNotFound } from "./Pages";
-import Patient from './Pages/Patient/Patient';
-import Contact from './Pages/Patient/Contact';
-import Prescription from './Pages/Patient/Prescription';
+import { Contact, Patient, Tracking } from "./Pages/Patient";
+import { AddPrescription, Admin, PatientDetails } from './Pages/Admin';
 
 function App() {
   return (
@@ -24,6 +23,24 @@ function App() {
           }
         />
         <Route 
+          exact path="/Admin"
+          render={props => 
+            <Admin {...props} />
+          }
+        />
+        <Route 
+          exact path="/Admin/PatientDetails"
+          render={props => 
+            <PatientDetails {...props} />
+          }
+        />
+        <Route 
+          exact path="/Admin/AddPrescription"
+          render={props => 
+            <AddPrescription {...props} />
+          }
+        />
+        <Route 
           exact path="/Patient"
           render={props => 
             <Patient {...props} />
@@ -36,9 +53,15 @@ function App() {
           }
         />
         <Route 
-          exact path="/Patient/Prescription"
+          exact path="/Patient/Tracking"
           render={props => 
-            <Prescription {...props} />
+            <Tracking {...props} />
+          }
+        />
+        <Route 
+          exact path="/Patient/Contact"
+          render={props => 
+            <Contact {...props} />
           }
         />
         <Route

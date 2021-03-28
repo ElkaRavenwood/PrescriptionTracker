@@ -5,7 +5,13 @@ const theme = createMuiTheme({
         primary: {
             main: "#369fff",
             dark: "#0965bb"
-        }
+        },
+        success: {
+            main: "hsl(104deg 77% 55% / 87%)",
+        },
+        secondary: {
+            main: "#e792fd",
+        },
     },
     overrides: {
         MuiTooltip: {

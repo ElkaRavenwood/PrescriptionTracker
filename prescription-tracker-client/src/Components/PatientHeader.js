@@ -1,4 +1,4 @@
-import { AppBar, Grid, makeStyles, Typography, unstable_createMuiStrictModeTheme } from '@material-ui/core';
+import { AppBar, Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
