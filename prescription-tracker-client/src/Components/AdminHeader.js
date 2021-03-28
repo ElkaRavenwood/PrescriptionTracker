@@ -33,7 +33,6 @@ const AdminHeader = (props) => {
 
     const history = useHistory();
     const location = useLocation();
-console.log(location)
     return (
         <AppBar position="sticky">
             <Grid container className={classes.root}>
