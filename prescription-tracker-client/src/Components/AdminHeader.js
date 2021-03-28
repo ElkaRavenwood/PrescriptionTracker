@@ -38,10 +38,25 @@ const AdminHeader = (props) => {
             <Grid container className={classes.root}>
                 <Grid item xs={1} />
                 <Grid item container xs={10}>
-                <Grid item xs={1} className={classes.header_elem_container} onClick={() => history.goBack()}>
-                    {location.pathname === "/Admin" ? "" : <Typography variant="h4" className={classes.header_elem}>Back</Typography>}
-                </Grid>
-                <Grid item xs={10} className={classes.header_elem_container}>
+                {location.pathname === "/Admin" ? 
+                    <React.Fragment>
+                        <Grid item xs={3} className={classes.header_elem_container} onClick={() => history.push("/Admin/AddPrescription")}>
+                            <Typography variant="h4" className={classes.header_elem}>Add Prescription</Typography>
+                        </Grid>
+                        <Grid item xs={2} />
+                    </React.Fragment>
+                    : 
+                    <React.Fragment>
+                        <Grid item xs={1} className={classes.header_elem_container} onClick={() => history.goBack()}>
+                            <Typography variant="h4" className={classes.header_elem}>Back</Typography>
+                        </Grid>
+                        <Grid item xs={4} className={classes.header_elem_container} onClick={() => history.push("/Admin/AddPrescription")}>
+                            <Typography variant="h4" className={classes.header_elem}>Add Prescription</Typography>
+                        </Grid>    
+                    </React.Fragment>
+                }
+                
+                <Grid item xs={6} className={classes.header_elem_container}>
                     {location.state ? location.state.id ? <Typography variant="h4" className={classes.header_elem}>Patient # {location.state.id}</Typography> : "" : "" }
                 </Grid>
                 <Grid item xs={1} className={classes.header_elem_container} onClick={() => history.push('/')}>
