@@ -39,6 +39,11 @@ const PatientHeader = (props) => {
 
     const history = useHistory();
 
+    const handleLogout = () => {
+        localStorage.setItem("prescriptionTrackerUserId", null);
+        history.push('/');
+    }
+
     return (
         <AppBar position="sticky">
             <Grid container className={classes.root}>
@@ -63,7 +68,7 @@ const PatientHeader = (props) => {
                 <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Patient/Contact')}>
                     <Typography variant="h4" className={classes.header_elem}>Contact Us</Typography>
                 </Grid>
-                <Grid item xs={1} className={classes.header_elem_container} onClick={() => history.push('/')}>
+                <Grid item xs={1} className={classes.header_elem_container} onClick={handleLogout}>
                     <Typography variant="h4" className={classes.header_elem + " " + classes.header_elem_logout}>Logout</Typography>
                 </Grid>
                 </Grid>
