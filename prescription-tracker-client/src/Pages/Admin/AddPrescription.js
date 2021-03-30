@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Icon, makeStyles, TextField, Typography } from "@material-ui/core"
+import { Box, Grid, Icon, makeStyles, TextField, Typography } from "@material-ui/core"
 import { useState } from "react";
 import AdminHeader from "../../Components/AdminHeader";
 import CustomButton from "../../Components/CustomButton";
@@ -47,7 +47,7 @@ const AddPrescription = (props) => {
     });
 
     const handleText = (event) => {
-        if ((event.target.name === "pRefills" && event.target.value.match(/^[0-9]+$/) || event.target.name !== "pRefills")) {
+        if ((event.target.name === "pRefills" && event.target.value.match(/^[0-9]+$/)) || event.target.name !== "pRefills") {
             setState((state) => ({
                 ...state,
                 [event.target.name]: event.target.value,
@@ -73,23 +73,23 @@ const AddPrescription = (props) => {
                 <Typography variant="h2" className="heading">Add Prescription</Typography>
                 <Grid container className={classes.fields} spacing={3}>
                     <Grid item xs={4}>
-                        <TextField className={classes.text_element} label="Patient First Name" variant="filled" value={state.firstName} name="firstName" onChange={handleText} required fullWidth required error={state.error && !state.firstName}/>
+                        <TextField className={classes.text_element} label="Patient First Name" variant="filled" value={state.firstName} name="firstName" onChange={handleText} fullWidth required error={state.error && !state.firstName}/>
                     </Grid>
                     <Grid item xs={4}>
-                        <TextField className={classes.text_element} label="Patient Last Name" variant="filled" value={state.lastName} name="lastName" onChange={handleText} required fullWidth required error={state.error && !state.lastName}/>
+                        <TextField className={classes.text_element} label="Patient Last Name" variant="filled" value={state.lastName} name="lastName" onChange={handleText} fullWidth required error={state.error && !state.lastName}/>
                     </Grid>
                     <Grid item xs={4}>
-                        <TextField className={classes.text_element} label="Patient ID" variant="filled" value={state.patientId} name="patientId" onChange={handleText} required fullWidth required error={state.error && !state.patientId}/>
+                        <TextField className={classes.text_element} label="Patient ID" variant="filled" value={state.patientId} name="patientId" onChange={handleText} fullWidth required error={state.error && !state.patientId}/>
                     </Grid>
                     {/* <Grid item xs={6} />  */}
                     <Grid item xs={6}>
-                        <TextField className={classes.text_element} label="Prescription Name" variant="filled" value={state.pName} name="pName" onChange={handleText} required fullWidth required error={state.error && !state.pName}/>
+                        <TextField className={classes.text_element} label="Prescription Name" variant="filled" value={state.pName} name="pName" onChange={handleText} fullWidth required error={state.error && !state.pName}/>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField className={classes.text_element} label="Prescription ID" variant="filled" value={state.pId} name="pId" onChange={handleText} required fullWidth required error={state.error && !state.pId}/>
+                        <TextField className={classes.text_element} label="Prescription ID" variant="filled" value={state.pId} name="pId" onChange={handleText} fullWidth required error={state.error && !state.pId}/>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField className={classes.text_element} label="Prescription Amount" variant="filled" value={state.pAmount} name="pAmount" onChange={handleText} required fullWidth required error={state.error && !state.pAmount}/>
+                        <TextField className={classes.text_element} label="Prescription Amount" variant="filled" value={state.pAmount} name="pAmount" onChange={handleText} fullWidth required error={state.error && !state.pAmount}/>
                     </Grid>
                     <Grid item xs={6} className={classes.refills}>
                         <TextField className={classes.text_element + " " + classes.refillText} label="Number of Refills" variant="filled" value={state.pRefills} name="pRefills" onChange={handleText} required />

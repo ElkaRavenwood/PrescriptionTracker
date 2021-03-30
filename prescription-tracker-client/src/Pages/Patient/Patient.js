@@ -39,7 +39,6 @@ const Patient = (props) => {
     useEffect(() => {
         if (location.hash) {
             let elem = document.getElementById(location.hash.substring(1));
-            console.log(elem)
             if (elem) {
                 elem.scrollIntoView({behavior: "smooth"})
             }

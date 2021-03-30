@@ -28,8 +28,8 @@ const SelectLogin = (props) => {
     const classes = useStyles();
 
     return <Box className={classes.root}>
-        <Button variant="filled" className={classes.button}><Typography variant="h2" onClick={() => setState((state) => ({...state, showLogin: true, admin: true}))}>Admin Login</Typography></Button>
-        <Button variant="filled" className={classes.button} onClick={() => setState((state) => ({...state, showLogin: true}))}><Typography variant="h2">Patient Login</Typography></Button>
+        <Button className={classes.button}><Typography variant="h2" onClick={() => setState((state) => ({...state, showLogin: true, admin: true}))}>Admin Login</Typography></Button>
+        <Button className={classes.button} onClick={() => setState((state) => ({...state, showLogin: true}))}><Typography variant="h2">Patient Login</Typography></Button>
     </Box>
 }
 
