@@ -66,7 +66,7 @@ const AddPrescription = (props) => {
             axios.post("/meditrack/precs", {
                 rx: state.pId,
                 user_id: state.patientId,
-                pharm_id: localStorage.getItem("userId"),
+                pharm_id: localStorage.getItem("prescriptionTrackerUserId"),
                 status_date: new Date(),
                 med_name: state.pName,
                 max_refills: state.pRefills,
