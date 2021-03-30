@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 // Pages
 import { Home, Login, PageNotFound } from "./Pages";
 import { Contact, Patient, Tracking } from "./Pages/Patient";
-import { AddPrescription, Admin, PatientDetails } from './Pages/Admin';
+import { AddPrescription, Admin, PatientDetails, PrescriptionSuccess } from './Pages/Admin';
 
 function App() {
   return (
@@ -38,6 +38,12 @@ function App() {
           exact path="/Admin/AddPrescription"
           render={props => 
             <AddPrescription {...props} />
+          }
+        />
+        <Route 
+          exact path="/Admin/PrescriptionSuccess"
+          render={props => 
+            <PrescriptionSuccess {...props} />
           }
         />
         <Route 

@@ -1,12 +1,16 @@
 import { Box, Grid, Icon, makeStyles, TextField, Typography } from "@material-ui/core"
+import axios from "axios";
 import { useState } from "react";
+import { useHistory } from "react-router";
 import AdminHeader from "../../Components/AdminHeader";
 import CustomButton from "../../Components/CustomButton";
+import MessageDisplay from "../../Components/MessageDisplay";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.primary.dark,
         height: "90vh",
+        paddingTop: "5vw",
     },
     fields: {
         display: "flex",
@@ -34,6 +38,8 @@ const AddPrescription = (props) => {
 
     const classes = useStyles();
 
+    const history = useHistory();
+
     const [state, setState] = useState({
         firstName: "",
         lastName: "",
@@ -56,8 +62,31 @@ const AddPrescription = (props) => {
     }
 
     const handleSubmit = () => {
-        // TODO Ping backend
         if (state.firstName && state.lastName && state.patientId && state.pName && state.pId && state.pAmount && state.pRefills) {
+            axios.post("/meditrack/precs", {
+                rx: state.pId,
+                user_id: state.patientId,
+                pharm_id: history.location.state.userId,
+                status_date: new Date(),
+                med_name: state.pName,
+                // med_strength: ,
+                // status_msg: ,
+                max_refills: state.pRefills,
+                cur_refills: 0,
+                query_pswd: "ae34ZF76!",
+            }).then(res => {
+                if (res.status === 200) {
+                    setState((state) => ({...state,successMessage: "Success!"})); // note success
+                    history.push("/Admin/PrescriptionSuccess");
+                } else {
+                    // TODO check error handling
+                    setState((state)=> ({...state,
+                        errorMessage: res.data.message,
+                        showError: true
+                    }));
+                }
+
+            })
 
         } else { // if there are empty fields
             setState((state) => ({...state, error: true}));
@@ -67,8 +96,6 @@ const AddPrescription = (props) => {
     return (
         <div id="addPrescription" className="admin">
             <AdminHeader />
-            <br/>
-            <br/>
             <Box className={classes.root}>
                 <Typography variant="h2" className="heading">Add Prescription</Typography>
                 <Grid container className={classes.fields} spacing={3}>
@@ -110,6 +137,8 @@ const AddPrescription = (props) => {
                     <Grid item xs={4}/>
                 </Grid>
             </Box>
+            <MessageDisplay message={state.errorMessage} error={state.showError} />
+			<MessageDisplay message={state.successMessage} />
         </div>
     );
 }
