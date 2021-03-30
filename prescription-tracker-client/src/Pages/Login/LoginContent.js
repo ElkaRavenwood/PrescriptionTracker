@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Box, TextField, Typography, makeStyles } from "@material-ui/core";
 import axios from 'axios';
+import MessageDisplay from '../../Components/MessageDisplay';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,9 +37,11 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginContent = (props) => {
 
-    const { state, setState } = props;
+    const { state, setState, admin } = props;
 
     const classes = useStyles();
+
+    const history = useHistory();
 
     const handleText = (event) => {
         setState((state) => ({
@@ -57,11 +61,27 @@ const LoginContent = (props) => {
         }).then((res) => {
                 if(res.status === 201){
                     //this is an erro
-                    console.log(res.data);
+                    setState((state)=> ({
+                        ...state,
+                        errorMessage: res.data,
+                        showError: true
+                    }));
                 } else{
-                    //move to next page..
+                    // TODO check success local storage
+                    localStorage.setItem("prescriptionTrackerAdmin", admin ? true : false)
+                    localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
                     console.log(res.data);
-                    console.log("NEXT PAGE");
+                    // TODO check if user_id is the right name
+                    if (admin) {
+                        history.push("/Admin", {
+                            userId: res.data.user_id,
+                        });
+                    } else {
+                        history.push("/Patient", {
+                            userId: res.data.user_id,
+                        });
+
+                    }
                 }
         }, (error) => {
             //log the error
@@ -71,6 +91,7 @@ const LoginContent = (props) => {
 
     return (
         <Box className={classes.root}>
+            <MessageDisplay message={state.errorMessage} error={state.showError} />
             <Typography variant="h6" gutterBottom>Email</Typography>
             <TextField className={classes.text_element} variant="filled" value={state.email} type="email" name="email" onChange={handleText}/>
             <Typography variant="h6" gutterBottom>Password</Typography>
