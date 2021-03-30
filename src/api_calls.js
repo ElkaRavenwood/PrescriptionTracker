@@ -363,16 +363,16 @@ module.exports = async(router) => {
     //POST USER ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/user/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.query;
+            const {query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {first_name, last_name, email, phone_no} = req.query;
-                let {street_address, city, postal_code} = req.query;
-                let {password, healthcard_no} = req.query;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
+                let {first_name, last_name, email, phone_no} = req.body;
+                let {street_address, city, postal_code} = req.body;
+                let {password, healthcard_no} = req.body;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
 
                 //perform the appropriate error checking
                 noName = (first_name == null) || (last_name == null);
@@ -952,16 +952,16 @@ module.exports = async(router) => {
     //POST PHARM ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/pharm/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.query;
+            const {query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {name, email, phone_no} = req.query;
-                let {street_address, city, postal_code} = req.query;
-                let {password } = req.query;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
+                let {name, email, phone_no} = req.body;
+                let {street_address, city, postal_code} = req.body;
+                let {password } = req.body;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
 
                 //perform the appropriate error checking
                 noName = (name == null);
