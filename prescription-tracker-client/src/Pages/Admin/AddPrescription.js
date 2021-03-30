@@ -62,7 +62,7 @@ const AddPrescription = (props) => {
     }
 
     const handleSubmit = () => {
-        if (state.firstName && state.lastName && state.patientId && state.pName && state.pId && state.pAmount && state.pRefills) {
+        if (state.firstName && state.lastName && state.patientId && state.pName && state.pId && state.pAmount) {
             axios.post("/meditrack/precs", {
                 rx: state.pId,
                 user_id: state.patientId,
@@ -73,7 +73,9 @@ const AddPrescription = (props) => {
                 cur_refills: 0,
                 query_pswd: "ae34ZF76!",
             }).then(res => {
+                console.log(res)
                 if (res.status === 200) {
+                    console.log('asd')
                     setState((state) => ({...state,successMessage: "Success!"})); // note success
                     history.push("/Admin/PrescriptionSuccess");
                 } else {
@@ -123,7 +125,7 @@ const AddPrescription = (props) => {
                         <Icon onClick={() => setState((state) => ({...state, pRefills: (state.pRefills - 1 >= 0 ? state.pRefills - 1 : 0)}))} fontSize="large">remove</Icon>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField className={classes.text_element} multiline rows={4} label="Additional Notes" variant="filled" value={state.notes} name="notes" onChange={handleText} required fullWidth />
+                        <TextField className={classes.text_element} multiline rows={4} label="Additional Notes" variant="filled" value={state.notes} name="notes" onChange={handleText} fullWidth />
                     </Grid>
                 </Grid>
                 <br />
