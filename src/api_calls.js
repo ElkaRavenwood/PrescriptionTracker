@@ -193,10 +193,10 @@ module.exports = async(router) => {
         console.log("HERE IN TEST");
         try{
             // res.status(200).send( await getDescriptivePrecInfo('7527686'))
-            res.status(500).send("Failure Handling Request")
+            res.status(201).send("Failure Handling Request")
         } catch(err){
             console.log(err.message);
-            res.status(500).send("Failure Handling Request")
+            res.status(201).send("Failure Handling Request")
         }
     });
 
@@ -241,18 +241,18 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Keys");
+                    res.status(201).send("No Provided Keys");
                 }
 
                 if(accQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == accQuery.rows[0].user_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!userMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                        res.status(201).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
                         //res.status(200).send(accQuery.rows[0]);
@@ -284,7 +284,7 @@ module.exports = async(router) => {
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query")
+                res.status(201).send("Illegal Query")
             }
 
         } catch(err){
@@ -321,18 +321,18 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Keys");
+                    res.status(201).send("No Provided Keys");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == secQuery.rows[0].user_id);
                     let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
 
                     if(!userMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                        res.status(201).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
                         //res.status(200).send(accQuery.rows[0]);
@@ -352,11 +352,11 @@ module.exports = async(router) => {
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -407,19 +407,19 @@ module.exports = async(router) => {
                         res.status(200).send(infoQuery.rows[0]);
 
                     } else {
-                        res.status(500).send("Email Or Phone No Already Associated With An Account");
+                        res.status(201).send("Email Or Phone No Already Associated With An Account");
                     }
 
                 } else {
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -440,11 +440,11 @@ module.exports = async(router) => {
                 }
                 res.status(200).send(questions);
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -466,11 +466,11 @@ module.exports = async(router) => {
                     
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Key");
+                    res.status(201).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     //we want t
                     let { first_name, last_name, email, phone_no} = req.query;
@@ -537,11 +537,11 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -563,11 +563,11 @@ module.exports = async(router) => {
                     
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Key");
+                    res.status(201).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     //we want t
                     let {password} = req.query;
@@ -618,11 +618,11 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -641,14 +641,14 @@ module.exports = async(router) => {
                 let pharmQuery;
 
                 if(rx == null || user_id == null || pharm_id == null || status_date == null){
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 } else{
                     precQuery = await pool.query(
                        "SELECT * FROM prec_info WHERE rx='"+rx+"'"
                     );
                       
                     if(precQuery.rows[0] != null){
-                        res.status(500).send("Prescription Already Exists In Database");
+                        res.status(201).send("Prescription Already Exists In Database");
 
                     } else{
                         //first create the information to post
@@ -664,11 +664,11 @@ module.exports = async(router) => {
 
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -680,16 +680,16 @@ module.exports = async(router) => {
                 const { rx } = req.query;
                 let precDescInfo = await getDescriptivePrecInfo(rx);
                 if(precDescInfo == null){
-                    res.status(500).send("No Prescription Found");
+                    res.status(201).send("No Prescription Found");
                 } else {
                     res.status(200).send(precDescInfo);
                 }
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
       
@@ -724,15 +724,15 @@ module.exports = async(router) => {
                 
 
                 } else {
-                    res.status(500).send("User Not Found");
+                    res.status(201).send("User Not Found");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
     
@@ -765,15 +765,15 @@ module.exports = async(router) => {
                     res.status(200).send(precs);
 
                 } else {
-                    res.status(500).send("User Not Found");
+                    res.status(201).send("User Not Found");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -823,19 +823,19 @@ module.exports = async(router) => {
                         }
 
                     } else{
-                        res.status(500).send("No Prescription Found");
+                        res.status(201).send("No Prescription Found");
                     }
 
                 } else{
 
-                    res.status(500).send("No RX provided");
+                    res.status(201).send("No RX provided");
                 }
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -871,19 +871,19 @@ module.exports = async(router) => {
                         res.status(200).send(await getDescriptivePrecInfo(rx));
 
                     } else{
-                        res.status(500).send("No prescription found for provided RX");
+                        res.status(201).send("No prescription found for provided RX");
                     }
 
                 } else{
-                    res.status(500).send("No RX provided");
+                    res.status(201).send("No RX provided");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -904,11 +904,11 @@ module.exports = async(router) => {
                 res.status(200).send(steps);
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -934,18 +934,18 @@ module.exports = async(router) => {
                         res.status(200).send(prec);
 
                     } else{
-                        res.status(500).send("No prescription found")
+                        res.status(201).send("No prescription found")
                     }
                 } else{
-                    res.status(500).send("No RX provided")
+                    res.status(201).send("No RX provided")
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -995,19 +995,19 @@ module.exports = async(router) => {
                         //insertion is complete so return the pharm account information
                         res.status(200).send(infoQuery.rows[0]);
                     } else{
-                        res.status(500).send("Email or Phone No. already associated with an account");
+                        res.status(201).send("Email or Phone No. already associated with an account");
                     }
 
                 } else {
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1043,19 +1043,19 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No provided keys");
+                    res.status(201).send("No provided keys");
                 }
 
                 if(accQuery.rows[0] == null){
                     //if the query is not present, then the account does not exist
-                    res.status(500).send("No Pharmacy Account Found");
+                    res.status(201).send("No Pharmacy Account Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == accQuery.rows[0].pharm_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!pharmMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info or Provided Info Do Not Match");
+                        res.status(201).send("Account Info or Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
                         //res.status(200).send(accQuery.rows[0]);
@@ -1079,7 +1079,7 @@ module.exports = async(router) => {
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query")
+                res.status(201).send("Illegal Query")
             }
 
         } catch(err){
@@ -1119,19 +1119,19 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No provided keys");
+                    res.status(201).send("No provided keys");
                 }
 
                 if(accQuery.rows[0] == null){
                     //if the query is not present, then the account does not exist
-                    res.status(500).send("No Pharmacy Account Found");
+                    res.status(201).send("No Pharmacy Account Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == accQuery.rows[0].pharm_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!pharmMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info or Provided Info Do Not Match");
+                        res.status(201).send("Account Info or Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
                         //res.status(200).send(accQuery.rows[0]);
@@ -1150,7 +1150,7 @@ module.exports = async(router) => {
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query")
+                res.status(201).send("Illegal Query")
             }
 
         } catch(err){
@@ -1176,11 +1176,11 @@ module.exports = async(router) => {
                     
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Key");
+                    res.status(201).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No Pharmacy Found");
+                    res.status(201).send("No Pharmacy Found");
                 } else{
                     //get the optional parms from the request
                     let { name, email, phone_no} = req.query;
@@ -1247,11 +1247,11 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1272,11 +1272,11 @@ module.exports = async(router) => {
                     
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Key");
+                    res.status(201).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     //retrieve information from request body
                     let {password} = req.query;
@@ -1330,11 +1330,11 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1375,19 +1375,19 @@ module.exports = async(router) => {
 
                         res.status(200).send(ptlist);
                     } else {   
-                        res.status(500).send("No pharmacy found");
+                        res.status(201).send("No pharmacy found");
                     }
 
                 } else{
-                    res.status(500).send("No PHARM ID provided");
+                    res.status(201).send("No PHARM ID provided");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1420,15 +1420,15 @@ module.exports = async(router) => {
                     res.status(200).send(activeList);
 
                 } else{
-                    res.status(500).send("Insufficient information");
+                    res.status(201).send("Insufficient information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1459,15 +1459,15 @@ module.exports = async(router) => {
                     res.status(200).send(activeList);
 
                 } else{
-                    res.status(500).send("Insufficient information");
+                    res.status(201).send("Insufficient information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     }); 
 
@@ -1500,15 +1500,15 @@ module.exports = async(router) => {
                     res.status(200).send(precs);
 
                 } else {
-                    res.status(500).send("User Not Found");
+                    res.status(201).send("User Not Found");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1541,15 +1541,15 @@ module.exports = async(router) => {
                     res.status(200).send(precs);
 
                 } else {
-                    res.status(500).send("User Not Found");
+                    res.status(201).send("User Not Found");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1584,23 +1584,23 @@ module.exports = async(router) => {
                             res.status(200).send(await getDescriptivePrecInfo(rx));
 
                         } else{
-                            res.status(500).send("No prescription found");
+                            res.status(201).send("No prescription found");
                         }
 
                     } else{
-                        res.status(500).send("No pharmacy found");
+                        res.status(201).send("No pharmacy found");
                     }
 
                 } else{
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1653,23 +1653,23 @@ module.exports = async(router) => {
                             //now send the new version
                             res.status(200).send(await getDescriptivePrecInfo(rx));
                         } else{
-                            res.status(500).send("Increase is larger than maximum refills")
+                            res.status(201).send("Increase is larger than maximum refills")
                         }
                         
                     } else{
-                        res.status(500).send("No accounts found");
+                        res.status(201).send("No accounts found");
                     }
 
                 } else{
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1704,23 +1704,23 @@ module.exports = async(router) => {
                             res.status(200).send(await getDescriptivePrecInfo(rx));
 
                         } else{
-                            res.status(500).send("No prescription found");
+                            res.status(201).send("No prescription found");
                         }
 
                     } else{
-                        res.status(500).send("No pharmacy found");
+                        res.status(201).send("No pharmacy found");
                     }
 
                 } else{
-                    res.status(500).send("Insufficient Information");
+                    res.status(201).send("Insufficient Information");
                 }
 
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1754,18 +1754,18 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Keys");
+                    res.status(201).send("No Provided Keys");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == secQuery.rows[0].user_id);
                     let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
 
                     if(!userMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                        res.status(201).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity
                         //now confirm the password
@@ -1791,11 +1791,11 @@ module.exports = async(router) => {
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
@@ -1827,18 +1827,18 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.status(500).send("No Provided Keys");
+                    res.status(201).send("No Provided Keys");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.status(500).send("No User Found");
+                    res.status(201).send("No User Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == secQuery.rows[0].pharm_id);
                     let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
 
                     if(!pharmMatch || !emailMatch || !phoneMatch){
-                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                        res.status(201).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed pharm provided identity
                         //now confirm the password
@@ -1858,17 +1858,17 @@ module.exports = async(router) => {
                             res.status(200).send(await getBasicPharmInfo(pharm_id));
                         } else{
                             //not valid information 
-                            res.status(500).send("Incorrect Password");
+                            res.status(201).send("Incorrect Password");
                         }
 
                     }
                 }
             } else{
-                res.status(500).send("Illegal Query");
+                res.status(201).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.status(500).send("Failure Handling Request");
+            res.status(201).send("Failure Handling Request");
         }
     });
 
