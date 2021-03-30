@@ -379,28 +379,36 @@ module.exports = async(router) => {
                 noIdentifier = (email == null) && (phone_no == null);
                 noPassword = (password == null);
 
+
                 if(!noName && !noIdentifier && !noPassword){
-                    //first store information into user_info table
-                    //then retrieve the user_id
-                    //console.log("HERE1");
-                    let infoQuery = await pool.query(
-                        "INSERT INTO user_info(first_name, last_name, email, phone_no) VALUES($1,$2,$3,$4) RETURNING *",
-                        [first_name, last_name, email, phone_no]
-                    );
-                    //console.log("HERE2");
-
-                    const user_id = infoQuery.rows[0].user_id;
-
-                    //use the user id for insertions into the security table
-                    let secQuery = await pool.query(
-                        "INSERT INTO user_sec_info(user_id, email, phone_no, password, healthcard_no, street_address, city, postal_code,"
-                        +"sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *",
-                        [user_id, email, phone_no, password, healthcard_no, street_address, city, postal_code, 
-                            sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3]
+                    //need to check if the email and phone no have already been used
+                    let checkQuery =  await pool.query(
+                        "SELECT user_id FROM user_info WHERE email='"+email+"' or phone_no='"+phone_no+"'"
                     );
 
-                    //insertion is complete so return the user account information
-                    res.status(200).send(infoQuery.rows[0]);
+                    if(checkQuery.rows[0] == null){
+                        let infoQuery = await pool.query(
+                            "INSERT INTO user_info(first_name, last_name, email, phone_no) VALUES($1,$2,$3,$4) RETURNING *",
+                            [first_name, last_name, email, phone_no]
+                        );
+                        //console.log("HERE2");
+    
+                        const user_id = infoQuery.rows[0].user_id;
+    
+                        //use the user id for insertions into the security table
+                        let secQuery = await pool.query(
+                            "INSERT INTO user_sec_info(user_id, email, phone_no, password, healthcard_no, street_address, city, postal_code,"
+                            +"sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *",
+                            [user_id, email, phone_no, password, healthcard_no, street_address, city, postal_code, 
+                                sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3]
+                        );
+    
+                        //insertion is complete so return the user account information
+                        res.status(200).send(infoQuery.rows[0]);
+
+                    } else {
+                        res.status(500).send("Email Or Phone No Already Associated With An Account");
+                    }
 
                 } else {
                     res.status(500).send("Insufficient Information");
@@ -963,24 +971,32 @@ module.exports = async(router) => {
                 if(!noName && !noIdentifier && !noPassword){
                     //first store information into pharm_info table
                     //then retrieve the pharm_id
-                    
-                    let infoQuery = await pool.query(
-                        "INSERT INTO pharm_info(name, email, phone_no, street_address, city, postal_code) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
-                        [name, email, phone_no, street_address, city, postal_code]
-                    );
-                    
-                    const pharm_id = infoQuery.rows[0].pharm_id;
 
-                    //use the pharm id for insertions into the security table
-                    let secQuery = await pool.query(
-                        "INSERT INTO pharm_sec_info(pharm_id, email, phone_no, password,"
-                        +"sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *",
-                        [pharm_id, email, phone_no, password, 
-                        sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3]
+                    let checkQuery =  await pool.query(
+                        "SELECT pharm_id FROM pharm_info WHERE email='"+email+"' or phone_no='"+phone_no+"'"
                     );
 
-                    //insertion is complete so return the pharm account information
-                    res.status(200).send(infoQuery.rows[0]);
+                    if(checkQuery.rows[0] == null){
+                        let infoQuery = await pool.query(
+                            "INSERT INTO pharm_info(name, email, phone_no, street_address, city, postal_code) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
+                            [name, email, phone_no, street_address, city, postal_code]
+                        );
+                        
+                        const pharm_id = infoQuery.rows[0].pharm_id;
+    
+                        //use the pharm id for insertions into the security table
+                        let secQuery = await pool.query(
+                            "INSERT INTO pharm_sec_info(pharm_id, email, phone_no, password,"
+                            +"sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *",
+                            [pharm_id, email, phone_no, password, 
+                            sec_quest_1, sec_ans_1, sec_quest_2, sec_ans_2, sec_quest_3, sec_ans_3]
+                        );
+    
+                        //insertion is complete so return the pharm account information
+                        res.status(200).send(infoQuery.rows[0]);
+                    } else{
+                        res.status(500).send("Email or Phone No. already associated with an account");
+                    }
 
                 } else {
                     res.status(500).send("Insufficient Information");

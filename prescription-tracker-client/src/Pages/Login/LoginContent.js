@@ -48,7 +48,7 @@ const LoginContent = (props) => {
 
     const handleSubmit = () => {
         // TODO work out login functionality
-        axios.get("meditrack/user/account/security", {
+        axios.get("meditrack/user/login", {
             params: {
                 email: state.email,
                 password: state.password,
