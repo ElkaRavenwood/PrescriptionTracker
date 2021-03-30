@@ -55,9 +55,14 @@ const LoginContent = (props) => {
                 password: state.password,
             }
         }).then((res) => {
-                //move to next page...
-                if(res.status === 500) console.log("BAKA!");
-                console.log(res.data);
+                if(res.status === 201){
+                    //this is an erro
+                    console.log(res.data);
+                } else{
+                    //move to next page..
+                    console.log(res.data);
+                    console.log("NEXT PAGE");
+                }
         }, (error) => {
             //log the error
             console.log(error);
