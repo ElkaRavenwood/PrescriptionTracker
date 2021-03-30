@@ -68,7 +68,7 @@ const LoginContent = (props) => {
                     }));
                 } else{
                     localStorage.setItem("prescriptionTrackerAdmin", false)
-                    localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
+                    localStorage.setItem("prescriptionTrackerUserId", res.data.user_id);
                     history.push("/Patient", {
                         userId: res.data.user_id,
                     });
@@ -93,7 +93,7 @@ const LoginContent = (props) => {
                     }));
                 } else{
                     localStorage.setItem("prescriptionTrackerAdmin", true)
-                    localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
+                    localStorage.setItem("prescriptionTrackerUserId", res.data.user_id);
                     history.push("/Admin", {
                         userId: res.data.user_id,
                     });
