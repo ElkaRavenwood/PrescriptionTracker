@@ -47,10 +47,20 @@ const LoginContent = (props) => {
     }
 
     const handleSubmit = () => {
-        // TODO ping backend
-        axios.get("meditrack/user/account/info").then((res) => {
-            console.log(res)
-            console.log(res.message)
+        // TODO work out login functionality
+        axios.get("meditrack/user/account/security", {
+            params: {
+                email: state.email,
+                password: state.password,
+            }
+            
+        }).then((res) => {
+            console.log(res.data)
+            if (res.data.includes("ERROR")) {
+                //  error message
+            } else {
+                // move to correct page.
+            }
         })
     }
 
