@@ -50,18 +50,18 @@ const LoginContent = (props) => {
         // TODO work out login functionality
         axios.get("meditrack/user/login", {
             params: {
+                query_pswd: "ae34ZF76!",
                 email: state.email,
                 password: state.password,
             }
-            
         }).then((res) => {
-            console.log(res.data)
-            if (res.data.includes("ERROR")) {
-                //  error message
-            } else {
-                // move to correct page.
-            }
-        })
+                //move to next page...
+                if(res.status === 500) console.log("BAKA!");
+                console.log(res.data);
+        }, (error) => {
+            //log the error
+            console.log(error);
+          });
     }
 
     return (

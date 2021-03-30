@@ -1727,9 +1727,11 @@ module.exports = async(router) => {
     //USER LOG IN -------------------------------------------------------------------------------
     router.get(`/${objId}/user/login`, async(req,res) => {
         try{
+            //console.log(req.query);
             const {query_pswd} = req.query;
             if(query_pswd == PSWD){
                 let {user_id, phone_no, email, password } = req.query;
+                //console.log("HERE");
                 let secQuery;
                 if(user_id != null && password != null){
                     secQuery  = await pool.query(
@@ -1783,7 +1785,7 @@ module.exports = async(router) => {
                             res.status(200).send(await getBasicUserInfo(user_id));
                         } else{
                             //not valid information 
-                            res.status(500).send("Incorrect Password");
+                            res.status(201).send("Incorrect Password");
                         }
 
                     }
