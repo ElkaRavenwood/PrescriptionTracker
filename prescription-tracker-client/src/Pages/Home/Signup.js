@@ -88,9 +88,9 @@ const Signup = (props) => {
             }).then((res) => {
                 console.log(res)
                 if (res.status === 200) {
-                    history.push("/Patient", { 
-                        patientId: res.user_id, 
-                    });
+                    localStorage.setItem("prescriptionTrackerAdmin", false)
+                    localStorage.setItem("prescriptionTrackerUserId", res.data.user_id);
+                    history.push("/Patient");
                 } else {
                     setState((state)=> ({...state,
                         errorMessage: res.data.message,

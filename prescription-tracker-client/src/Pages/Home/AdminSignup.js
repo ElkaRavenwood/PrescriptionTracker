@@ -82,9 +82,9 @@ const AdminSignup = (props) => {
             }).then((res) => {
                 console.log(res)
                 if (res.status === 200) {
-                    history.push("/Admin", { 
-                        pharm_id: res.user_id, 
-                    });
+                    localStorage.setItem("prescriptionTrackerAdmin", true)
+                    localStorage.setItem("prescriptionTrackerUserId", res.data.pharm_id);
+                    history.push("/Admin");
                 } else {
                     setState((state)=> ({...state,
                         errorMessage: res.data.message,
