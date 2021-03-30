@@ -192,10 +192,11 @@ module.exports = async(router) => {
     router.get(`/${objId}/test`, async (req, res) => {
         console.log("HERE IN TEST");
         try{
-             res.send( await getDescriptivePrecInfo('7527686'))
+            // res.status(200).send( await getDescriptivePrecInfo('7527686'))
+            res.status(500).send("Failure Handling Request")
         } catch(err){
             console.log(err.message);
-            res.send("ERROR: Failure Handling Request")
+            res.status(500).send("Failure Handling Request")
         }
     });
 
@@ -204,9 +205,9 @@ module.exports = async(router) => {
         try{
             console.log("HERE IN TEST2");
             //let response = fetch("http://localhost:8000/meditrack/test")
-            res.send("baka")
+            res.status(200).send("baka")
         } catch(err){
-            res.send(err);
+            res.status(200).send(err);
         }
     });
 
@@ -214,9 +215,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/user/account/info`, async(req,res) => {
         console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.query;
+            const { query_pswd } = req.body;
             if(query_pswd == PSWD){
-                let {user_id, phone_no, email } = req.query;
+                let {user_id, phone_no, email } = req.body;
                 let accQuery;
                 let secQuery;
                 if(user_id != null){
@@ -240,21 +241,21 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Keys");
+                    res.status(500).send("No Provided Keys");
                 }
 
                 if(accQuery.rows[0] == null){
-                    res.send("ERROR: No User Found");
+                    res.status(500).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == accQuery.rows[0].user_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!userMatch || !emailMatch || !phoneMatch){
-                        res.send("ERROR: Account Info and Provided Info Do Not Match");
+                        res.status(500).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
-                        //res.send(accQuery.rows[0]);
+                        //res.status(200).send(accQuery.rows[0]);
 
                         user_id = accQuery.rows[0].user_id;
                         email = accQuery.rows[0].email;
@@ -278,12 +279,12 @@ module.exports = async(router) => {
                             postal_code: secQuery.rows[0].postal_code
                         }
 
-                        res.send(outputDix);
+                        res.status(200).send(outputDix);
 
                     }
                 }
             } else{
-                res.send("ERROR: Illegal Query")
+                res.status(500).send("Illegal Query")
             }
 
         } catch(err){
@@ -295,9 +296,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/user/account/security`, async(req,res) => {
         console.log(`API CALL: GET -> /${objId}/user/account/security`);
         try{
-            const {query_pswd} = req.query;
+            const {query_pswd} = req.body;
             if(query_pswd == PSWD){
-                let {user_id, phone_no, email } = req.query;
+                let {user_id, phone_no, email } = req.body;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -305,7 +306,7 @@ module.exports = async(router) => {
                         [user_id]
                     );
                     //console.log("here");
-                    //res.send(secQuery);
+                    //res.status(200).send(secQuery);
                 } else if (email != null){
                     secQuery  = await pool.query(
                         "SELECT user_id, email, phone_no FROM user_sec_info WHERE email=$1",
@@ -320,21 +321,21 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Keys");
+                    res.status(500).send("No Provided Keys");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.send("ERROR: No User Found");
+                    res.status(500).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == secQuery.rows[0].user_id);
                     let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
 
                     if(!userMatch || !emailMatch || !phoneMatch){
-                        res.send("ERROR: Account Info and Provided Info Do Not Match");
+                        res.status(500).send("Account Info and Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
-                        //res.send(accQuery.rows[0]);
+                        //res.status(200).send(accQuery.rows[0]);
 
                         user_id = secQuery.rows[0].user_id;
                         email = secQuery.rows[0].email;
@@ -346,16 +347,16 @@ module.exports = async(router) => {
                             [user_id]
                         );
 
-                        res.send(secQuery.rows[0]);
+                        res.status(200).send(secQuery.rows[0]);
 
                     }
                 }
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -399,25 +400,25 @@ module.exports = async(router) => {
                     );
 
                     //insertion is complete so return the user account information
-                    res.send(infoQuery.rows[0]);
+                    res.status(200).send(infoQuery.rows[0]);
 
                 } else {
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //GET USER SECURITY QUESTIONS --------------------------------------------------------------------------
     router.get(`/${objId}/security/questions`, async(req,res) => {
         try{
-            const { query_pswd } = req.query;
+            const { query_pswd } = req.body;
             if(query_pswd == PSWD){
                 //return the dictionary of questions
                 const query = await pool.query(
@@ -429,23 +430,23 @@ module.exports = async(router) => {
                     //console.log(query.rows[0]);
                    questions.push(query.rows[i].sec_quest);
                 }
-                res.send(questions);
+                res.status(200).send(questions);
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //UPDATE USER ACCOUNT INFORMATION ---------------------------------------------------------
     router.put(`/${objId}/user/account/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {user_id } = req.query;
+                let {user_id } = req.body;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -453,19 +454,19 @@ module.exports = async(router) => {
                         [user_id]
                     );
                     //console.log("here");
-                    //res.send(secQuery);
+                    //res.status(200).send(secQuery);
                     
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Key");
+                    res.status(500).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.send("ERROR: No User Found");
+                    res.status(500).send("No User Found");
                 } else{
                     //we want t
-                    let { first_name, last_name, email, phone_no} = req.query;
-                    let { healthcard_no, street_address, city, postal_code} = req.query;
+                    let { first_name, last_name, email, phone_no} = req.body;
+                    let { healthcard_no, street_address, city, postal_code} = req.body;
                     let updateCols = "";
                     let updateSecCols = "";
 
@@ -507,19 +508,19 @@ module.exports = async(router) => {
                     }
 
                     if((updateCols !="" || updateSecCols !="") && updateVal){
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 1,
                             update_msg: "Update Successful"
                         });
                     } else if (!updateVal && (updateCols !="" || updateSecCols !="") ) {
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 0,
                             update_msg: "An error occured"
                         });
                     } else{
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 1,
                             update_msg: "No fields to update"
@@ -528,21 +529,21 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //UPDATE USER SECURITY INFORMATION --------------------------------------------------------------------
     router.put(`/${objId}/user/account/security`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {user_id } = req.query;
+                let {user_id } = req.body;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -550,20 +551,20 @@ module.exports = async(router) => {
                         [user_id]
                     );
                     //console.log("here");
-                    //res.send(secQuery);
+                    //res.status(200).send(secQuery);
                     
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Key");
+                    res.status(500).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.send("ERROR: No User Found");
+                    res.status(500).send("No User Found");
                 } else{
                     //we want t
-                    let {password} = req.query;
-                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
-                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
+                    let {password} = req.body;
+                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
+                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
                     let updateSecCols = "";
 
                     if(password != null) updateSecCols = "password='"+password+"',"+updateSecCols;
@@ -588,19 +589,19 @@ module.exports = async(router) => {
                     }
 
                     if(updateSecCols !="" && updateVal){
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 1,
                             update_msg: "Update Successful"
                         });
                     } else if (!updateVal && updateSecCols !="") {
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 0,
                             update_msg: "An error occured"
                         });
                     } else{
-                        res.send({
+                        res.status(200).send({
                             user_id: user_id,
                             update_status: 1,
                             update_msg: "No fields to update"
@@ -609,11 +610,11 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -632,14 +633,14 @@ module.exports = async(router) => {
                 let pharmQuery;
 
                 if(rx == null || user_id == null || pharm_id == null || status_date == null){
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 } else{
                     precQuery = await pool.query(
                        "SELECT * FROM prec_info WHERE rx='"+rx+"'"
                     );
                       
                     if(precQuery.rows[0] != null){
-                        res.send("ERROR: Prescription Already Exists In Database");
+                        res.status(500).send("Prescription Already Exists In Database");
 
                     } else{
                         //first create the information to post
@@ -649,38 +650,38 @@ module.exports = async(router) => {
                             [rx, med_name, med_strength, user_id, pharm_id, 1, status_msg, 0, status_date, max_refills, cur_refills ]
                         );
                         
-                        res.send(precQuery.rows[0]);
+                        res.status(200).send(precQuery.rows[0]);
                     }
                 }
 
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //GET A GIVEN PRESCRIPTION ---------------------------------------------------------------
     router.get(`/${objId}/precs/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const { rx } = req.query;
+                const { rx } = req.body;
                 let precDescInfo = await getDescriptivePrecInfo(rx);
                 if(precDescInfo == null){
-                    res.send("ERROR: No Prescription Found");
+                    res.status(500).send("No Prescription Found");
                 } else {
-                    res.send(precDescInfo);
+                    res.status(200).send(precDescInfo);
                 }
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
       
@@ -688,9 +689,9 @@ module.exports = async(router) => {
     //GET ALL ACTIVE PRECS FOR A GIVEN USER ID ---------------------------------------------------------------
     router.get(`/${objId}/user/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const {user_id} = req.query;
+                const {user_id} = req.body;
 
                 let uQuery = await pool.query(
                     "SELECT user_id FROM user_info WHERE user_id="+user_id
@@ -711,28 +712,28 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.send(precs);
+                    res.status(200).send(precs);
                 
 
                 } else {
-                    res.send("ERROR: User Not Found");
+                    res.status(500).send("User Not Found");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
     
     //GET ALL PRECS (HISTORY) FOR A GIVEN USER ID ---------------------------------------------------------------
     router.get(`/${objId}/user/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const {user_id} = req.query;
+                const {user_id} = req.body;
 
                 let uQuery = await pool.query(
                     "SELECT user_id FROM user_info WHERE user_id="+user_id
@@ -753,28 +754,28 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.send(precs);
+                    res.status(200).send(precs);
 
                 } else {
-                    res.send("ERROR: User Not Found");
+                    res.status(500).send("User Not Found");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //UPDATE A PRESCRIPTION PROGRESS--------------------------------------------------------------------
     router.put(`/${objId}/precs/progress`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //first of all check to make sure prescription is in library
-                const { rx } = req.query;
+                const { rx } = req.body;
                 if(rx != null){
                     let mq = await pool.query(
                         "SELECT rx FROM prec_info WHERE rx='"+rx+"'"
@@ -784,7 +785,7 @@ module.exports = async(router) => {
                     if(mq.rows[0] != null){
 
                         //now check if status date is there
-                        const { status_date, progress, status_msg, is_completed } = req.query;
+                        const { status_date, progress, status_msg, is_completed } = req.body;
 
                         if(status_date != null){
                             
@@ -803,39 +804,39 @@ module.exports = async(router) => {
                                      "UPDATE prec_info SET "+fields+" WHERE rx='"+rx+"' RETURNING *"
                                  );
 
-                                res.send(await getDescriptivePrecInfo(rx));
+                                res.status(200).send(await getDescriptivePrecInfo(rx));
                             } else{
-                                res.send("No Progress ID Provided")
+                                res.status(200).send("No Progress ID Provided")
                             }
 
 
                         } else{
-                            res.send("No update date provided");
+                            res.status(200).send("No update date provided");
                         }
 
                     } else{
-                        res.send("ERROR: No Prescription Found");
+                        res.status(500).send("No Prescription Found");
                     }
 
                 } else{
 
-                    res.send("ERROR: No RX provided");
+                    res.status(500).send("No RX provided");
                 }
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //UPDATE PRESCRIPTION INFORMATION --------------------------------------------------------------------
     router.put(`/${objId}/precs/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const { rx } = req.query;
+                const { rx } = req.body;
                 if(rx != null){
                     //check if the prescription is in database
                     let myQuery = await pool.query(
@@ -844,7 +845,7 @@ module.exports = async(router) => {
 
                     if(myQuery.rows[0] != null){
                         //grab the fields in the query
-                        let { med_name, med_strength } = req.query;
+                        let { med_name, med_strength } = req.body;
 
                         let fields = "";
 
@@ -859,29 +860,29 @@ module.exports = async(router) => {
                             "UPDATE prec_info SET "+fields+" WHERE rx='"+rx+"'"
                         );
 
-                        res.send(await getDescriptivePrecInfo(rx));
+                        res.status(200).send(await getDescriptivePrecInfo(rx));
 
                     } else{
-                        res.send("ERROR: No prescription found for provided RX");
+                        res.status(500).send("No prescription found for provided RX");
                     }
 
                 } else{
-                    res.send("ERROR: No RX provided");
+                    res.status(500).send("No RX provided");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //GET PROGRESS STEPS --------------------------------------------------------------------------------
     router.get(`/${objId}/precs/progress/steps`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 let steps = {
                     1: "Received",
@@ -892,24 +893,24 @@ module.exports = async(router) => {
                     6: "NOMESSAGE"
                 }
 
-                res.send(steps);
+                res.status(200).send(steps);
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //COMPLETE A PRESCRIPTION
     router.put(`/${objId}/precs/progress/complete`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
 
-                const { rx } = req.query;
+                const { rx } = req.body;
                 if(rx != null){
                     let prec = await getDescriptivePrecInfo(rx);
                     if(prec != null){
@@ -922,21 +923,21 @@ module.exports = async(router) => {
 
                         //send the updated prescription.
                         prec.is_completed = 1;
-                        res.send(prec);
+                        res.status(200).send(prec);
 
                     } else{
-                        res.send("ERROR: No prescription found")
+                        res.status(500).send("No prescription found")
                     }
                 } else{
-                    res.send("ERROR: No RX provided")
+                    res.status(500).send("No RX provided")
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -979,18 +980,18 @@ module.exports = async(router) => {
                     );
 
                     //insertion is complete so return the pharm account information
-                    res.send(infoQuery.rows[0]);
+                    res.status(200).send(infoQuery.rows[0]);
 
                 } else {
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -998,9 +999,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/pharm/account/info`, async(req,res) => {
         //console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.query;
+            const { query_pswd } = req.body;
             if(query_pswd == PSWD){
-                let {pharm_id, phone_no, email } = req.query;
+                let {pharm_id, phone_no, email } = req.body;
                 let accQuery;
                 let secQuery;
                 //perform checking to retrieve information from the database
@@ -1026,22 +1027,22 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No provided keys");
+                    res.status(500).send("No provided keys");
                 }
 
                 if(accQuery.rows[0] == null){
                     //if the query is not present, then the account does not exist
-                    res.send("ERROR: No Pharmacy Account Found");
+                    res.status(500).send("No Pharmacy Account Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == accQuery.rows[0].pharm_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!pharmMatch || !emailMatch || !phoneMatch){
-                        res.send("ERROR: Account Info or Provided Info Do Not Match");
+                        res.status(500).send("Account Info or Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
-                        //res.send(accQuery.rows[0]);
+                        //res.status(200).send(accQuery.rows[0]);
 
                         pharm_id = accQuery.rows[0].pharm_id;
                         email = accQuery.rows[0].email;
@@ -1057,12 +1058,12 @@ module.exports = async(router) => {
                             postal_code: accQuery.rows[0].postal_code
                         }
 
-                        res.send(outputDix);
+                        res.status(200).send(outputDix);
 
                     }
                 }
             } else{
-                res.send("ERROR: Illegal Query")
+                res.status(500).send("Illegal Query")
             }
 
         } catch(err){
@@ -1074,9 +1075,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/pharm/account/security`, async(req,res) => {
         //console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.query;
+            const { query_pswd } = req.body;
             if(query_pswd == PSWD){
-                let {pharm_id, phone_no, email } = req.query;
+                let {pharm_id, phone_no, email } = req.body;
                 let accQuery;
                 let secQuery;
                 //perform checking to retrieve information from the database
@@ -1102,22 +1103,22 @@ module.exports = async(router) => {
 
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No provided keys");
+                    res.status(500).send("No provided keys");
                 }
 
                 if(accQuery.rows[0] == null){
                     //if the query is not present, then the account does not exist
-                    res.send("ERROR: No Pharmacy Account Found");
+                    res.status(500).send("No Pharmacy Account Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == accQuery.rows[0].pharm_id);
                     let emailMatch = (email == null) ||  (email == accQuery.rows[0].email);
                     let phoneMatch = (phone_no == null) ||  (phone_no == accQuery.rows[0].phone_no);
 
                     if(!pharmMatch || !emailMatch || !phoneMatch){
-                        res.send("ERROR: Account Info or Provided Info Do Not Match");
+                        res.status(500).send("Account Info or Provided Info Do Not Match");
                     } else{
                         //confirmed user provided identity can now start building dictionary
-                        //res.send(accQuery.rows[0]);
+                        //res.status(200).send(accQuery.rows[0]);
 
                         pharm_id = accQuery.rows[0].pharm_id;
                         email = accQuery.rows[0].email;
@@ -1128,12 +1129,12 @@ module.exports = async(router) => {
                             [pharm_id]
                         )
 
-                        res.send(secQuery.rows[0]);
+                        res.status(200).send(secQuery.rows[0]);
 
                     }
                 }
             } else{
-                res.send("ERROR: Illegal Query")
+                res.status(500).send("Illegal Query")
             }
 
         } catch(err){
@@ -1144,10 +1145,10 @@ module.exports = async(router) => {
     //UPDATE PHARM ACCOUNT INFO ------------------------------------------------------------
     router.put(`/${objId}/pharm/account/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {pharm_id } = req.query;
+                let {pharm_id } = req.body;
                 let secQuery;
                 if(pharm_id != null){
                     secQuery  = await pool.query(
@@ -1155,19 +1156,19 @@ module.exports = async(router) => {
                         [pharm_id]
                     );
                     //console.log("here");
-                    //res.send(secQuery);
+                    //res.status(200).send(secQuery);
                     
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Key");
+                    res.status(500).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.send("ERROR: No Pharmacy Found");
+                    res.status(500).send("No Pharmacy Found");
                 } else{
                     //get the optional parms from the request
-                    let { name, email, phone_no} = req.query;
-                    let { street_address, city, postal_code} = req.query;
+                    let { name, email, phone_no} = req.body;
+                    let { street_address, city, postal_code} = req.body;
                     let updateCols = "";
                     let updateSecCols = "";
 
@@ -1209,19 +1210,19 @@ module.exports = async(router) => {
                     }
 
                     if((updateCols !="" || updateSecCols !="") && updateVal){
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 1,
                             update_msg: "Update Successful"
                         });
                     } else if (!updateVal && (updateCols !="" || updateSecCols !="")) {
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 0,
                             update_msg: "An error occured"
                         });
                     } else{
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 1,
                             update_msg: "No fields to update"
@@ -1230,21 +1231,21 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //UPDATE PHARM SECURITY INFO ---------------------------------------------------------------
     router.put(`/${objId}/pharm/account/security`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
                 //first confirm the pharm identity 
-                let {pharm_id } = req.query;
+                let {pharm_id } = req.body;
                 let secQuery;
                 if(pharm_id != null){
                     secQuery  = await pool.query(
@@ -1255,16 +1256,16 @@ module.exports = async(router) => {
                     
                 } else{
                     //no information so send a simple message
-                    res.send("ERROR: No Provided Key");
+                    res.status(500).send("No Provided Key");
                 }
 
                 if(secQuery.rows[0] == null){
-                    res.send("ERROR: No User Found");
+                    res.status(500).send("No User Found");
                 } else{
                     //retrieve information from request body
-                    let {password} = req.query;
-                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
-                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
+                    let {password} = req.body;
+                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
+                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
                     let updateSecCols = "";
 
                     //generate update request field
@@ -1292,19 +1293,19 @@ module.exports = async(router) => {
 
                     //do some checking to determine what response we should send.
                     if(updateSecCols !="" && updateVal){
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 1,
                             update_msg: "Update Successful"
                         });
                     } else if (!updateVal &&  updateSecCols !="") {
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 0,
                             update_msg: "An error occured"
                         });
                     } else{
-                        res.send({
+                        res.status(200).send({
                             pharm_id: pharm_id,
                             update_status: 1,
                             update_msg: "No fields to update"
@@ -1313,20 +1314,20 @@ module.exports = async(router) => {
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     // PHARMACY GET PATIENTS ------------------------------------------------------------------
     router.get(`/${objId}/pharm/patients`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const { pharm_id } = req.query;
+                const { pharm_id } = req.body;
                 //standard id check to see if it is present
                 if(pharm_id != null){
                     // retrieve patient query
@@ -1356,21 +1357,21 @@ module.exports = async(router) => {
                             }
                         }
 
-                        res.send(ptlist);
+                        res.status(200).send(ptlist);
                     } else {   
-                        res.send("ERROR: No pharmacy found");
+                        res.status(500).send("No pharmacy found");
                     }
 
                 } else{
-                    res.send("ERROR: No PHARM ID provided");
+                    res.status(500).send("No PHARM ID provided");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -1378,10 +1379,10 @@ module.exports = async(router) => {
     //get all active prescriptions for a patients that the pharmacy services
     router.get(`/${objId}/pharm/patient/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
 
-                const { pharm_id, user_id } = req.query;
+                const { pharm_id, user_id } = req.body;
 
                 if(pharm_id != null && user_id != null){
                     //make a call to the database to retrieve information for prescriptions
@@ -1400,28 +1401,28 @@ module.exports = async(router) => {
                         activeList.push(await getDescriptivePrecInfo_fromQuery(listOfPrecs.rows[i]))
                     }
 
-                    res.send(activeList);
+                    res.status(200).send(activeList);
 
                 } else{
-                    res.send("ERROR: Insufficient information");
+                    res.status(500).send("Insufficient information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     //GET PATIENT HISSTORY FOR A PHARM ------------------------------------------------------------
     router.get(`/${objId}/pharm/patient/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
 
-                const { pharm_id, user_id } = req.query;
+                const { pharm_id, user_id } = req.body;
 
                 if(pharm_id != null && user_id != null){
                     //make a call to the database to retrieve information for prescriptions
@@ -1439,27 +1440,27 @@ module.exports = async(router) => {
                         activeList.push(await getDescriptivePrecInfo_fromQuery(listOfPrecs.rows[i]))
                     }
 
-                    res.send(activeList);
+                    res.status(200).send(activeList);
 
                 } else{
-                    res.send("ERROR: Insufficient information");
+                    res.status(500).send("Insufficient information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     }); 
 
     // GET PHARM ACTIVE PRESCRIPTIONS --------------------------------------------------------------------
     router.get(`/${objId}/pharm/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const {pharm_id} = req.query;
+                const {pharm_id} = req.body;
 
                 let uQuery = await pool.query(
                     "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
@@ -1480,27 +1481,27 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.send(precs);
+                    res.status(200).send(precs);
 
                 } else {
-                    res.send("ERROR: User Not Found");
+                    res.status(500).send("User Not Found");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     // GET PHARM HISTORY ---------------------------------------------------------------------------
     router.get(`/${objId}/pharm/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const {pharm_id} = req.query;
+                const {pharm_id} = req.body;
 
                 let uQuery = await pool.query(
                     "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
@@ -1521,28 +1522,28 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.send(precs);
+                    res.status(200).send(precs);
 
                 } else {
-                    res.send("ERROR: User Not Found");
+                    res.status(500).send("User Not Found");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     // SET MAX REFILLS (pharm authorization only) ----------------------------------------------------
     router.put(`/${objId}/precs/refills/set-max`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
 
-                const { rx, pharm_id, max_refills } = req.query;
+                const { rx, pharm_id, max_refills } = req.body;
                 //check if required information is provided
 
                 if(rx!= null && pharm_id != null && max_refills != null){
@@ -1564,26 +1565,26 @@ module.exports = async(router) => {
                             )
 
                             //send out result
-                            res.send(await getDescriptivePrecInfo(rx));
+                            res.status(200).send(await getDescriptivePrecInfo(rx));
 
                         } else{
-                            res.send("ERROR: No prescription found");
+                            res.status(500).send("No prescription found");
                         }
 
                     } else{
-                        res.send("ERROR: No pharmacy found");
+                        res.status(500).send("No pharmacy found");
                     }
 
                 } else{
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
@@ -1591,9 +1592,9 @@ module.exports = async(router) => {
     //INCREASE REFILL (user or pharmacy) -----------------------------------------------------------
     router.put(`/${objId}/precs/refills/request-refill`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
-                const { rx, user_id, pharm_id, request_amount } = req.query;
+                const { rx, user_id, pharm_id, request_amount } = req.body;
                 let increase = request_amount;
 
                 let sufficientInfo = (rx != null) && (pharm_id != null || user_id != null) && (increase != null);
@@ -1634,35 +1635,35 @@ module.exports = async(router) => {
                             )
 
                             //now send the new version
-                            res.send(await getDescriptivePrecInfo(rx));
+                            res.status(200).send(await getDescriptivePrecInfo(rx));
                         } else{
-                            res.send("ERROR: Increase is larger than maximum refills")
+                            res.status(500).send("Increase is larger than maximum refills")
                         }
                         
                     } else{
-                        res.send("ERROR: No accounts found");
+                        res.status(500).send("No accounts found");
                     }
 
                 } else{
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
 
     // RESET REFILLS (pharm authorization only) ----------------------------------------------------
     router.put(`/${objId}/precs/refills/reset-refill`, async(req,res) => {
         try{
-            const { query_pswd} = req.query;
+            const { query_pswd} = req.body;
             if(query_pswd == PSWD){
 
-                const { rx, pharm_id } = req.query;
+                const { rx, pharm_id } = req.body;
                 //check if required information is provided
 
                 if(rx!= null && pharm_id != null){
@@ -1684,26 +1685,173 @@ module.exports = async(router) => {
                             )
 
                             //send out result
-                            res.send(await getDescriptivePrecInfo(rx));
+                            res.status(200).send(await getDescriptivePrecInfo(rx));
 
                         } else{
-                            res.send("ERROR: No prescription found");
+                            res.status(500).send("No prescription found");
                         }
 
                     } else{
-                        res.send("ERROR: No pharmacy found");
+                        res.status(500).send("No pharmacy found");
                     }
 
                 } else{
-                    res.send("ERROR: Insufficient Information");
+                    res.status(500).send("Insufficient Information");
                 }
 
             } else{
-                res.send("ERROR: Illegal Query");
+                res.status(500).send("Illegal Query");
             }
         } catch(err){
             console.log(err);
-            res.send("ERROR: Failure Handling Request");
+            res.status(500).send("Failure Handling Request");
         }
     });
+
+    //USER LOG IN -------------------------------------------------------------------------------
+    router.get(`/${objId}/user/login`, async(req,res) => {
+        try{
+            const {query_pswd} = req.body;
+            if(query_pswd == PSWD){
+                let {user_id, phone_no, email, password } = req.body;
+                let secQuery;
+                if(user_id != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT user_id, email, phone_no FROM user_sec_info WHERE user_id=$1",
+                        [user_id]
+                    );
+                    //console.log("here");
+                    //res.status(200).send(secQuery);
+                } else if (email != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT user_id, email, phone_no FROM user_sec_info WHERE email=$1",
+                        [email]
+                    );
+
+                } else if(phone_no != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT user_id, email, phone_no FROM user_sec_info WHERE phone_no=$1",
+                        [phone_no]
+                    );
+
+                } else{
+                    //no information so send a simple message
+                    res.status(500).send("No Provided Keys");
+                }
+
+                if(secQuery.rows[0] == null){
+                    res.status(500).send("No User Found");
+                } else{
+                    let userMatch = (user_id == null) ||  (user_id == secQuery.rows[0].user_id);
+                    let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
+                    let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
+
+                    if(!userMatch || !emailMatch || !phoneMatch){
+                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                    } else{
+                        //confirmed user provided identity
+                        //now confirm the password
+
+                        user_id = secQuery.rows[0].user_id;
+                        email = secQuery.rows[0].email;
+                        phone_no = secQuery.rows[0].phone_no;
+
+                        //first retrieve the security query
+                        secQuery = await pool.query(
+                            "SELECT password FROM user_sec_info WHERE user_id=$1",
+                            [user_id]
+                        );
+
+                        if(password == secQuery.rows[0].password){
+                            //this is valid info so send the basic user information
+                            res.status(200).send(await getBasicUserInfo(user_id));
+                        } else{
+                            //not valid information 
+                            res.status(500).send("Incorrect Password");
+                        }
+
+                    }
+                }
+            } else{
+                res.status(500).send("Illegal Query");
+            }
+        } catch(err){
+            console.log(err);
+            res.status(500).send("Failure Handling Request");
+        }
+    });
+
+    //PHARM LOG IN
+    router.get(`/${objId}/pharm/login`, async(req,res) => {
+        try{
+            const {query_pswd} = req.body;
+            if(query_pswd == PSWD){
+                let {pharm_id, phone_no, email, password } = req.body;
+                let secQuery;
+                if(pharm_id != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT pharm_id, email, phone_no FROM pharm_sec_info WHERE pharm_id=$1",
+                        [user_id]
+                    );
+                    //console.log("here");
+                    //res.status(200).send(secQuery);
+                } else if (email != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT pharm_id, email, phone_no FROM pharm_sec_info WHERE email=$1",
+                        [email]
+                    );
+
+                } else if(phone_no != null && password != null){
+                    secQuery  = await pool.query(
+                        "SELECT pharm_id, email, phone_no FROM pharm_sec_info WHERE phone_no=$1",
+                        [phone_no]
+                    );
+
+                } else{
+                    //no information so send a simple message
+                    res.status(500).send("No Provided Keys");
+                }
+
+                if(secQuery.rows[0] == null){
+                    res.status(500).send("No User Found");
+                } else{
+                    let pharmMatch = (pharm_id == null) ||  (pharm_id == secQuery.rows[0].pharm_id);
+                    let emailMatch = (email == null) ||  (email == secQuery.rows[0].email);
+                    let phoneMatch = (phone_no == null) ||  (phone_no == secQuery.rows[0].phone_no);
+
+                    if(!pharmMatch || !emailMatch || !phoneMatch){
+                        res.status(500).send("Account Info and Provided Info Do Not Match");
+                    } else{
+                        //confirmed pharm provided identity
+                        //now confirm the password
+
+                        pharm_id = secQuery.rows[0].pharm_id;
+                        email = secQuery.rows[0].email;
+                        phone_no = secQuery.rows[0].phone_no;
+
+                        //first retrieve the security query
+                        secQuery = await pool.query(
+                            "SELECT password FROM pharm_sec_info WHERE pharm_id=$1",
+                            [pharm_id]
+                        );
+
+                        if(password == secQuery.rows[0].password){
+                            //this is valid info so send the basic user information
+                            res.status(200).send(await getBasicPharmInfo(pharm_id));
+                        } else{
+                            //not valid information 
+                            res.status(500).send("Incorrect Password");
+                        }
+
+                    }
+                }
+            } else{
+                res.status(500).send("Illegal Query");
+            }
+        } catch(err){
+            console.log(err);
+            res.status(500).send("Failure Handling Request");
+        }
+    });
+
 };
