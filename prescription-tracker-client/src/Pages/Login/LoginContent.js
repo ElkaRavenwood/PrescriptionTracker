@@ -93,9 +93,9 @@ const LoginContent = (props) => {
         <Box className={classes.root}>
             <MessageDisplay message={state.errorMessage} error={state.showError} />
             <Typography variant="h6" gutterBottom>Email</Typography>
-            <TextField className={classes.text_element} variant="filled" value={state.email || admin ? "ewinear2@dailymotion.com" : "tpetters0@walmart.com"} type="email" name="email" onChange={handleText}/>
+            <TextField className={classes.text_element} variant="filled" value={state.email} type="email" name="email" onChange={handleText}/>
             <Typography variant="h6" gutterBottom>Password</Typography>
-            <TextField className={classes.text_element} variant="filled" value={state.password || admin ? "MxKByHaJf" : 'epfHyxOLpN7'} name="password" type="password" onChange={handleText}/>
+            <TextField className={classes.text_element} variant="filled" value={state.password} name="password" type="password" onChange={handleText}/>
             <Button className={classes.button} variant="outlined" onClick={handleSubmit}>Login</Button>
             <Button className={classes.backButton} onClick={() => setState((state) => ({...state, showLogin: false}))}>Go Back</Button>
         </Box>
