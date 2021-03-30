@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Box, TextField, Typography, makeStyles } from "@material-ui/core";
+import axios from 'axios';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         height: "100vh",
@@ -46,6 +48,10 @@ const LoginContent = (props) => {
 
     const handleSubmit = () => {
         // TODO ping backend
+        axios.get("meditrack/user/account/info").then((res) => {
+            console.log(res)
+            console.log(res.message)
+        })
     }
 
     return (
