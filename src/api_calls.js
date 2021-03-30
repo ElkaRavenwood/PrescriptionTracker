@@ -215,9 +215,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/user/account/info`, async(req,res) => {
         console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.body;
+            const { query_pswd } = req.query;
             if(query_pswd == PSWD){
-                let {user_id, phone_no, email } = req.body;
+                let {user_id, phone_no, email } = req.query;
                 let accQuery;
                 let secQuery;
                 if(user_id != null){
@@ -296,9 +296,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/user/account/security`, async(req,res) => {
         console.log(`API CALL: GET -> /${objId}/user/account/security`);
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
-                let {user_id, phone_no, email } = req.body;
+                let {user_id, phone_no, email } = req.query;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -363,16 +363,16 @@ module.exports = async(router) => {
     //POST USER ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/user/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {first_name, last_name, email, phone_no} = req.body;
-                let {street_address, city, postal_code} = req.body;
-                let {password, healthcard_no} = req.body;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                let {first_name, last_name, email, phone_no} = req.query;
+                let {street_address, city, postal_code} = req.query;
+                let {password, healthcard_no} = req.query;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
 
                 //perform the appropriate error checking
                 noName = (first_name == null) || (last_name == null);
@@ -426,7 +426,7 @@ module.exports = async(router) => {
     //GET USER SECURITY QUESTIONS --------------------------------------------------------------------------
     router.get(`/${objId}/security/questions`, async(req,res) => {
         try{
-            const { query_pswd } = req.body;
+            const { query_pswd } = req.query;
             if(query_pswd == PSWD){
                 //return the dictionary of questions
                 const query = await pool.query(
@@ -451,10 +451,10 @@ module.exports = async(router) => {
     //UPDATE USER ACCOUNT INFORMATION ---------------------------------------------------------
     router.put(`/${objId}/user/account/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {user_id } = req.body;
+                let {user_id } = req.query;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -473,8 +473,8 @@ module.exports = async(router) => {
                     res.status(500).send("No User Found");
                 } else{
                     //we want t
-                    let { first_name, last_name, email, phone_no} = req.body;
-                    let { healthcard_no, street_address, city, postal_code} = req.body;
+                    let { first_name, last_name, email, phone_no} = req.query;
+                    let { healthcard_no, street_address, city, postal_code} = req.query;
                     let updateCols = "";
                     let updateSecCols = "";
 
@@ -548,10 +548,10 @@ module.exports = async(router) => {
     //UPDATE USER SECURITY INFORMATION --------------------------------------------------------------------
     router.put(`/${objId}/user/account/security`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {user_id } = req.body;
+                let {user_id } = req.query;
                 let secQuery;
                 if(user_id != null){
                     secQuery  = await pool.query(
@@ -570,9 +570,9 @@ module.exports = async(router) => {
                     res.status(500).send("No User Found");
                 } else{
                     //we want t
-                    let {password} = req.body;
-                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                    let {password} = req.query;
+                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
                     let updateSecCols = "";
 
                     if(password != null) updateSecCols = "password='"+password+"',"+updateSecCols;
@@ -629,11 +629,11 @@ module.exports = async(router) => {
     //POST A PRESCRIPTION ------------------------------------------------------------
     router.post(`/${objId}/precs`, async(req,res) => {
         try{
-            const  {query_pswd} = req.body;
+            const  {query_pswd} = req.query;
             if(query_pswd == PSWD){
-                let { rx, user_id, pharm_id, status_date } = req.body;
-                let {med_name, med_strength, status_msg} = req.body; 
-                let { max_refills, cur_refills } = req.body;
+                let { rx, user_id, pharm_id, status_date } = req.query;
+                let {med_name, med_strength, status_msg} = req.query; 
+                let { max_refills, cur_refills } = req.query;
 
                 let fields;
                 let precQuery;
@@ -675,9 +675,9 @@ module.exports = async(router) => {
     //GET A GIVEN PRESCRIPTION ---------------------------------------------------------------
     router.get(`/${objId}/precs/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const { rx } = req.body;
+                const { rx } = req.query;
                 let precDescInfo = await getDescriptivePrecInfo(rx);
                 if(precDescInfo == null){
                     res.status(500).send("No Prescription Found");
@@ -697,9 +697,9 @@ module.exports = async(router) => {
     //GET ALL ACTIVE PRECS FOR A GIVEN USER ID ---------------------------------------------------------------
     router.get(`/${objId}/user/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const {user_id} = req.body;
+                const {user_id} = req.query;
 
                 let uQuery = await pool.query(
                     "SELECT user_id FROM user_info WHERE user_id="+user_id
@@ -739,9 +739,9 @@ module.exports = async(router) => {
     //GET ALL PRECS (HISTORY) FOR A GIVEN USER ID ---------------------------------------------------------------
     router.get(`/${objId}/user/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const {user_id} = req.body;
+                const {user_id} = req.query;
 
                 let uQuery = await pool.query(
                     "SELECT user_id FROM user_info WHERE user_id="+user_id
@@ -780,10 +780,10 @@ module.exports = async(router) => {
     //UPDATE A PRESCRIPTION PROGRESS--------------------------------------------------------------------
     router.put(`/${objId}/precs/progress`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //first of all check to make sure prescription is in library
-                const { rx } = req.body;
+                const { rx } = req.query;
                 if(rx != null){
                     let mq = await pool.query(
                         "SELECT rx FROM prec_info WHERE rx='"+rx+"'"
@@ -793,7 +793,7 @@ module.exports = async(router) => {
                     if(mq.rows[0] != null){
 
                         //now check if status date is there
-                        const { status_date, progress, status_msg, is_completed } = req.body;
+                        const { status_date, progress, status_msg, is_completed } = req.query;
 
                         if(status_date != null){
                             
@@ -842,9 +842,9 @@ module.exports = async(router) => {
     //UPDATE PRESCRIPTION INFORMATION --------------------------------------------------------------------
     router.put(`/${objId}/precs/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const { rx } = req.body;
+                const { rx } = req.query;
                 if(rx != null){
                     //check if the prescription is in database
                     let myQuery = await pool.query(
@@ -853,7 +853,7 @@ module.exports = async(router) => {
 
                     if(myQuery.rows[0] != null){
                         //grab the fields in the query
-                        let { med_name, med_strength } = req.body;
+                        let { med_name, med_strength } = req.query;
 
                         let fields = "";
 
@@ -890,7 +890,7 @@ module.exports = async(router) => {
     //GET PROGRESS STEPS --------------------------------------------------------------------------------
     router.get(`/${objId}/precs/progress/steps`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 let steps = {
                     1: "Received",
@@ -915,10 +915,10 @@ module.exports = async(router) => {
     //COMPLETE A PRESCRIPTION
     router.put(`/${objId}/precs/progress/complete`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
 
-                const { rx } = req.body;
+                const { rx } = req.query;
                 if(rx != null){
                     let prec = await getDescriptivePrecInfo(rx);
                     if(prec != null){
@@ -952,16 +952,16 @@ module.exports = async(router) => {
     //POST PHARM ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/pharm/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {name, email, phone_no} = req.body;
-                let {street_address, city, postal_code} = req.body;
-                let {password } = req.body;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                let {name, email, phone_no} = req.query;
+                let {street_address, city, postal_code} = req.query;
+                let {password } = req.query;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
 
                 //perform the appropriate error checking
                 noName = (name == null);
@@ -1015,9 +1015,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/pharm/account/info`, async(req,res) => {
         //console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.body;
+            const { query_pswd } = req.query;
             if(query_pswd == PSWD){
-                let {pharm_id, phone_no, email } = req.body;
+                let {pharm_id, phone_no, email } = req.query;
                 let accQuery;
                 let secQuery;
                 //perform checking to retrieve information from the database
@@ -1091,9 +1091,9 @@ module.exports = async(router) => {
     router.get(`/${objId}/pharm/account/security`, async(req,res) => {
         //console.log(`API CALL: GET -> /${objId}/user/account/info`);
         try{
-            const { query_pswd } = req.body;
+            const { query_pswd } = req.query;
             if(query_pswd == PSWD){
-                let {pharm_id, phone_no, email } = req.body;
+                let {pharm_id, phone_no, email } = req.query;
                 let accQuery;
                 let secQuery;
                 //perform checking to retrieve information from the database
@@ -1161,10 +1161,10 @@ module.exports = async(router) => {
     //UPDATE PHARM ACCOUNT INFO ------------------------------------------------------------
     router.put(`/${objId}/pharm/account/info`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //first confirm the user identity 
-                let {pharm_id } = req.body;
+                let {pharm_id } = req.query;
                 let secQuery;
                 if(pharm_id != null){
                     secQuery  = await pool.query(
@@ -1183,8 +1183,8 @@ module.exports = async(router) => {
                     res.status(500).send("No Pharmacy Found");
                 } else{
                     //get the optional parms from the request
-                    let { name, email, phone_no} = req.body;
-                    let { street_address, city, postal_code} = req.body;
+                    let { name, email, phone_no} = req.query;
+                    let { street_address, city, postal_code} = req.query;
                     let updateCols = "";
                     let updateSecCols = "";
 
@@ -1258,10 +1258,10 @@ module.exports = async(router) => {
     //UPDATE PHARM SECURITY INFO ---------------------------------------------------------------
     router.put(`/${objId}/pharm/account/security`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //first confirm the pharm identity 
-                let {pharm_id } = req.body;
+                let {pharm_id } = req.query;
                 let secQuery;
                 if(pharm_id != null){
                     secQuery  = await pool.query(
@@ -1279,9 +1279,9 @@ module.exports = async(router) => {
                     res.status(500).send("No User Found");
                 } else{
                     //retrieve information from request body
-                    let {password} = req.body;
-                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                    let {password} = req.query;
+                    let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                    let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
                     let updateSecCols = "";
 
                     //generate update request field
@@ -1341,9 +1341,9 @@ module.exports = async(router) => {
     // PHARMACY GET PATIENTS ------------------------------------------------------------------
     router.get(`/${objId}/pharm/patients`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const { pharm_id } = req.body;
+                const { pharm_id } = req.query;
                 //standard id check to see if it is present
                 if(pharm_id != null){
                     // retrieve patient query
@@ -1395,10 +1395,10 @@ module.exports = async(router) => {
     //get all active prescriptions for a patients that the pharmacy services
     router.get(`/${objId}/pharm/patient/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
 
-                const { pharm_id, user_id } = req.body;
+                const { pharm_id, user_id } = req.query;
 
                 if(pharm_id != null && user_id != null){
                     //make a call to the database to retrieve information for prescriptions
@@ -1435,10 +1435,10 @@ module.exports = async(router) => {
     //GET PATIENT HISSTORY FOR A PHARM ------------------------------------------------------------
     router.get(`/${objId}/pharm/patient/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
 
-                const { pharm_id, user_id } = req.body;
+                const { pharm_id, user_id } = req.query;
 
                 if(pharm_id != null && user_id != null){
                     //make a call to the database to retrieve information for prescriptions
@@ -1474,9 +1474,9 @@ module.exports = async(router) => {
     // GET PHARM ACTIVE PRESCRIPTIONS --------------------------------------------------------------------
     router.get(`/${objId}/pharm/precs/active`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const {pharm_id} = req.body;
+                const {pharm_id} = req.query;
 
                 let uQuery = await pool.query(
                     "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
@@ -1515,9 +1515,9 @@ module.exports = async(router) => {
     // GET PHARM HISTORY ---------------------------------------------------------------------------
     router.get(`/${objId}/pharm/precs/history`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const {pharm_id} = req.body;
+                const {pharm_id} = req.query;
 
                 let uQuery = await pool.query(
                     "SELECT pharm_id FROM pharm_info WHERE pharm_id="+pharm_id
@@ -1556,10 +1556,10 @@ module.exports = async(router) => {
     // SET MAX REFILLS (pharm authorization only) ----------------------------------------------------
     router.put(`/${objId}/precs/refills/set-max`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
 
-                const { rx, pharm_id, max_refills } = req.body;
+                const { rx, pharm_id, max_refills } = req.query;
                 //check if required information is provided
 
                 if(rx!= null && pharm_id != null && max_refills != null){
@@ -1608,9 +1608,9 @@ module.exports = async(router) => {
     //INCREASE REFILL (user or pharmacy) -----------------------------------------------------------
     router.put(`/${objId}/precs/refills/request-refill`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
-                const { rx, user_id, pharm_id, request_amount } = req.body;
+                const { rx, user_id, pharm_id, request_amount } = req.query;
                 let increase = request_amount;
 
                 let sufficientInfo = (rx != null) && (pharm_id != null || user_id != null) && (increase != null);
@@ -1676,10 +1676,10 @@ module.exports = async(router) => {
     // RESET REFILLS (pharm authorization only) ----------------------------------------------------
     router.put(`/${objId}/precs/refills/reset-refill`, async(req,res) => {
         try{
-            const { query_pswd} = req.body;
+            const { query_pswd} = req.query;
             if(query_pswd == PSWD){
 
-                const { rx, pharm_id } = req.body;
+                const { rx, pharm_id } = req.query;
                 //check if required information is provided
 
                 if(rx!= null && pharm_id != null){
@@ -1727,9 +1727,9 @@ module.exports = async(router) => {
     //USER LOG IN -------------------------------------------------------------------------------
     router.get(`/${objId}/user/login`, async(req,res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
-                let {user_id, phone_no, email, password } = req.body;
+                let {user_id, phone_no, email, password } = req.query;
                 let secQuery;
                 if(user_id != null && password != null){
                     secQuery  = await pool.query(
@@ -1800,9 +1800,9 @@ module.exports = async(router) => {
     //PHARM LOG IN
     router.get(`/${objId}/pharm/login`, async(req,res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
-                let {pharm_id, phone_no, email, password } = req.body;
+                let {pharm_id, phone_no, email, password } = req.query;
                 let secQuery;
                 if(pharm_id != null && password != null){
                     secQuery  = await pool.query(
