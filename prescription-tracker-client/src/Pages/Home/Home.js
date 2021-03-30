@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import HomeHeader from '../../Components/HomeHeader';
 import background from "../../Resources/store.png"
+import AdminSignup from './AdminSignup';
 import Signup from './Signup';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +63,9 @@ const Home = (props) => {
             </Box>
             <div ref={signup} id="signup">
                 <Signup />
+            </div>
+            <div ref={signup} id="adminSignup">
+                <AdminSignup />
             </div>
         </div>
     )

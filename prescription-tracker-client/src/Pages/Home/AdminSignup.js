@@ -6,7 +6,7 @@ import MessageDisplay from "../../Components/MessageDisplay";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.dark,
         // height: "80vh",
         display: "flex",
         // flexDirection: "column",
@@ -36,9 +36,7 @@ const AdminSignup = (props) => {
     const history = useHistory();
 
     const [state, setState] = useState({
-        firstName: "",
-        middleName: "",
-        lastName: "",
+        name: "",
         email: "",
         phone: "",
         streetAddress: "",
@@ -62,37 +60,30 @@ const AdminSignup = (props) => {
     }
 
     const handleSubmit = () => {
-        console.log("sum")
         // checks required fields
         if (state.firstName=== "" || state.lastName=== "" || state.email=== "jane.doe@email.ca" || state.phone=== "" || state.streetAddress=== "" || state.city=== "" || state.postalCode=== "" || state.securityQ1=== "" || state.securityA1=== "" || state.securityQ2=== "" || state.securityA2=== "" || state.securityQ3=== "" || state.securityA3=== "" || state.password=== "" || state.confirmPassword=== "" || state.password!==state.confirmPassword) {
-            console.log("sum")
             setState((state) => ({...state, error: true}))
         } else {
-        // TODO Ping backend
-        // this is user signup
-            axios.post("/meditrack/user/account", {
-                    query_pswd: "ae34ZF76!",
-                    first_name: state.firstName,
-                    last_name: state.lastName,
-                    email: state.email,
-                    phone_no: state.phone,
-                    password: state.password,
-                    street_address: state.streetAddress,
-                    city: state.city,
-                    postal_code: state.postalCode,
-                    sec_quest_1: state.securityQ1,
-                    sec_ans_1: state.securityA1,
-                    sec_quest_2: state.securityQ2,
-                    sec_ans_2: state.securityA2,
-                    sec_quest_3: state.securityQ3,
-                    sec_ans_3: state.securityA3,
+            axios.post("/meditrack/pharm/account", {
+                query_pswd: "ae34ZF76!",
+                name: state.name,
+                email: state.email,
+                phone_no: state.phone,
+                password: state.password,
+                street_address: state.streetAddress,
+                city: state.city,
+                postal_code: state.postalCode,
+                sec_quest_1: state.securityQ1,
+                sec_ans_1: state.securityA1,
+                sec_quest_2: state.securityQ2,
+                sec_ans_2: state.securityA2,
+                sec_quest_3: state.securityQ3,
+                sec_ans_3: state.securityA3,
             }).then((res) => {
-                console.log(res.status)
+                console.log(res)
                 if (res.status === 200) {
-                    history.push("/Pharmacist", { 
+                    history.push("/Admin", { 
                         pharm_id: res.user_id, 
-                        // activePrescriptions: res.precs_active,
-                        // prescriptionHistory: res.precs_history
                     });
                 } else {
                     setState((state)=> ({...state,
@@ -104,21 +95,14 @@ const AdminSignup = (props) => {
         }
     }
 
-
     // TODO change all security questions to dropdowns
     return ( 
         <Grid container className={classes.root} spacing={3}>
             <MessageDisplay message={state.errorMessage} error={state.showError} />
-            <Grid xs={12} item><Typography variant="h1">Sign Up</Typography></Grid>
+            <Grid xs={12} item><Typography variant="h1">Admin Sign Up</Typography></Grid>
             <Grid xs={12} item><Typography variant="h2">General Information</Typography></Grid>
             <Grid xs={4} item>
-                <TextField className={classes.text_element} label="First Name" variant="filled" value={state.firstName} name="firstName" onChange={handleText} required fullWidth error={state.error && state.firstName ===""}/>
-            </Grid>
-            <Grid xs={4} item>
-                <TextField className={classes.text_element} label="Middle Name" variant="filled" value={state.middleName} name="middleName" onChange={handleText} fullWidth/>
-            </Grid>
-            <Grid xs={4} item>
-                <TextField className={classes.text_element} label="Last Name" variant="filled" value={state.lastName} name="lastName" onChange={handleText} required fullWidth error={state.error && state.lastName ===""}/>
+                <TextField className={classes.text_element} label="Name" variant="filled" value={state.name} name="name" onChange={handleText} required fullWidth error={state.error && state.name ===""}/>
             </Grid>
             <Grid xs={4} item>
                 <TextField className={classes.text_element} label="Pharmacy Email Address" variant="filled" value={state.email} name="email" onChange={handleText} required fullWidth error={state.error && state.email ===""}/>

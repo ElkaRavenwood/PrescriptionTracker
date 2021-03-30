@@ -63,38 +63,33 @@ const Signup = (props) => {
     }
 
     const handleSubmit = () => {
-        console.log("sum")
         // checks required fields
         if (state.firstName=== "" || state.lastName=== "" || state.email=== "jane.doe@email.ca" || state.phone=== "" || state.streetAddress=== "" || state.city=== "" || state.postalCode=== "" || state.securityQ1=== "" || state.securityA1=== "" || state.securityQ2=== "" || state.securityA2=== "" || state.securityQ3=== "" || state.securityA3=== "" || state.password=== "" || state.confirmPassword=== "" || state.password!==state.confirmPassword) {
-            console.log("sum")
             setState((state) => ({...state, error: true}))
         } else {
-        // TODO Ping backend
         // this is user signup
             axios.post("/meditrack/user/account", {
-                    query_pswd: "ae34ZF76!",
-                    first_name: state.firstName,
-                    last_name: state.lastName,
-                    email: state.email,
-                    phone_no: state.phone,
-                    password: state.password,
-                    street_address: state.streetAddress,
-                    city: state.city,
-                    postal_code: state.postalCode,
-                    healthcard_no: state.healthCard,
-                    sec_quest_1: state.securityQ1,
-                    sec_ans_1: state.securityA1,
-                    sec_quest_2: state.securityQ2,
-                    sec_ans_2: state.securityA2,
-                    sec_quest_3: state.securityQ3,
-                    sec_ans_3: state.securityA3,
+                query_pswd: "ae34ZF76!",
+                first_name: state.firstName,
+                last_name: state.lastName,
+                email: state.email,
+                phone_no: state.phone,
+                password: state.password,
+                street_address: state.streetAddress,
+                city: state.city,
+                postal_code: state.postalCode,
+                healthcard_no: state.healthCard,
+                sec_quest_1: state.securityQ1,
+                sec_ans_1: state.securityA1,
+                sec_quest_2: state.securityQ2,
+                sec_ans_2: state.securityA2,
+                sec_quest_3: state.securityQ3,
+                sec_ans_3: state.securityA3,
             }).then((res) => {
-                console.log(res.status)
+                console.log(res)
                 if (res.status === 200) {
                     history.push("/Patient", { 
                         patientId: res.user_id, 
-                        // activePrescriptions: res.precs_active,
-                        // prescriptionHistory: res.precs_history
                     });
                 } else {
                     setState((state)=> ({...state,
@@ -106,8 +101,6 @@ const Signup = (props) => {
         }
     }
 
-
-    // TODO change all security questions to dropdowns
     return ( 
         <Grid container className={classes.root} spacing={3}>
             <MessageDisplay message={state.errorMessage} error={state.showError} />
