@@ -60,7 +60,7 @@ const PatientHeader = (props) => {
                         <Typography variant="h4" className={classes.header_elem}>Order History</Typography>
                     </Link>
                 </Grid>
-                <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Contact')}>
+                <Grid item xs={2} className={classes.header_elem_container} onClick={() => history.push('/Patient/Contact')}>
                     <Typography variant="h4" className={classes.header_elem}>Contact Us</Typography>
                 </Grid>
                 <Grid item xs={1} className={classes.header_elem_container} onClick={() => history.push('/')}>
