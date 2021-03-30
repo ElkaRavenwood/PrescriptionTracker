@@ -36,7 +36,7 @@ const Login = (props) => {
             <HomeHeader />
             {!state.showLogin ? <SelectLogin setState={setState}/> :
             <Box className={(state.admin ? classes.admin : classes.patient)}>
-                <LoginContent state={state} setState={setState}/>
+                <LoginContent state={state} setState={setState} admin={state.admin}/>
             </Box>
             }
         </div>
