@@ -66,11 +66,9 @@ const AddPrescription = (props) => {
             axios.post("/meditrack/precs", {
                 rx: state.pId,
                 user_id: state.patientId,
-                pharm_id: history.location.state.userId,
+                pharm_id: localStorage.getItem("userId"),
                 status_date: new Date(),
                 med_name: state.pName,
-                // med_strength: ,
-                // status_msg: ,
                 max_refills: state.pRefills,
                 cur_refills: 0,
                 query_pswd: "ae34ZF76!",
@@ -80,8 +78,9 @@ const AddPrescription = (props) => {
                     history.push("/Admin/PrescriptionSuccess");
                 } else {
                     // TODO check error handling
-                    setState((state)=> ({...state,
-                        errorMessage: res.data.message,
+                    setState((state)=> ({
+                        ...state,
+                        errorMessage: res.data,
                         showError: true
                     }));
                 }
