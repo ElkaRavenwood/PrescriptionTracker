@@ -629,11 +629,11 @@ module.exports = async(router) => {
     //POST A PRESCRIPTION ------------------------------------------------------------
     router.post(`/${objId}/precs`, async(req,res) => {
         try{
-            const  {query_pswd} = req.query;
+            const  {query_pswd} = req.body;
             if(query_pswd == PSWD){
-                let { rx, user_id, pharm_id, status_date } = req.query;
-                let {med_name, med_strength, status_msg} = req.query; 
-                let { max_refills, cur_refills } = req.query;
+                let { rx, user_id, pharm_id, status_date } = req.body;
+                let {med_name, med_strength, status_msg} = req.body; 
+                let { max_refills, cur_refills } = req.body;
 
                 let fields;
                 let precQuery;
