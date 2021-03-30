@@ -59,7 +59,6 @@ const PatientDetails = (props) => {
     const classes = useStyles();
 
     const location = useLocation();
-    console.log(location)
 
     const [data, setData] = useState({prescriptions: []});
 
