@@ -10,9 +10,6 @@ app.use(express.json());
 
 api(app);
 
-app.get("/", (req,res) => {
-  res.send({message: 123})
-})
 // front end
 app.use(express.static(`${__dirname}/prescription-tracker-client/build`));
 
