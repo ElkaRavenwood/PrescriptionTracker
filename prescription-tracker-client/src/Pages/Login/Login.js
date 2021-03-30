@@ -25,7 +25,7 @@ const Login = (props) => {
     const classes = useStyles();
 
     const [state, setState] = useState({
-        email: "jane.doe@email.ca",
+        email: "",
         password: "",
         admin: false,
         showLogin: false,
