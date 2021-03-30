@@ -8,13 +8,22 @@ const app = express();
 const port = process.env.PORT || 8000;
 app.use(express.json());
 
-// backend
-api(app); //api is now a function with the different router calls
-			// takes the app as argument input
+api(app);
 
+app.get("/", (req,res) => {
+  res.send({message: 123})
+})
 // front end
 app.use(express.static(`${__dirname}/prescription-tracker-client/build`));
+
+// for production
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// })
 
 app.listen(port, () => {
   console.log(`App is listening on port ${port}!`)
 });
+
+
+// console.log(app._router)
