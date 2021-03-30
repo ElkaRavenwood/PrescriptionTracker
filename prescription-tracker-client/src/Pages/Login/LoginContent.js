@@ -51,7 +51,6 @@ const LoginContent = (props) => {
     }
 
     const handleSubmit = () => {
-        // TODO work out login functionality
         axios.get("meditrack/user/login", {
             params: {
                 query_pswd: "ae34ZF76!",
@@ -60,33 +59,46 @@ const LoginContent = (props) => {
             }
         }).then((res) => {
                 if(res.status === 201){
-                    //this is an erro
                     setState((state)=> ({
                         ...state,
                         errorMessage: res.data,
                         showError: true
                     }));
                 } else{
-                    // TODO check success local storage
                     localStorage.setItem("prescriptionTrackerAdmin", admin ? true : false)
                     localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
-                    console.log(res.data);
-                    // TODO check if user_id is the right name
-                    if (admin) {
-                        history.push("/Admin", {
-                            userId: res.data.user_id,
-                        });
-                    } else {
-                        history.push("/Patient", {
-                            userId: res.data.user_id,
-                        });
-
-                    }
+                    history.push("/Patient", {
+                        userId: res.data.user_id,
+                    });
                 }
         }, (error) => {
             //log the error
             console.log(error);
-          });
+        });
+        axios.get("meditrack/pharm/login", {
+            params: {
+                query_pswd: "ae34ZF76!",
+                email: state.email,
+                password: state.password,
+            }
+        }).then((res) => {
+                if(res.status === 201){
+                    setState((state)=> ({
+                        ...state,
+                        errorMessage: res.data,
+                        showError: true
+                    }));
+                } else{
+                    localStorage.setItem("prescriptionTrackerAdmin", true)
+                    localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
+                    history.push("/Admin", {
+                        userId: res.data.user_id,
+                    });
+                }
+        }, (error) => {
+            //log the error
+            console.log(error);
+        });
     }
 
     return (
