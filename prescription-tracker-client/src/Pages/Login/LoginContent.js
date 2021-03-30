@@ -93,10 +93,8 @@ const LoginContent = (props) => {
                     }));
                 } else{
                     localStorage.setItem("prescriptionTrackerAdmin", true)
-                    localStorage.setItem("prescriptionTrackerUserId", res.data.user_id);
-                    history.push("/Admin", {
-                        userId: res.data.user_id,
-                    });
+                    localStorage.setItem("prescriptionTrackerUserId", res.data.pharm_id);
+                    history.push("/Admin");
                 }
             }, (error) => {
                 //log the error
