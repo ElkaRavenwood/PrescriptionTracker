@@ -1,5 +1,8 @@
 import { Button, Grid, makeStyles, TextField, Typography } from "@material-ui/core"
+import axios from "axios";
 import { useState } from "react";
+import { useHistory } from "react-router";
+import MessageDisplay from "../../Components/MessageDisplay";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,11 +33,13 @@ const useStyles = makeStyles((theme) => ({
 const Signup = (props) => {
     const classes = useStyles();
 
+    const history = useHistory();
+
     const [state, setState] = useState({
         firstName: "",
         middleName: "",
         lastName: "",
-        email: "jane.doe@email.ca",
+        email: "",
         phone: "",
         healthCard: "",
         streetAddress: "",
@@ -58,12 +63,46 @@ const Signup = (props) => {
     }
 
     const handleSubmit = () => {
+        console.log("sum")
         // checks required fields
-        if (state.firstName=== "" && state.lastName=== "" && state.email=== "jane.doe@email.ca" && state.phone=== "" && state.streetAddress=== "" && state.city=== "" && state.postalCode=== "" && state.securityQ1=== "" && state.securityA1=== "" && state.securityQ2=== "" && state.securityA2=== "" && state.securityQ3=== "" && state.securityA3=== "" && state.password=== "" && state.confirmPassword=== "") {
+        if (state.firstName=== "" || state.lastName=== "" || state.email=== "jane.doe@email.ca" || state.phone=== "" || state.streetAddress=== "" || state.city=== "" || state.postalCode=== "" || state.securityQ1=== "" || state.securityA1=== "" || state.securityQ2=== "" || state.securityA2=== "" || state.securityQ3=== "" || state.securityA3=== "" || state.password=== "" || state.confirmPassword=== "" || state.password!==state.confirmPassword) {
+            console.log("sum")
             setState((state) => ({...state, error: true}))
         } else {
         // TODO Ping backend
-
+        // this is user signup
+            axios.post("/meditrack/user/account", {
+                    query_pswd: "ae34ZF76!",
+                    first_name: state.firstName,
+                    last_name: state.lastName,
+                    email: state.email,
+                    phone_no: state.phone,
+                    password: state.password,
+                    street_address: state.streetAddress,
+                    city: state.city,
+                    postal_code: state.postalCode,
+                    healthcard_no: state.healthCard,
+                    sec_quest_1: state.securityQ1,
+                    sec_ans_1: state.securityA1,
+                    sec_quest_2: state.securityQ2,
+                    sec_ans_2: state.securityA2,
+                    sec_quest_3: state.securityQ3,
+                    sec_ans_3: state.securityA3,
+            }).then((res) => {
+                console.log(res.status)
+                if (res.status === 200) {
+                    history.push("/Patient", { 
+                        patientId: res.user_id, 
+                        // activePrescriptions: res.precs_active,
+                        // prescriptionHistory: res.precs_history
+                    });
+                } else {
+                    setState((state)=> ({...state,
+                        errorMessage: res.data.message,
+                        showError: true
+                    }));
+                }
+            });
         }
     }
 
@@ -71,6 +110,7 @@ const Signup = (props) => {
     // TODO change all security questions to dropdowns
     return ( 
         <Grid container className={classes.root} spacing={3}>
+            <MessageDisplay message={state.errorMessage} error={state.showError} />
             <Grid xs={12} item><Typography variant="h1">Sign Up</Typography></Grid>
             <Grid xs={12} item><Typography variant="h2">General Information</Typography></Grid>
             <Grid xs={4} item>
@@ -121,10 +161,10 @@ const Signup = (props) => {
                 <TextField className={classes.text_element} label="Answer #3" variant="filled" value={state.securityA3} name="securityA3" onChange={handleText} required fullWidth error={state.error && state.securityA3===""}/>
             </Grid>
             <Grid item xs={6}>
-                <TextField className={classes.text_element} label="Password" variant="filled" value={state.password} name="password" onChange={handleText} required fullWidth error={state.error && state.password ===""}/>
+                <TextField className={classes.text_element} label="Password" variant="filled" value={state.password} name="password" onChange={handleText} required fullWidth error={state.error && (state.password ===""|| state.password !== state.confirmPassword)}/>
             </Grid>
             <Grid item xs={6}>
-                <TextField className={classes.text_element} label="Confirm Password" variant="filled" value={state.confirmPassword} name="confirmPassword" onChange={handleText} required fullWidth error={state.error && state.confirmPassword ===""}/>
+                <TextField className={classes.text_element} label="Confirm Password" variant="filled" value={state.confirmPassword} name="confirmPassword" onChange={handleText} required fullWidth error={state.error && (state.confirmPassword ==="" || state.password !== state.confirmPassword)}/>
             </Grid>
             <Grid item xs={12}>
                 <Button className={classes.button} variant="outlined" onClick={handleSubmit}>Sign Up</Button>
