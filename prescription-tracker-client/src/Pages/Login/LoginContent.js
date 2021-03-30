@@ -65,7 +65,7 @@ const LoginContent = (props) => {
                         showError: true
                     }));
                 } else{
-                    localStorage.setItem("prescriptionTrackerAdmin", admin ? true : false)
+                    localStorage.setItem("prescriptionTrackerAdmin", false)
                     localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
                     history.push("/Patient", {
                         userId: res.data.user_id,
@@ -82,19 +82,19 @@ const LoginContent = (props) => {
                 password: state.password,
             }
         }).then((res) => {
-                if(res.status === 201){
-                    setState((state)=> ({
-                        ...state,
-                        errorMessage: res.data,
-                        showError: true
-                    }));
-                } else{
-                    localStorage.setItem("prescriptionTrackerAdmin", true)
-                    localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
-                    history.push("/Admin", {
-                        userId: res.data.user_id,
-                    });
-                }
+            if(res.status === 201){
+                setState((state)=> ({
+                    ...state,
+                    errorMessage: res.data,
+                    showError: true
+                }));
+            } else{
+                localStorage.setItem("prescriptionTrackerAdmin", true)
+                localStorage.setItem("prescriptionTrackerUserId", res.data._userId);
+                history.push("/Admin", {
+                    userId: res.data.user_id,
+                });
+            }
         }, (error) => {
             //log the error
             console.log(error);
