@@ -515,4 +515,3 @@ insert into prec_info (rx, med_name, med_strength, user_id, pharm_id, max_refill
 insert into prec_info (rx, med_name, med_strength, user_id, pharm_id, max_refills, cur_refills, status_step_id, status_msg, is_completed, status_date) values ('9141391', 'Lithium Carbonate', '', 26, 5, 4, 0, 1, null, 0, '2021-02-11 08:50:00');
 
 
-
