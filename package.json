@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "setup": "npm i && cd prescription-tracker-client && npm i && npm run start"
   },
   "repository": {
     "type": "git",
