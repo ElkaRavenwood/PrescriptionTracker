@@ -1,5 +1,5 @@
 import { AppBar, Grid, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +43,12 @@ const PatientHeader = (props) => {
         localStorage.setItem("prescriptionTrackerUserId", null);
         history.push('/');
     }
+
+    useEffect(() => {
+        if (history.location.pathname.includes("Patient") && (localStorage.getItem("prescriptionTrackerAdmin") || !localStorage.getItem("prescriptionTrackerUserId") || localStorage.getItem("prescriptionTrackerUserId") === "null")) {
+            history.push('/');
+        }
+    }, [history]);
 
     return (
         <AppBar position="sticky">
