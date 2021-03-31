@@ -45,7 +45,7 @@ const PatientHeader = (props) => {
     }
 
     useEffect(() => {
-        if (history.location.pathname.includes("Patient") && (localStorage.getItem("prescriptionTrackerAdmin") || !localStorage.getItem("prescriptionTrackerUserId") || localStorage.getItem("prescriptionTrackerUserId") === "null")) {
+        if (history.location.pathname.includes("Patient") && (localStorage.getItem("prescriptionTrackerAdmin") === "true" || !localStorage.getItem("prescriptionTrackerUserId") || localStorage.getItem("prescriptionTrackerUserId") === "null")) {
             history.push('/');
         }
     }, [history]);
