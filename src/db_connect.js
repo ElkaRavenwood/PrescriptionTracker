@@ -11,8 +11,8 @@ const Pool = require("pg").Pool;
 //in this case we are pulling the Pool object?
 
 const pool = new Pool({
-  user: "postgres", //username for postgres database
-  password: "<password>", //password for postgres database
+  user: "me", //username for postgres database
+  password: "password", //password for postgres database
 
   host: "localhost", //our host
   port: 5432, //port of the host
@@ -22,6 +22,4 @@ const pool = new Pool({
 });
 
 //export the pool
-Object.assign(module.exports, {
-    pool
-  });
+module.exports = pool;
