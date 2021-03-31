@@ -6,6 +6,64 @@ import axios from "axios";
 import React from "react";
 import TrackingTimeline from "../../Components/TrackingTineline";
 
+const toReadableDate = (sqlDateIn) => {
+    let date = parseToDateInfo(sqlDateIn);
+    return date.hh12+":"+date.mm+" "+date.am_pm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+    //return date.hh+":"+date.mm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+ }
+ 
+ const parseToDateInfo = (sqlDateIn) => {
+     let pt = sqlDateIn.split("T")[0];
+     let tt = sqlDateIn.split("T")[1].split(".000Z")[0];
+     let date = new Date(pt+" "+tt);
+     //console.log(date);
+ 
+     let dateDix = {};
+
+     dateDix.h12 = "test";
+    let h12num = 0;
+    let ap = "AM";
+
+    if(date.getHours() > 12){
+        h12num = parseInt(date.getHours()) - 12;
+        ap = "PM";
+    } else if(date.getHours() == 12){
+        h12num = date.getHours();
+        ap = "PM";
+    } else{
+        h12num = date.getHours();
+        ap = "AM";
+    }
+ 
+     dateDix.h = ""+date.getHours();
+     dateDix.hh = (date.getHours() < 10) ? "0"+date.getHours() : ""+date.getHours();
+     dateDix.h12 = ""+h12num;
+     dateDix.hh12 = (h12num < 10) ? "0"+h12num : ""+h12num;
+     dateDix.am_pm = ap;
+     dateDix.m = ""+date.getMinutes();
+     dateDix.mm = (date.getMinutes() < 10) ? "0"+date.getMinutes() : ""+date.getMinutes();
+     dateDix.s = ""+date.getSeconds();
+     dateDix.ss = (date.getSeconds() < 10) ? "0"+date.getSeconds() : ""+date.getSeconds();
+     dateDix.d = ""+date.getDate();
+     dateDix.dd = (date.getDate() < 10) ? "0"+date.getDate() : ""+date.getDate();
+ 
+     
+     const longMonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+     const shortMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+     let monthStr = shortMonthNames[date.getMonth()];
+     let longMonthStr = longMonthNames[date.getMonth()];
+     
+ 
+     dateDix.M = ""+(date.getMonth()+1);
+     dateDix.MM = (date.getMonth()+1 < 10) ? "0"+date.getMonth()+1 : ""+date.getMonth()+1;
+     dateDix.MMM = monthStr;
+     dateDix.MMMM = longMonthStr;
+     dateDix.yy = ""+date.getYear();
+     dateDix.yyyy = ""+date.getFullYear();
+ 
+     return dateDix;
+  }
+
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.primary.main,
@@ -66,12 +124,7 @@ const Tracking = (props) => {
                 }));
             }
         })
-        let temp = [{
-            orderNumber: "0000",
-            orderStatus: "Order Received",
-            orderUpdated: "21-03-2021 17:02:15",
-        }]
-        setState((state) => ({...state, prescriptions: temp}));
+        
     }, []);
 
     // const handleSubmit = () => {
@@ -96,7 +149,7 @@ const Tracking = (props) => {
                                 <Box className={classes.details}>
                                     <Typography variant="h5" gutterBottom><strong>Order Number</strong>: {prescription.rx}</Typography>
                                     <Typography variant="h5" gutterBottom><strong>Order Status</strong>: {prescription.progress} - {prescription.progress_msg}</Typography>
-                                    <Typography variant="h5" gutterBottom><strong>Order Updated</strong>: {prescription.status_date}</Typography>
+                                    <Typography variant="h5" gutterBottom><strong>Order Updated</strong>: {toReadableDate(prescription.status_date)}</Typography>
                                 </Box>
                                 <Box className={classes.needs}>
                                     {/* <Typography variant="h5" gutterBottom><strong>Customer Needs:</strong></Typography>
