@@ -1,23 +1,21 @@
-import { Box, makeStyles, TextField, Typography } from "@material-ui/core";
-import { Timeline, TimelineEvent } from '@mailtop/horizontal-timeline';
-import { FaClipboardCheck, FaClock, FaRegFileAlt, FaUserCheck } from 'react-icons/fa';
+import { Box, makeStyles, /*TextField,*/ Typography } from "@material-ui/core";
 import PatientHeader from "../../Components/PatientHeader";
 import { useEffect, useState } from "react";
-import CustomButton from "../../Components/CustomButton";
+// import CustomButton from "../../Components/CustomButton";
+import axios from "axios";
+import React from "react";
+import TrackingTimeline from "../../Components/TrackingTineline";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.primary.main,
         paddingTop: "3vh",
         color: "white",
-        height: "90vh",
+        minHeight: "90vh",
     },
     container: {
         width: "90vw",
         margin: "auto"
-    },
-    timeline: {
-        paddingTop: "3vh",
     },
     details: {
         textAlign: "left",
@@ -25,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     needs: {
         textAlign: "left",
         marginTop: "3vh",
+        marginBottom: "5vh",
     },
     text: {
         backgroundColor: "white",
@@ -35,28 +34,49 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "flex-end",
     },
+    heading: {
+        marginBottom: "3vh",
+    },
 }));
 
 const Tracking = (props) => {
 
     const classes = useStyles();
 
-    const [data, setData] = useState({});
-    const [state, setState] = useState("");
+    const [state, setState] = useState({
+        notes: "",
+        showError: false,
+        prescriptions: [],
+    });
 
     useEffect(() => {
-        let temp = {
+        axios.get("/meditrack/user/precs/active", {
+            params: {
+                user_id: localStorage.getItem("prescriptionTrackerUserId"),
+                query_pswd: "ae34ZF76!",
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                setState((state) => ({...state, prescriptions: res.data}));
+            } else {
+                setState((state)=> ({
+                    ...state,
+                    errorMessage: res.data,
+                    showError: true
+                }));
+            }
+        })
+        let temp = [{
             orderNumber: "0000",
             orderStatus: "Order Received",
             orderUpdated: "21-03-2021 17:02:15",
-        }
-        // TODO pull from db
-        setData(temp);
+        }]
+        setState((state) => ({...state, prescriptions: temp}));
     }, []);
 
-    const handleSubmit = () => {
-        // TODO ping backend
-    }
+    // const handleSubmit = () => {
+    //     // T O D O ping backend
+    // }
 
     return (
         <div id="tracking">
@@ -64,46 +84,31 @@ const Tracking = (props) => {
             <Box className={classes.root}>
                 <Box className={classes.container}>
                     <Typography variant="h2" className={"heading"}>Order Tracking</Typography>
-            
-                    <Box className={classes.timeline}>
-                        <Timeline minEvents={4} placeholder>
-                        <TimelineEvent
-                            icon={FaRegFileAlt}
-                            title='Order Placed'
-                            // subtitle='26/03/2019 09:51'
-                            />
-                        <TimelineEvent
-                            color='#87a2c7'
-                            icon={FaClipboardCheck}
-                            title='Order Received'
-                            // subtitle='26/03/2019 09:51'
-                            />
-                        <TimelineEvent
-                            color='#30D5C8'
-                            icon={FaClock}
-                            title='In Progress'
-                            // subtitle='26/03/2019 09:51'
-                            />
-                        <TimelineEvent
-                            color='#03c040'
-                            icon={FaUserCheck}
-                            title='Ready for Pick Up'
-                            // subtitle='26/03/2019 09:51'
-                            />
-                        </Timeline>
-                    </Box>
-                    <Box className={classes.details}>
-                        <Typography variant="h5" gutterBottom><strong>Order Number</strong>: {data.orderNumber}</Typography>
-                        <Typography variant="h5" gutterBottom><strong>Order Status</strong>: {data.orderStatus}</Typography>
-                        <Typography variant="h5" gutterBottom><strong>Order Updated</strong>: {data.orderUpdated}</Typography>
-                    </Box>
-                    <Box className={classes.needs}>
-                        <Typography variant="h5" gutterBottom><strong>Customer Needs:</strong></Typography>
-                        <TextField multiline variant="outlined" rows={4} onChange={(val) => setState(val)} value={state} fullWidth className={classes.text}/>
-                        <div className={classes.submitButton} onClick={handleSubmit}>
-                            <CustomButton color="secondary" text="Add Note" variant="contained" rectangular />
-                        </div>
-                    </Box>
+                    <br />
+                    <br />
+                    <Typography variant="h6" className={"heading"}>See the status of all your active prescriptions below!</Typography>
+                    <br />
+                    <br />
+                    {state.prescriptions.map((prescription, index) => {
+                        return (
+                            <React.Fragment key={index}>
+                                <TrackingTimeline currentStatus={prescription.progress} />
+                                <Box className={classes.details}>
+                                    <Typography variant="h5" gutterBottom><strong>Order Number</strong>: {prescription.rx}</Typography>
+                                    <Typography variant="h5" gutterBottom><strong>Order Status</strong>: {prescription.progress} - {prescription.progress_msg}</Typography>
+                                    <Typography variant="h5" gutterBottom><strong>Order Updated</strong>: {prescription.status_date}</Typography>
+                                </Box>
+                                <Box className={classes.needs}>
+                                    {/* <Typography variant="h5" gutterBottom><strong>Customer Needs:</strong></Typography>
+                                    <TextField multiline variant="outlined" rows={4} onChange={(val) => setState((state) => ({...state, notes: val}))} value={state.notes} fullWidth className={classes.text}/>
+                                    <div className={classes.submitButton} onClick={handleSubmit}>
+                                        <CustomButton color="secondary" text="Add Note" variant="contained" rectangular />
+                                    </div> */}
+                                </Box>
+                            </React.Fragment>
+                        )
+                    })}
+                    
                 </Box>
             </Box>
         </div>
