@@ -20,10 +20,10 @@ const toReadableDate = (sqlDateIn) => {
     let h12num = 0;
     let ap = "AM";
 
-    if(date.getHours() > 12){
+    if(parseInt(date.getHours()) > 12){
         h12num = parseInt(date.getHours()) - 12;
         ap = "PM";
-    } else if(date.getHours() == 12){
+    } else if(parseInt(date.getHours()) === 12){
         h12num = date.getHours();
         ap = "PM";
     } else{
