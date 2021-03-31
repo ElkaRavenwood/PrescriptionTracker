@@ -1,5 +1,6 @@
 import { Box, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,25 +37,43 @@ const Prescription = (props) => {
 
     const [data, setData] = useState([]);
 
-    useEffect(() => {
+    useEffect(async() => {
         // pull from database
-        setData([{
-            name: "0000000001",
-            repeated: 0,
-            refillsAllowed: 0,
-        }, {
-            name: "0000000002",
-            repeated: 0,
-            refillsAllowed: 0,
-        }, {
-            name: "0000000003",
-            repeated: 0,
-            refillsAllowed: 2,
-        }, {
-            name: "0000000501",
-            repeated: 3,
-            refillsAllowed: 5,
-        }]);
+        console.log(localStorage.getItem("prescriptionTrackerUserId"));
+            let uuid = 1; //will be the local storage call when Ready
+            let arrayOut = [];
+            
+            //make querry to database
+            await axios.get("meditrack/user/precs/active", {
+                params: {
+                    query_pswd: "ae34ZF76!",
+                    user_id: uuid
+                }
+            }).then((res) => {
+                if(res.status === 200){
+                    //if read was success then we have JSON array in res.data
+                   // console.log(res.data);
+                    let fp = "";
+                    for(let i=0; i<res.data.length; i++){
+                        if(res.data[i].med_name == null) fp = "RX"+res.data[i].rx+""
+                        else fp = res.data[i].med_name+" (RX"+res.data[i].rx+")";
+
+                        arrayOut.push({
+                            name: fp,
+                            repeated: res.data[i].cur_refills,
+                            refillsAllowed: res.data[i].max_refills
+                        })
+                    }
+                } else{
+                    //error reporting
+                    
+                }
+            }, (error) => {
+                console.log(error);
+            });
+        
+            setData(arrayOut);
+        
     }, []);
 
     return (
@@ -65,7 +84,7 @@ const Prescription = (props) => {
                     <TableHead>
                         <TableRow hover>
                             <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Prescription Name</TableCell>
-                            <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Repeated</TableCell>
+                            <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Refills</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

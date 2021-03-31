@@ -5,6 +5,103 @@ const objId = 'meditrack';
 const pool = require("./db_connect");
 const PSWD = "ae34ZF76!";
 
+const toReadableDate = (sqlDateIn) => {
+    let date = parseToDateInfo(sqlDateIn);
+    return date.hh+":"+date.mm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+ }
+ 
+ const parseToDateInfo = (sqlDateIn) => {
+     let pt = sqlDateIn.split("T")[0];
+     let tt = sqlDateIn.split("T")[1].split(".000Z")[0];
+     let date = new Date(pt+" "+tt);
+     //console.log(date);
+ 
+     let dateDix = {};
+ 
+     dateDix.h = ""+date.getHours();
+     dateDix.hh = (date.getHours() < 10) ? "0"+date.getHours() : ""+date.getHours();
+     dateDix.m = ""+date.getMinutes();
+     dateDix.mm = (date.getMinutes() < 10) ? "0"+date.getMinutes() : ""+date.getMinutes();
+     dateDix.s = ""+date.getSeconds();
+     dateDix.ss = (date.getSeconds() < 10) ? "0"+date.getSeconds() : ""+date.getSeconds();
+     dateDix.d = ""+date.getDate();
+     dateDix.dd = (date.getDate() < 10) ? "0"+date.getDate() : ""+date.getDate();
+ 
+     
+     let monthStr = "";
+     let longMonthStr = "";
+     switch(date.getMonth()+1){
+         case 1:
+             monthStr = "Jan";
+             longMonthStr = "January";
+         break;
+ 
+         case 2:
+             monthStr = "Feb";
+             longMonthStr = "February";
+         break;
+ 
+         case 3:
+             longMonthStr = monthStr = "March";
+         break;
+ 
+         case 4:
+             monthStr = "Apr";
+             longMonthStr = "April";
+         break;
+ 
+         case 5:
+             longMonthStr = monthStr = "May";
+ 
+         break;
+ 
+         case 6:
+             monthStr = "Jun";
+             longMonthStr = "June";
+         break;
+ 
+         case 7:
+             monthStr = "Jul";
+             longMonthStr = "";
+         break;
+ 
+         case 8:
+             monthStr = "August";
+             longMonthStr = "August";
+         break;
+ 
+         case 9:
+             monthStr = "Sep";
+             longMonthStr = "September";
+         break;
+ 
+         case 10:
+             monthStr = "Oct";
+             longMonthStr = "October";
+         break;
+ 
+         case 11:
+             monthStr = "Nov";
+             longMonthStr = "November";
+         break;
+ 
+         case 12:
+             monthStr = "Dec";
+             longMonthStr = "December";
+         break;
+     }
+ 
+     dateDix.M = ""+(date.getMonth()+1);
+     dateDix.MM = (date.getMonth()+1 < 10) ? "0"+date.getMonth()+1 : ""+date.getMonth()+1;
+     dateDix.MMM = monthStr;
+     dateDix.MMMM = longMonthStr;
+     dateDix.yy = ""+date.getYear();
+     dateDix.yyyy = ""+date.getFullYear();
+ 
+     return dateDix;
+  }
+
+
 baka =  async ( contents ) => {
     for(i=0;i<100;i++) sum = sum+i;
     try{
@@ -192,8 +289,8 @@ module.exports = async(router) => {
     router.get(`/${objId}/test`, async (req, res) => {
         console.log("HERE IN TEST");
         try{
-            // res.status(200).send( await getDescriptivePrecInfo('7527686'))
-            res.status(201).send("Failure Handling Request")
+            
+            res.status(200).send("good")
         } catch(err){
             console.log(err.message);
             res.status(201).send("Failure Handling Request")
@@ -363,16 +460,16 @@ module.exports = async(router) => {
     //POST USER ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/user/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {first_name, last_name, email, phone_no} = req.body;
-                let {street_address, city, postal_code} = req.body;
-                let {password, healthcard_no} = req.body;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                let {first_name, last_name, email, phone_no} = req.query;
+                let {street_address, city, postal_code} = req.query;
+                let {password, healthcard_no} = req.query;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
 
                 //perform the appropriate error checking
                 noName = (first_name == null) || (last_name == null);
@@ -629,11 +726,11 @@ module.exports = async(router) => {
     //POST A PRESCRIPTION ------------------------------------------------------------
     router.post(`/${objId}/precs`, async(req,res) => {
         try{
-            const  {query_pswd} = req.body;
+            const  {query_pswd} = req.query;
             if(query_pswd == PSWD){
-                let { rx, user_id, pharm_id, status_date } = req.body;
-                let {med_name, med_strength, status_msg} = req.body; 
-                let { max_refills, cur_refills } = req.body;
+                let { rx, user_id, pharm_id, status_date } = req.query;
+                let {med_name, med_strength, status_msg} = req.query; 
+                let { max_refills, cur_refills } = req.query;
 
                 let fields;
                 let precQuery;
@@ -952,16 +1049,16 @@ module.exports = async(router) => {
     //POST PHARM ACCOUNT INFORMATION ON SIGN UP ----------------------------------------------------------------
     router.post(`/${objId}/pharm/account`, async(req, res) => {
         try{
-            const {query_pswd} = req.body;
+            const {query_pswd} = req.query;
             if(query_pswd == PSWD){
                 //assume that all the fields are available with the request
                 //if not handle null fields appropriately
 
-                let {name, email, phone_no} = req.body;
-                let {street_address, city, postal_code} = req.body;
-                let {password } = req.body;
-                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.body;
-                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.body;
+                let {name, email, phone_no} = req.query;
+                let {street_address, city, postal_code} = req.query;
+                let {password } = req.query;
+                let {sec_quest_1, sec_quest_2, sec_quest_3} = req.query;
+                let {sec_ans_1, sec_ans_2, sec_ans_3} = req.query;
 
                 //perform the appropriate error checking
                 noName = (name == null);
@@ -1757,7 +1854,7 @@ module.exports = async(router) => {
                     res.status(201).send("No Provided Keys");
                 }
 
-                if(secQuery.rows[0] == null){
+                if(secQuery.rows[0] == null || secQuery.rows[0] == undefined ){
                     res.status(201).send("No User Found");
                 } else{
                     let userMatch = (user_id == null) ||  (user_id == secQuery.rows[0].user_id);
@@ -1830,7 +1927,8 @@ module.exports = async(router) => {
                     res.status(201).send("No Provided Keys");
                 }
 
-                if(secQuery.rows[0] == null){
+
+                if(secQuery.rows[0] == null || secQuery.rows[0] == undefined ){
                     res.status(201).send("No User Found");
                 } else{
                     let pharmMatch = (pharm_id == null) ||  (pharm_id == secQuery.rows[0].pharm_id);

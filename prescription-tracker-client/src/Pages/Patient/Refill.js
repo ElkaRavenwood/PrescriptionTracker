@@ -44,6 +44,8 @@ const Refill = (props) => {
 
     useEffect(() => {
         // TODO pull from database
+        
+
         let temp = [{
             name: "0000000001",
             repeated: 0,
