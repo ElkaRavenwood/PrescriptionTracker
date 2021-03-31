@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginContent = (props) => {
 
-    const { state, setState, admin } = props;
+    const { state, setState } = props;
 
     const classes = useStyles();
 
