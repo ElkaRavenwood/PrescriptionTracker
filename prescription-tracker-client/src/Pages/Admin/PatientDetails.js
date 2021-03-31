@@ -75,7 +75,6 @@ const PatientDetails = (props) => {
     const prescriptionStatuses = "Prescription Received,Prescription Logged,Pharmacist Verification,Packaging,Ready For Pickup".split(",");
 
     useEffect(() => {
-        // TODO pull from db using location.state.id
         if (location.state) {
             axios.get("/meditrack/pharm/patient/precs/history", {
                 params: {
@@ -107,8 +106,6 @@ const PatientDetails = (props) => {
         } else { // if in progress
             statusToSet = !start ? parseInt(prescription.progress) + 1 : parseInt(prescription.progress) - 1;
         }
-        console.log(prescription.progress)
-        console.log(statusToSet)
         axios.put("/meditrack/precs/progress", null, {
             params: {
                 rx: prescription.rx,
@@ -117,7 +114,6 @@ const PatientDetails = (props) => {
                 query_pswd: "ae34ZF76!",
             }
         }).then((res) => {
-            console.log(res)
             if (res.status === 200) {
                 let temp = [...data.prescriptions];
                 temp[index].progress = "" + statusToSet;
@@ -144,7 +140,7 @@ const PatientDetails = (props) => {
                                 <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Prescription</TableCell>
                                 <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Status</TableCell>
                                 <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Status Options</TableCell>
-                                <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Estimated Finish</TableCell>
+                                {/* <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Estimated Finish</TableCell> */}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -172,9 +168,9 @@ const PatientDetails = (props) => {
                                             </React.Fragment>
                                         }
                                     </TableCell>
-                                    <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell + " " + classes.finishCellContainer}>
+                                    {/* <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell + " " + classes.finishCellContainer}>
                                         <div className={classes.finishCell}> {prescription.estimatedFinish || "-" }</div>
-                                    </TableCell>
+                                    </TableCell> */}
                                 </TableRow>
                             )): null}
                         </TableBody>
