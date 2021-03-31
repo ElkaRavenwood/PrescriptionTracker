@@ -58,8 +58,7 @@ const Contact = (props) => {
 				sending: true,
 			}));
             // TODO
-			// ping backend
-			axios.get('/api/sendContact', {params: {
+			axios.get('/meditrack/contact', {params: {
 				email: state.email,
 				message: state.message,
 			}}).then((res) => {
@@ -70,11 +69,13 @@ const Contact = (props) => {
 					sending: false,
 					sent: true,
 				}));
-			}).catch(err => console.log(err))
+			}).catch(err => console.log(err));
 			setTimeout(function () {
 				setState((state) => ({
 					...state,
 					sent: false,
+                    email: "",
+                    message: "",
 				}));
 			}, 6000);
 		} else {
@@ -109,11 +110,11 @@ const Contact = (props) => {
                             <Typography paragraph>
                                 {process.env.REACT_APP_INSTRUCTIONS_CONTACTUS_MAIN}
                             </Typography>
-                            <TextField className={classes.textField} fullWidth variant="outlined"
+                            <TextField className={classes.textField} fullWidth variant="filled"
                                 name="email" type="email" label="Email" 
                                 helperText={process.env.REACT_APP_INSTRUCTIONS_CONTACTUS_EMAIL} 
                                 onChange={handleText}/>
-                            <TextField className={classes.textField} fullWidth variant="outlined" multiline rows={10}
+                            <TextField className={classes.textField} fullWidth variant="filled" multiline rows={10}
                                 name="message" type="text" label="Message or Query" error={state.error}
                                 helperText={state.error ? "This value cannot be empty." : process.env.REACT_APP_INSTRUCTIONS_CONTACTUS_MESSAGE} 
                                 onChange={handleText}/>

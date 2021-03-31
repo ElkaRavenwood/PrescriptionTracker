@@ -10,6 +10,8 @@ app.use(express.json());
 
 api(app);
 
+app.get("/meditrack/contact", require("./src/send_email"));
+
 // front end
 app.use(express.static(`${__dirname}/prescription-tracker-client/build`));
 
