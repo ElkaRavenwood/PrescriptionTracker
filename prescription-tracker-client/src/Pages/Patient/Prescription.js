@@ -37,42 +37,33 @@ const Prescription = (props) => {
 
     const [data, setData] = useState([]);
 
-    useEffect(async() => {
-        // pull from database
-        console.log(localStorage.getItem("prescriptionTrackerUserId"));
-            let uuid = 1; //will be the local storage call when Ready
-            let arrayOut = [];
+    useEffect(() => {
             
-            //make querry to database
-            await axios.get("meditrack/user/precs/active", {
-                params: {
-                    query_pswd: "ae34ZF76!",
-                    user_id: uuid
-                }
-            }).then((res) => {
-                if(res.status === 200){
-                    //if read was success then we have JSON array in res.data
-                   // console.log(res.data);
-                    let fp = "";
-                    for(let i=0; i<res.data.length; i++){
-                        if(res.data[i].med_name == null) fp = "RX"+res.data[i].rx+""
-                        else fp = res.data[i].med_name+" (RX"+res.data[i].rx+")";
-
-                        arrayOut.push({
-                            name: fp,
-                            repeated: res.data[i].cur_refills,
-                            refillsAllowed: res.data[i].max_refills
-                        })
-                    }
-                } else{
-                    //error reporting
-                    
-                }
-            }, (error) => {
-                console.log(error);
-            });
-        
-            setData(arrayOut);
+        axios.get("meditrack/user/precs/active", {
+            params: {
+                query_pswd: "ae34ZF76!",
+                user_id: localStorage.getItem("prescriptionTrackerUserId")
+            }
+        }).then((res) => {
+            if(res.status === 200){
+                //if read was success then we have JSON array in res.data
+                let arrayOut = [];
+                res.data.forEach((prescription) => {
+                    arrayOut.push({
+                        rx: prescription.rx,
+                        repeated: prescription.cur_refills,
+                        refillsAllowed: prescription.max_refills,
+                        name: prescription.med_name + " (RX" + prescription.rx + ")",
+                    });
+                });
+                setData(arrayOut);
+            } else{
+                //error reporting
+                
+            }
+        }, (error) => {
+            console.log(error);
+        });
         
     }, []);
 
@@ -88,8 +79,8 @@ const Prescription = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((prescription) => (
-                            <TableRow key={prescription.name} hover >
+                        {data.map((prescription, index) => (
+                            <TableRow key={index} hover >
                                 <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
                                     {prescription.name}
                                 </TableCell>
