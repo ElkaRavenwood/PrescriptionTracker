@@ -4,7 +4,8 @@ import axios from 'axios';
 
 const toReadableDate = (sqlDateIn) => {
     let date = parseToDateInfo(sqlDateIn);
-    return date.hh+":"+date.mm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+    return date.hh12+":"+date.mm+" "+date.am_pm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+    //return date.hh+":"+date.mm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
  }
  
  const parseToDateInfo = (sqlDateIn) => {
@@ -14,9 +15,27 @@ const toReadableDate = (sqlDateIn) => {
      //console.log(date);
  
      let dateDix = {};
+
+     dateDix.h12 = "test";
+    let h12num = 0;
+    let ap = "AM";
+
+    if(date.getHours() > 12){
+        h12num = parseInt(date.getHours()) - 12;
+        ap = "PM";
+    } else if(date.getHours() == 12){
+        h12num = date.getHours();
+        ap = "PM";
+    } else{
+        h12num = date.getHours();
+        ap = "AM";
+    }
  
      dateDix.h = ""+date.getHours();
      dateDix.hh = (date.getHours() < 10) ? "0"+date.getHours() : ""+date.getHours();
+     dateDix.h12 = ""+h12num;
+     dateDix.hh12 = (h12num < 10) ? "0"+h12num : ""+h12num;
+     dateDix.am_pm = ap;
      dateDix.m = ""+date.getMinutes();
      dateDix.mm = (date.getMinutes() < 10) ? "0"+date.getMinutes() : ""+date.getMinutes();
      dateDix.s = ""+date.getSeconds();
@@ -95,7 +114,7 @@ const History = (props) => {
                    // console.log(res.data);
                     let ipr ="";
                     for(let i=0; i<res.data.length; i++){
-                        if(res.data[i].is_completed === 0) ipr = "In Progress";
+                        if(parseInt(res.data[i].is_completed) === 0) ipr = "In Progress";
                         else ipr = "Order Completed";
 
                         //console.log(toReadableDate(res.data[i].status_date));

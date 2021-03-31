@@ -46,7 +46,7 @@ const TrackingTimeline = (props) => {
             <TimelineEvent
                 color={currentStatus === "5" ? "#30D5C8" : ""}
                 icon={FaClock}
-                title={prescriptionStatuses[0]}
+                title={prescriptionStatuses[4]}
                 // subtitle='26/03/2019 09:51'
                 />
             </Timeline>
