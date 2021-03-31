@@ -7,7 +7,7 @@ Ensure that you have git and node installed on your computer. Node can be downlo
 
 in the shell. Alternate ways of doing so can be found by clicking the green "Code" button.
 
-### Database Set Up and Connection
+### Backend Set Up and Connection
 
 Follow the instructions in this video to install and set up Postges (https://youtu.be/qw--VYLpxG4 @ 10:55).
 Take note of the password used in your set up process.
@@ -20,11 +20,14 @@ Once logged in, type the following command:
 
 Replace ```remainderFilePath``` with the file path to the PrescriptionTracker folder.
 
-Note: If you are on windows, you will have to change all backslashes ```\``` in the file path to forward slashes ```/```. This is a special requirement for the postgres terminal.
+Note: If you are on Windows, you must change all backslashes ```\``` in the file path to forward slashes ```/```. This is a special requirement for the postgres terminal.
 
-Press ```Enter``` on your keyboard. to execute the command. It may take a few seconds for file to be parsed and then a stream of CREATE TABLE and INSERT 0 1 will occur on the terminal.
+Press ```Enter``` on your keyboard. to execute the command. It may take a few seconds for file to be parsed.
+This will be followed by several ```CREATE TABLE``` and ```INSERT 0 1``` outputs terminal.
 
-Once that is complete, navigate to PrescriptionTracker/src/db_connect.js:
+When you are presented with the terminal ```meditrack_db=#```, the database set up is complete.
+
+Navigate to PrescriptionTracker/src/db_connect.js:
 
 If you are on Windows, Change the username on line 14 from ```me``` to ```postgres```.
 
@@ -53,7 +56,7 @@ You can now view prescription-tracker-client in the browser.
 Note that the development build is not optimized.
 To create a production build, use npm run build.
 ```
-Once this is complete, open a new shell terminal. Navigate to the PrescriptionTracker directory and run
+Once this is complete, open a new shell terminal. Navigate to the PrescriptionTracker directory and run.
 
 ```npm run dev```
 
@@ -62,7 +65,7 @@ Navigate back to the web browser that was opened, or use the link provided in th
 Have fun!
 
 ## Notes on Testing
-For the purposes of [a patient] contacting the company owners, an email was created. The email credentials are below:
+For the purposes of [a patient] contacting the pharmacies, an email was created. The email credentials are below:
 
 Username:
 
@@ -72,3 +75,17 @@ jwtesting2021@outlook.com
 Password:
 
 testPassword
+
+For simulated patients and pharmacies, the following credentials can be used:
+
+Patient Credentials:
+
+Username: tpetters0@walmart.com
+
+Password: epfHyxOLpN7
+
+Pharmacy Credentials:
+
+Username: bsladea@google.co.jp
+
+Password: nVYn0e
