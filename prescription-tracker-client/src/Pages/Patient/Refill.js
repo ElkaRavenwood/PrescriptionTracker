@@ -82,6 +82,7 @@ const Refill = (props) => {
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow hover>
+                            <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Prescription ID</TableCell>
                             <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Prescription Name</TableCell>
                             <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Refills Left</TableCell>
                         </TableRow>
@@ -90,6 +91,9 @@ const Refill = (props) => {
                         {data.map((prescription, index) => {
                             return (
                                 <TableRow key={index} hover>
+                                    <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
+                                        {prescription.rx}
+                                    </TableCell>
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
                                         {prescription.med_name}
                                     </TableCell>
