@@ -12,22 +12,26 @@ in the shell. Alternate ways of doing so can be found by clicking the green "Cod
 Follow the instructions in this video to install and set up Postges (https://youtu.be/qw--VYLpxG4 @ 10:55).
 Take note of the password used in your set up process.
 
-Start up the Postgres Terminal and log in using the default information (simply press Enter till you are prompted for your password)
-Once logged in type the folllowing command:
+Start up the Postgres Terminal and log in using the default information (simply press Enter till you are prompted for your password).
 
-```\i remainderFilePath/PrescriptionTracker/src/db_setup_commands.sql```
+Once logged in, type the following command:
+
+```\i 'remainderFilePath/PrescriptionTracker/src/db_setup_commands.sql'```
 
 Replace ```remainderFilePath``` with the file path to the PrescriptionTracker folder.
-Note: If you are on windows, you will have to change all ```\``` in the file path to forward slashes ```/```. This is a special requirement for the postgres terminal.
 
-Press Enter to execute the command.
-It may take a few seconds for file to be parsed and then a stream of CREATE TABLE and INSERT 0 1 will occur on screen.
+Note: If you are on windows, you will have to change all backslashes ```\``` in the file path to forward slashes ```/```. This is a special requirement for the postgres terminal.
+
+Press ```Enter``` on your keyboard. to execute the command. It may take a few seconds for file to be parsed and then a stream of CREATE TABLE and INSERT 0 1 will occur on the terminal.
 
 Once that is complete, navigate to PrescriptionTracker/src/db_connect.js:
+
 If you are on Windows, Change the username on line 14 from ```me``` to ```postgres```.
+
 For both Windows and MacOS, Change the password on line 15 from ```password``` to the password you used in your set up process.
 
 Optional Test:
+
 Perform a test call using Postman to verify if the database is connected GET http://localhost:8000/meditrack/test
 This will return the information for the first user in the system (Todd Peters).
 
