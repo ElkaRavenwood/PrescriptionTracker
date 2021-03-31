@@ -1,9 +1,11 @@
 import { Box, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import AdminHeader from "../../Components/AdminHeader";
 import CustomButton from "../../Components/CustomButton";
+import MessageDisplay from "../../Components/MessageDisplay";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,71 +62,80 @@ const PatientDetails = (props) => {
 
     const location = useLocation();
 
-    const [data, setData] = useState({prescriptions: []});
+    const [data, setData] = useState({
+        user_id: location.state ? location.state.id : "",
+        firstName: location.state ? location.state.firstName : "",
+        lastName: location.state ? location.state.lastName : "",
+        prescriptions: []
+    });
+
+    const [state, setState] = useState({
+        ready: false,
+    });
+    const prescriptionStatuses = "Prescription Received,Prescription Logged,Pharmacist Verification,Packaging,Ready For Pickup".split(",");
 
     useEffect(() => {
         // TODO pull from db using location.state.id
-        let temp = {
-            lastName: "Gupta",
-            firstName: "Varnikaa",
-            prescriptions: [{
-                id: "12389012d",
-                status: "In Progress",
-                estimatedFinish: "16:20",
-            }, {
-                id: "12389012f",
-                status: "Queued",
-                estimatedFinish: "16:20",
-            }, {
-                id: "1238a012d",
-                status: "Completed",
-                estimatedFinish: "12:20",
-            }, {
-                id: "1238d012d",
-                status: "Completed",
-                estimatedFinish: "18:20",
-            }, {
-                id: "12289012d",
-                status: "Completed",
-                estimatedFinish: "14:20",
-            }, {
-                id: "1f389b12d",
-                status: "Completed",
-                estimatedFinish: "16:20",
-            }],
-        };
-        setData(temp);
-    }, []);
+        if (location.state) {
+            axios.get("/meditrack/pharm/patient/precs/history", {
+                params: {
+                    pharm_id: localStorage.getItem("prescriptionTrackerUserId"),
+                    user_id: location.state.id,
+                    query_pswd: "ae34ZF76!",
+                },
+            }).then((res) => {
+                if (res.status === 200) {
+                    setData((data) => ({
+                        ...data,
+                        prescriptions: res.data
+                    }));
+                } else {
+                    setState((state)=> ({
+                        ...state,
+                        errorMessage: res.data,
+                        showError: true,
+                    }));
+                }
+            });
+        }
+    }, [location.state]);
     
-    // queued -> in progress -> completed
-    const handleClick = (prescription, start) => {
-        // TODO ping backend
-        let statusToSet = "In Progress";
-        let toDelete = false;
-        if (prescription.status === "Completed") { // if completed
-            statusToSet = "Queued"; // makes it so that the prescription is queued
-        } else if (prescription.status === "Queued") {
-            if (start) { // if first button is pressed
-                statusToSet = "In Progress";
-            } else {
-                // Delete prescription
-                toDelete = true;
-            }
+    const handleClick = (prescription, start, index) => {
+        let statusToSet = "1";
+        if (prescription.progress === "5") { // if completed
+            statusToSet = "1"; // makes it so that the prescription is reset
         } else { // if in progress
-            statusToSet = start ? "Completed" : "Queued";
+            statusToSet = !start ? parseInt(prescription.progress) + 1 : parseInt(prescription.progress) - 1;
         }
+        console.log(prescription.progress)
+        console.log(statusToSet)
+        axios.put("/meditrack/precs/progress", null, {
+            params: {
+                rx: prescription.rx,
+                progress: "" + statusToSet,
+                status_date: new Date(),
+                query_pswd: "ae34ZF76!",
+            }
+        }).then((res) => {
+            console.log(res)
+            if (res.status === 200) {
+                let temp = [...data.prescriptions];
+                temp[index].progress = "" + statusToSet;
+                temp[index].status_msg = res.data.progress_msg;
+                setData((data) => ({
+                    ...data,
+                    prescriptions: temp,
+                }));
+            }
+        })
 
-        if (toDelete) {
-            // delete a prescription
-        } else {
-            // modify a prescription status
-        }
     }
 
     return (
         <div id="patientDetails" className="admin">
             <AdminHeader />
             <div className={classes.root}>
+                <MessageDisplay message={state.errorMessage} error={state.showError} />
                 <Typography className="heading" variant="h2">{data.lastName}, {data.firstName}</Typography>
                 <Box className={classes.root}>
                     <Table className={classes.table}>
@@ -137,35 +148,35 @@ const PatientDetails = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data.prescriptions.map((prescription) => (
-                                <TableRow key={prescription.id} >
+                            {data.prescriptions ? data.prescriptions.map((prescription, index) => (
+                                <TableRow key={prescription.rx} >
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
-                                        {prescription.id}
+                                        {prescription.rx}
                                     </TableCell>
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
-                                        {prescription.status}
+                                        {prescription.progress === "6" ? prescription.status_msg : prescriptionStatuses[parseInt(prescription.progress) - 1]}
                                     </TableCell>
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell + " " + classes.statusCell}>
-                                        {prescription.status === "Completed" ? 
-                                            <div className={classes.bigButton} onClick={() => handleClick(prescription)}>
+                                        {prescription.progress === "5" ? 
+                                            <div className={classes.bigButton} onClick={() => handleClick(prescription, false, index)}>
                                                 <CustomButton text="Reopen" variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor /> 
                                             </div>
                                             :
                                             <React.Fragment>
-                                                <div className={classes.buttonContainer} onClick={() => handleClick(prescription, true)}>
-                                                    <CustomButton text={prescription.status === "In Progress" ? "Stop" : "Start"} variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor/>
+                                                <div className={classes.buttonContainer} onClick={() => handleClick(prescription, true, index)}>
+                                                    <CustomButton text={prescription.progress !== "1" ? "Go Back" : ""} variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor disabled={prescription.progress === "1"}/>
                                                 </div>
-                                                <div className={classes.buttonContainer} onClick={() => handleClick(prescription, false)}>
-                                                    <CustomButton text={prescription.status === "Queued" ? "Delete": "Finish"} variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor />
+                                                <div className={classes.buttonContainer} onClick={() => handleClick(prescription, false, index)}>
+                                                    <CustomButton text={prescription.progress === "5" ? "Finish": prescription.progress === "1" ? "Begin" : "Continue"} variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor  />
                                                 </div>
                                             </React.Fragment>
                                         }
                                     </TableCell>
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell + " " + classes.finishCellContainer}>
-                                        <div className={classes.finishCell}> {prescription.status === "In Progress" ? prescription.estimatedFinish : "-" }</div>
+                                        <div className={classes.finishCell}> {prescription.estimatedFinish || "-" }</div>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )): null}
                         </TableBody>
                     </Table>
                 </Box>

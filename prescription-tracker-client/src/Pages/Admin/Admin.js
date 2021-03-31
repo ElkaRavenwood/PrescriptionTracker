@@ -115,8 +115,8 @@ const Admin = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((patient) => (
-                            <TableRow key={patient.id} >
+                        {data.map((patient, index) => (
+                            <TableRow key={index} >
                                 <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
                                     {patient.last_name}, {patient.first_name}
                                 </TableCell>
@@ -125,6 +125,8 @@ const Admin = (props) => {
                                     <div className={classes.buttonContainer}>
                                         <Link className="noUnderline" to={{pathname:"/Admin/PatientDetails", state: {
                                             id: patient.user_id,
+                                            firstName: patient.first_name,
+                                            lastName: patient.last_name
                                         }}}>
                                             <CustomButton text="See More" variant="contained" longRectangular smallFont fullWidth primaryDarkTextColor/>
                                         </Link>
