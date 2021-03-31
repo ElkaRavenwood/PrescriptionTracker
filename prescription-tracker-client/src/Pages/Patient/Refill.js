@@ -1,6 +1,7 @@
-import { Box, Icon, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Box, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import CustomButton from "../../Components/CustomButton";
+import MessageDisplay from "../../Components/MessageDisplay";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,80 +42,65 @@ const Refill = (props) => {
     const classes = useStyles();
 
     const [data, setData] = useState([]);
+    const [state, setState] = useState({});
 
     useEffect(() => {
-        // TODO pull from database
-        
-
-        let temp = [{
-            name: "0000000001",
-            repeated: 0,
-            refillsAllowed: 0,
-        }, {
-            name: "0000000002",
-            repeated: 0,
-            refillsAllowed: 0,
-        }, {
-            name: "0000000003",
-            repeated: 0,
-            refillsAllowed: 2,
-        }, {
-            name: "0000000501",
-            repeated: 3,
-            refillsAllowed: 5,
-        }];
-
-        temp.forEach(elem => {
-            elem.selected = false;
+        axios.get("/meditrack/user/precs/history/", {
+            params: {
+                query_pswd: "ae34ZF76!",
+                user_id: localStorage.getItem("prescriptionTrackerUserId")
+            }
+        }).then((res) => {
+            if (res.status === 200) {
+                let temp = res.data.filter((prescription) => parseInt(prescription.max_refills) > parseInt(prescription.cur_refills))
+                temp.forEach(elem => {
+                    elem.selected = false;
+                    elem.refillsLeft = parseInt(elem.max_refills) - parseInt(elem.cur_refills);
+                });
+                setData(temp);
+            } else {
+                setState((state)=> ({
+                    ...state,
+                    errorMessage: res.data,
+                    showError: true
+                }));
+            }
+        }).catch((err) => {
+            console.log(err);
         });
-        setData(temp);
+
+        
     }, []);
-
-    const handleClick = (index) => {
-        let temp = [...data];
-        temp[index].selected = !temp[index].selected ;
-        setData(temp);
-    }
-
-    const handleSubmit = () => {
-        // TODO ping backend
-        console.log(123);
-    }
 
     return (
         <div id="refill">
             <Box className={classes.root} >
-                <Typography variant="h2" className={"heading"}>Refill Prescriptions</Typography>
-                <Typography variant="h4" className={"heading"}>Select a prescription to refill. Then click submit to put in your order.</Typography>
+                <MessageDisplay message={state.errorMessage} error={state.showError} />
+                <Typography variant="h2" className={"heading"} gutterBottom>Refill Prescriptions</Typography>
+                <Typography variant="h4" className={"heading"} gutterBottom>Below, are your refillable prescriptions. Call your pharmacist to put in a new order</Typography>
+                <br />
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow hover>
                             <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Prescription Name</TableCell>
-                            <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Refill</TableCell>
+                            <TableCell align="center" className={classes.tableCell + " " + classes.tableHeaderCell}>Refills Left</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((prescription, index) => (
-                            <TableRow key={prescription.name} hover className={prescription.repeated < prescription.refillsAllowed ? classes.clickableRow : ""} onClick={() => handleClick(index)}>
-                                <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
-                                    {prescription.name}
-                                </TableCell>
-                                {prescription.repeated < prescription.refillsAllowed ? 
+                        {data.map((prescription, index) => {
+                            return (
+                                <TableRow key={index} hover>
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
-                                        {prescription.selected ? <Icon>check</Icon> : "" }
+                                        {prescription.med_name}
                                     </TableCell>
-                                    : 
                                     <TableCell align="center" className={classes.tableCell + " " + classes.tableBodyCell}>
-                                        No more refills permitted
+                                        {prescription.refillsLeft}
                                     </TableCell>
-                                }
-                            </TableRow>
-                        ))}
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
-                <br/>
-                <br/>
-                <CustomButton color="primary" outlined rectangular variant="contained" text="Submit" onClick={handleSubmit}/>
             </Box>
         </div>
     );
