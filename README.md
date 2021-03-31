@@ -67,14 +67,10 @@ Have fun!
 ## Notes on Testing
 For the purposes of [a patient] contacting the pharmacies, an email was created. The email credentials are below:
 
-Username:
+Username: jwtesting2021@outlook.com
 
-jwtesting2021@outlook.com
+Password: testPassword
 
-
-Password:
-
-testPassword
 
 For simulated patients and pharmacies, the following credentials can be used:
 
@@ -83,6 +79,7 @@ Patient Credentials:
 Username: tpetters0@walmart.com
 
 Password: epfHyxOLpN7
+
 
 Pharmacy Credentials:
 
