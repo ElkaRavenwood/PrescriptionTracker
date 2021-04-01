@@ -39,31 +39,36 @@ const Prescription = (props) => {
 
     useEffect(() => {
             
-        axios.get("meditrack/user/precs/active", {
-            params: {
-                query_pswd: "ae34ZF76!",
-                user_id: localStorage.getItem("prescriptionTrackerUserId")
-            }
-        }).then((res) => {
-            if(res.status === 200){
-                //if read was success then we have JSON array in res.data
-                let arrayOut = [];
-                res.data.forEach((prescription) => {
-                    arrayOut.push({
-                        rx: prescription.rx,
-                        repeated: prescription.cur_refills,
-                        refillsAllowed: prescription.max_refills,
-                        name: prescription.med_name + " (RX" + prescription.rx + ")",
+        async function fetchData(setData){
+            await axios.get("meditrack/user/precs/active", {
+                params: {
+                    query_pswd: "ae34ZF76!",
+                    user_id: localStorage.getItem("prescriptionTrackerUserId")
+                }
+            }).then((res) => {
+                if(res.status === 200){
+                    //if read was success then we have JSON array in res.data
+                    let arrayOut = [];
+                    res.data.forEach((prescription) => {
+                        arrayOut.push({
+                            rx: prescription.rx,
+                            repeated: prescription.cur_refills,
+                            refillsAllowed: prescription.max_refills,
+                            name: prescription.med_name + " (RX" + prescription.rx + ")",
+                        });
                     });
-                });
-                setData(arrayOut);
-            } else{
-                //error reporting
-                
-            }
-        }, (error) => {
-            console.log(error);
-        });
+                    setData(arrayOut);
+                } else{
+                    //error reporting
+                    
+                }
+            }, (error) => {
+                console.log(error);
+            });
+        }
+
+        fetchData(setData);
+        
         
     }, []);
 

@@ -4,58 +4,74 @@ import axios from 'axios';
 
 const toReadableDate = (sqlDateIn) => {
     let date = parseToDateInfo(sqlDateIn);
-    return date.hh12+":"+date.mm+" "+date.am_pm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
+    //return "year: "+date.yyyy
+    return date.hh12+":"+date.mm+" "+date.am_pm+", "+date.MMM+" "+date.d+", "+date.yyyy;
     //return date.hh+":"+date.mm+", "+date.MMM+" "+date.dd+", "+date.yyyy;
  }
  
  const parseToDateInfo = (sqlDateIn) => {
-     let pt = sqlDateIn.split("T")[0];
-     let tt = sqlDateIn.split("T")[1].split(".000Z")[0];
-     let date = new Date(pt+" "+tt);
+     let dateStr = sqlDateIn.split("T")[0];
+     let timeStr = sqlDateIn.split("T")[1].split(".000Z")[0];
      //console.log(date);
- 
+    
+     let monthNumStr = dateStr.split("-")[1]
+     let yearNumStr = dateStr.split("-")[0]
+     let dateNumStr = dateStr.split("-")[2]
+
+     let timeArr = timeStr.split(":");
+     
+     let hourStr = timeArr[0];
+     let minStr = timeArr[1];
+     let secStr = timeArr[2];
+
+     let monthNum = parseInt(monthNumStr);
+     let hourNum = parseInt(hourStr);
+     let minNum = parseInt(minStr);
+     let secNum = parseInt(secStr);
+     let dateNum = parseInt(dateNumStr);
+
      let dateDix = {};
 
      dateDix.h12 = "test";
     let h12num = 0;
     let ap = "AM";
 
-    if(parseInt(date.getHours()) > 12){
-        h12num = parseInt(date.getHours()) - 12;
+    if(hourNum > 12){
+        h12num = hourNum - 12;
         ap = "PM";
-    } else if(parseInt(date.getHours()) === 12){
-        h12num = date.getHours();
+    } else if(hourNum === 12){
+        h12num = hourNum;
         ap = "PM";
     } else{
-        h12num = date.getHours();
+        h12num = hourNum;
         ap = "AM";
     }
  
-     dateDix.h = ""+date.getHours();
-     dateDix.hh = (date.getHours() < 10) ? "0"+date.getHours() : ""+date.getHours();
+     dateDix.h = ""+hourNum;
+     dateDix.hh = (hourNum < 10) ? "0"+hourNum : ""+hourNum;
      dateDix.h12 = ""+h12num;
      dateDix.hh12 = (h12num < 10) ? "0"+h12num : ""+h12num;
      dateDix.am_pm = ap;
-     dateDix.m = ""+date.getMinutes();
-     dateDix.mm = (date.getMinutes() < 10) ? "0"+date.getMinutes() : ""+date.getMinutes();
-     dateDix.s = ""+date.getSeconds();
-     dateDix.ss = (date.getSeconds() < 10) ? "0"+date.getSeconds() : ""+date.getSeconds();
-     dateDix.d = ""+date.getDate();
-     dateDix.dd = (date.getDate() < 10) ? "0"+date.getDate() : ""+date.getDate();
+     dateDix.m = ""+minNum;
+     dateDix.mm = (minNum < 10) ? "0"+minNum : ""+minNum;
+     dateDix.s = ""+secNum;
+     dateDix.ss = (secNum < 10) ? "0"+secNum : ""+secNum;
+     dateDix.d = ""+dateNum;
+     dateDix.dd = (dateNum < 10) ? "0"+dateNum : ""+dateNum;
  
      
      const longMonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
      const shortMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-     let monthStr = shortMonthNames[date.getMonth()];
-     let longMonthStr = longMonthNames[date.getMonth()];
+     let monthStr = shortMonthNames[monthNum-1];
+     let longMonthStr = longMonthNames[monthNum-1];
      
  
-     dateDix.M = ""+(date.getMonth()+1);
-     dateDix.MM = (date.getMonth()+1 < 10) ? "0"+date.getMonth()+1 : ""+date.getMonth()+1;
+     dateDix.M = ""+(monthNum+1);
+     dateDix.MM = (monthNum+1 < 10) ? "0"+monthNum+1 : ""+monthNum+1;
      dateDix.MMM = monthStr;
      dateDix.MMMM = longMonthStr;
-     dateDix.yy = ""+date.getYear();
-     dateDix.yyyy = ""+date.getFullYear();
+     dateDix.yy = ""+yearNumStr.substring(yearNumStr.length-2, yearNumStr.length);
+     dateDix.yyyy = ""+yearNumStr;
  
      return dateDix;
   }
@@ -98,8 +114,7 @@ const History = (props) => {
     
 
     useEffect(() => {
-
-        async function fetchData(setData){
+        async function fetchData(setData) {
             let arrayOut = [];
 
             //make query to database
@@ -111,16 +126,18 @@ const History = (props) => {
             }).then((res) => {
                 if(res.status === 200){
                     //if read was success then we have JSON array in res.data
-                   // console.log(res.data);
+                    // console.log(res.data);
                     let ipr ="";
                     for(let i=0; i<res.data.length; i++){
                         if(parseInt(res.data[i].is_completed) === 0) ipr = "In Progress";
                         else ipr = "Order Completed";
 
-                        //console.log(toReadableDate(res.data[i].status_date));
+                        console.log(toReadableDate(res.data[i].status_date));
+
+                        let dd = toReadableDate(res.data[i].status_date);
                         arrayOut.push({
                             number: "RX"+res.data[i].rx,
-                            placed: toReadableDate(res.data[i].status_date),
+                            placed: dd,
                             status: ipr
                         })
                     }
