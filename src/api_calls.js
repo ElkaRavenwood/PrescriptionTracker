@@ -284,13 +284,37 @@ constructBulkPrecRequest = ( listIn ) => {
     return whereClause;
 }
 
+limitInfo = ( prescription ) => {
+    return {
+        rx: prescription.rx,
+        med_name: prescription.med_name,
+        progress: prescription.progress
+    }
+}
+
 module.exports = async(router) => {
     //TEST ---------------------------------------------------------------
     router.get(`/${objId}/test`, async (req, res) => {
         console.log("HERE IN TEST");
         try{
-            
-            res.status(200).send("good")
+            //just run a for loop to capture the information
+            let precs = [];
+
+            //active queries will have user id and are not completed
+            let precQueries = await pool.query(
+                "SELECT * FROM prec_info WHERE user_id="+1+" and is_completed=0 ORDER BY status_step_id"
+            );
+            //console.log(precQueries.rows)
+            //if there is at least one then set up prescription information.
+            if(precQueries.rows[0] != null){
+                for(i=0; i<precQueries.rows.length; i++){
+                    precs.push(limitInfo(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i])));
+                }
+            }
+           precs = sortPrecsByProgress(precs)
+           
+            //console.log(pr2)
+            res.status(200).send(precs);
         } catch(err){
             console.log(err.message);
             res.status(201).send("Failure Handling Request")
@@ -808,7 +832,7 @@ module.exports = async(router) => {
 
                     //active queries will have user id and are not completed
                     let precQueries = await pool.query(
-                        "SELECT * FROM prec_info WHERE user_id="+user_id+" and is_completed=0"
+                        "SELECT * FROM prec_info WHERE user_id="+user_id+" and is_completed=0 ORDER BY status_step_id"
                     );
                     //console.log(precQueries.rows)
                     //if there is at least one then set up prescription information.
@@ -817,7 +841,9 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.status(200).send(precs);
+                    //let pr2 = sortPrecsByProgress(precs)
+                    //console.log(pr2)
+                    res.status(200).send(sortPrecsByProgress(precs));
                 
 
                 } else {
@@ -1514,7 +1540,7 @@ module.exports = async(router) => {
                         activeList.push(await getDescriptivePrecInfo_fromQuery(listOfPrecs.rows[i]))
                     }
 
-                    res.status(200).send(activeList);
+                    res.status(200).send(sortPrecsByProgress(activeList));
 
                 } else{
                     res.status(201).send("Insufficient information");
@@ -1594,13 +1620,14 @@ module.exports = async(router) => {
                             precs.push(await getDescriptivePrecInfo_fromQuery(precQueries.rows[i]));
                         }
                     }
-                    res.status(200).send(precs);
+                    res.status(200).send(sortPrecsByProgress(precs));
 
                 } else {
                     res.status(201).send("User Not Found");
                 }
 
             } else{
+                
                 res.status(201).send("Illegal Query");
             }
         } catch(err){
@@ -1971,3 +1998,51 @@ module.exports = async(router) => {
     });
 
 };
+
+
+
+findBiggest = (min, max, precArray) => {
+    
+    let i;
+    let bigIndx = min;
+    let iprog = 0;
+    let smallprog = 0;
+    
+    for(i=min; i<=max; i++){
+        //console.log(i);
+        if(parseInt(precArray[i].progress) === 6) iprog = 0;
+        else iprog = parseInt(precArray[i].progress);
+
+        if(parseInt(precArray[bigIndx].progress) === 6) smallprog = 0;
+        else smallprog = parseInt(precArray[bigIndx].progress);
+    
+
+        if( iprog > smallprog ){
+            bigIndx = i;
+            //console.log("Biggest:")
+            //console.log(precArray[bigIndx]);
+        }
+    }
+
+    return bigIndx;
+}
+
+sortPrecsByProgress = (precArray) => {
+    let bigIndx , temp;
+    let i= 0;
+    let min = 0;
+    let max = precArray.length-1;
+    
+    if(max > min){
+       for(i=min;i<=max;i++){
+        bigIndx = findBiggest(i,max, precArray);
+
+        temp = precArray[i];
+        precArray[i] = precArray[bigIndx];
+        precArray[bigIndx] = temp;
+
+       }
+    }
+
+    return precArray;
+}
